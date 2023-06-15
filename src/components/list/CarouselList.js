@@ -3,10 +3,10 @@ import { View, TouchableOpacity, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import CarouselItem from "../listitems/CarouselItem";
-import image1 from "../../images/image1.jpeg";
-import image2 from "../../images/image2.jpeg";
-import image3 from "../../images/image3.jpeg";
-import image4 from "../../images/image4.jpeg";
+import image1 from "../../../assets/images/image1.jpeg";
+import image2 from "../../../assets/images/image2.jpeg";
+import image3 from "../../../assets/images/image3.jpeg";
+import image4 from "../../../assets/images/image4.jpeg";
 
 const CarouselList = ({ navigation }) => {
   const [activeSlide, setActiveSlide] = useState(0);
