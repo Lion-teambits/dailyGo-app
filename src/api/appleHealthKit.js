@@ -15,7 +15,7 @@ const permissions = {
 
 // initialize permissions
 export const requestAuthorization = (callback) => {
-  AppleHealthKit.initHealthKit(permissions, (error) => {a
+  AppleHealthKit.initHealthKit(permissions, (error) => {
     if (error) {
       callback(error);
       return;
