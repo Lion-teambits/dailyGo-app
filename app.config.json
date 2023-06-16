@@ -25,6 +25,8 @@
     "updates": {
       "url": "https://u.expo.dev/ab348687-b102-442b-8497-aecbbf1c4fdb"
     },
-    "ios": {}
+    "ios": {
+      "bundleIdentifier": "com.lion-teambits.dailyGo-app"
+    }
   }
 }
