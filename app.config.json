@@ -20,6 +20,11 @@
     "slug": "dailyGo-app",
     "android": {
       "package": "com.teambits.dailyGoapp"
-    }
+    },
+    "runtimeVersion": "1.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/ab348687-b102-442b-8497-aecbbf1c4fdb"
+    },
+    "ios": {}
   }
 }
