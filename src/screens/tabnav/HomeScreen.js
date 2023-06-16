@@ -7,11 +7,10 @@ import {
   getAuthStatus,
   getDistance,
   getActiveEnergyBurned,
-} from '../../api/appleHealthKit';
+} from '../../api/healthInfoAPI';
 
 const HomeScreen = () => {
   if (Platform.OS === 'ios') {
-    const [authStatus, setAuthStatus] = useState({});
     const [todayStep, setTodayStep] = useState(0);
     const [todayDistance, setTodayDistance] = useState(0);
     const [todayEnergyBarned, setTodayEnergyBarned] = useState(0);
@@ -22,6 +21,7 @@ const HomeScreen = () => {
           console.log('[ERROR] Cannot grant permissions!');
           return;
         }
+
         getStepCount((err, result) => {
           if (err) {
             console.error(err);
@@ -46,27 +46,45 @@ const HomeScreen = () => {
           setTodayEnergyBarned(result);
         });
       });
-    }, [authStatus]);
-
-    const handlePressGetAuthStatus = () => {
-      getAuthStatus((err, result) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        setAuthStatus(result);
-      });
-    };
+    }, []);
 
     return (
       <View>
+        <Text>This is iOS</Text>
         <Text>Steps: {todayStep}</Text>
         <Text>Distance: {todayDistance}</Text>
         <Text>Calories: {JSON.stringify(todayEnergyBarned)}</Text>
       </View>
     );
   } else if (Platform.OS === 'android') {
-    return <Text>This is android</Text>;
+    const [todayStep, setTodayStep] = useState(0);
+    const [todayDistance, setTodayDistance] = useState(0);
+    const [todayEnergyBarned, setTodayEnergyBarned] = useState(0);
+
+    useEffect(() => {
+      async function retrieveData() {
+        try {
+          const stepResult = await getStepCount();
+          setTodayStep(stepResult);
+          const distanceResult = await getDistance();
+          setTodayDistance(distanceResult);
+          const caloriesResult = await getCalories();
+          setTodayEnergyBarned(caloriesResult);
+        } catch (error) {
+          console.log('Error :', error.message);
+        }
+      }
+      retrieveData();
+    }, []);
+
+    return (
+      <View>
+        <Text>This is android</Text>
+        <Text>Steps: {todayStep}</Text>
+        <Text>Distance: {todayDistance}</Text>
+        <Text>Calories: {todayEnergyBarned}</Text>
+      </View>
+    );
   }
 };
 
