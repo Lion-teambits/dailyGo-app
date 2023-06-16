@@ -34,8 +34,9 @@ export const getStepCount = async () => {
   try {
     const authResult = await authorizeFit();
     const res = await GoogleFit.getDailyStepCountSamples(opt);
-    console.log('steps: ', res);
-    return res[1].steps[0];
+    const dateString = res[1].steps[0].date;
+
+    return { [dateString]: res[1].steps[0].value };
   } catch (error) {
     throw new Error(error.message);
   }
@@ -45,8 +46,9 @@ export const getDistance = async () => {
   try {
     const authResult = await authorizeFit();
     const res = await GoogleFit.getDailyDistanceSamples(opt);
-    console.log('distance: ', res);
-    return res[0];
+    const dateString = res[0].startDate.split('T')[0];
+
+    return { [dateString]: res[0].distance };
   } catch (error) {
     throw new Error(error.message);
   }
@@ -56,8 +58,9 @@ export const getCalories = async () => {
   try {
     const authResult = await authorizeFit();
     const res = await GoogleFit.getDailyCalorieSamples(opt);
-    console.log('calories: ', res);
-    return res[0];
+    const dateString = res[0].startDate.split('T')[0];
+
+    return { [dateString]: Math.abs(res[0].calorie) };
   } catch (error) {
     throw new Error(error.message);
   }

@@ -24,25 +24,9 @@ export const requestAuthorization = (callback) => {
   });
 };
 
-export const getAuthStatus = (callback) => {
-  AppleHealthKit.getAuthStatus(permissions, (err, result) => {
-    if (err) {
-      callback(err, null);
-      return;
-    }
-
-    callback(null, result);
-  });
-};
-
 // GET health info
 // date constant
 const today = new Date();
-const sevenDaysAgo = new Date(
-  today.getFullYear(),
-  today.getMonth(),
-  today.getDate() - 7
-);
 today.setHours(0, 0, 0, 0);
 
 // Today's current step count
@@ -57,9 +41,9 @@ export const getStepCount = (callback) => {
       callback(err, null);
       return;
     }
-
-    // console.log('Current daily step(getStepCount):', result.value);
-    callback(null, result.value);
+    const dateString = result.startDate.split('T')[0];
+    console.log('getStepCount:', { [dateString]: result.value });
+    callback(null, { [dateString]: result.value });
   });
 };
 
@@ -75,42 +59,40 @@ export const getDistance = (callback) => {
       callback(err, null);
       return;
     }
-
-    callback(null, result.value);
-    // console.log('getDistance: ', result.value);
+    const dateString = result.startDate.split('T')[0];
+    console.log('getDistance: ', { [dateString]: result.value });
+    callback(null, { [dateString]: result.value });
   });
 };
 
 // Today's current Active Energy Burned
-export const getActiveEnergyBurned = (callback) => {
+export const getCalories = (callback) => {
   let options = {
-    startDate: today.toISOString(), 
+    startDate: today.toISOString(),
   };
 
   AppleHealthKit.getActiveEnergyBurned(options, function (err, results) {
     if (err) {
-        console.error('Error in getDailyActiveEnergyBurnedSamples: ', err);
-        callback(err, null);
-        return;
+      console.error('Error in getDailyActiveEnergyBurnedSamples: ', err);
+      callback(err, null);
+      return;
+    }
+    const data = results;
+    const dailyEnergyBarned = {};
+
+    // calculate distance on each day
+    data.forEach((entry) => {
+      const startDate = entry.startDate.split('T')[0];
+      const value = entry.value;
+
+      if (dailyEnergyBarned[startDate]) {
+        dailyEnergyBarned[startDate] += value;
+      } else {
+        dailyEnergyBarned[startDate] = value;
       }
-      const data = results;
-      const dailyEnergyBarned = {};
-  
-      // calculate distance on each day
-      data.forEach((entry) => {
-        const startDate = entry.startDate.split('T')[0];
-        const value = entry.value;
-  
-        if (dailyEnergyBarned[startDate]) {
-          dailyEnergyBarned[startDate] += value;
-        } else {
-          dailyEnergyBarned[startDate] = value;
-        }
-      });
-  
-      // console.log('getActiveEnergyBurned: ', dailyEnergyBarned);
-      callback(null, dailyEnergyBarned);
     });
+
+    console.log('getActiveEnergyBurned: ', dailyEnergyBarned);
+    callback(null, dailyEnergyBarned);
+  });
 };
-
-

@@ -4,16 +4,15 @@ import { View, Text, Platform } from 'react-native';
 import {
   requestAuthorization,
   getStepCount,
-  getAuthStatus,
   getDistance,
-  getActiveEnergyBurned,
+  getCalories
 } from '../../api/healthInfoAPI';
 
 const HomeScreen = () => {
   if (Platform.OS === 'ios') {
-    const [todayStep, setTodayStep] = useState(0);
-    const [todayDistance, setTodayDistance] = useState(0);
-    const [todayEnergyBarned, setTodayEnergyBarned] = useState(0);
+    const [todayStep, setTodayStep] = useState({});
+    const [todayDistance, setTodayDistance] = useState({});
+    const [todayEnergyBarned, setTodayEnergyBarned] = useState({});
 
     useEffect(() => {
       requestAuthorization((error) => {
@@ -38,7 +37,7 @@ const HomeScreen = () => {
           setTodayDistance(result);
         });
 
-        getActiveEnergyBurned((err, result) => {
+        getCalories((err, result) => {
           if (err) {
             console.error(err);
             return;
@@ -51,15 +50,15 @@ const HomeScreen = () => {
     return (
       <View>
         <Text>This is iOS</Text>
-        <Text>Steps: {todayStep}</Text>
-        <Text>Distance: {todayDistance}</Text>
+        <Text>Steps: {JSON.stringify(todayStep)}</Text>
+        <Text>Distance: {JSON.stringify(todayDistance)}</Text>
         <Text>Calories: {JSON.stringify(todayEnergyBarned)}</Text>
       </View>
     );
   } else if (Platform.OS === 'android') {
-    const [todayStep, setTodayStep] = useState(0);
-    const [todayDistance, setTodayDistance] = useState(0);
-    const [todayEnergyBarned, setTodayEnergyBarned] = useState(0);
+    const [todayStep, setTodayStep] = useState({});
+    const [todayDistance, setTodayDistance] = useState({});
+    const [todayEnergyBarned, setTodayEnergyBarned] = useState({});
 
     useEffect(() => {
       async function retrieveData() {
@@ -80,9 +79,9 @@ const HomeScreen = () => {
     return (
       <View>
         <Text>This is android</Text>
-        <Text>Steps: {todayStep}</Text>
-        <Text>Distance: {todayDistance}</Text>
-        <Text>Calories: {todayEnergyBarned}</Text>
+        <Text>Steps: {JSON.stringify(todayStep)}</Text>
+        <Text>Distance: {JSON.stringify(todayDistance)}</Text>
+        <Text>Calories: {JSON.stringify(todayEnergyBarned)}</Text>
       </View>
     );
   }
