@@ -21,6 +21,7 @@
     "native-base": "^3.4.28",
     "react": "18.2.0",
     "react-native": "0.71.8",
+    "react-native-background-actions": "^3.0.0",
     "react-native-gesture-handler": "^2.12.0",
     "react-native-google-fit": "^0.19.1",
     "react-native-health": "^1.14.0",
