@@ -72,7 +72,7 @@ export const fetchActivityData = async () => {
     const resSteps = await GoogleFit.getDailyStepCountSamples(opt);
     const resDistance = await GoogleFit.getDailyDistanceSamples(opt);
     const resCalories = await GoogleFit.getDailyCalorieSamples(opt);
-
+    console.log('googleFit data');
     return {
       date: resCalories[0].endDate,
       steps: resSteps[1].steps[0].value,

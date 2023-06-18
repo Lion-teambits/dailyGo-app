@@ -143,7 +143,7 @@ export const fetchActivityData = async () => {
 
     const keys = Object.keys(caloriesResult);
     data.calories = caloriesResult[keys[0]];
-
+    console.log(data);
     return data;
   } catch (error) {
     console.error(error);

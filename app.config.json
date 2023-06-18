@@ -9,7 +9,8 @@
           "healthUpdatePermission": "Custom health update permission",
           "healthClinicalDescription": "Custom health share permission for clinical data"
         }
-      ]
+      ],
+      "react-native-background-fetch"
     ],
     "extra": {
       "eas": {
