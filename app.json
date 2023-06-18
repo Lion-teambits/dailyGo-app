@@ -14,7 +14,11 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.lion-teambits.dailyGo-app"
+      "bundleIdentifier": "com.lion-teambits.dailyGo-app",
+      "infoPlist": {
+        "UIBackgroundModes": ["processing", "fetch"],
+        "BGTaskSchedulerPermittedIdentifiers": ["com.transistorsoft.fetch", "com.transistorsoft.customtask"]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -25,7 +29,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["react-native-health"],
+    "plugins": ["react-native-health", "react-native-background-fetch"],
     "owner": "teambits"
   }
 }

@@ -41,9 +41,8 @@ export const getStepCount = (callback) => {
       callback(err, null);
       return;
     }
-    const dateString = result.startDate.split('T')[0];
-    console.log('getStepCount:', { [dateString]: result.value });
-    callback(null, { [dateString]: result.value });
+    // console.log('getStepCount:', result.value);
+    callback(null, result.value);
   });
 };
 
@@ -59,9 +58,8 @@ export const getDistance = (callback) => {
       callback(err, null);
       return;
     }
-    const dateString = result.startDate.split('T')[0];
-    console.log('getDistance: ', { [dateString]: result.value });
-    callback(null, { [dateString]: result.value });
+    // console.log('getDistance: ', result.value);
+    callback(null, result.value);
   });
 };
 
@@ -91,8 +89,63 @@ export const getCalories = (callback) => {
         dailyEnergyBarned[startDate] = value;
       }
     });
-
-    console.log('getActiveEnergyBurned: ', dailyEnergyBarned);
+    // console.log('getActiveEnergyBurned: ', dailyEnergyBarned);
     callback(null, dailyEnergyBarned);
   });
+};
+export const fetchActivityData = async () => {
+  let data = { date: today, steps: 0, distance: 0, calories: 0 };
+
+  try {
+    await new Promise((resolve, reject) => {
+      requestAuthorization((error) => {
+        if (error) {
+          console.log('[ERROR] Cannot grant permissions!');
+          reject(error);
+          return;
+        }
+        resolve();
+      });
+    });
+
+    data.steps = await new Promise((resolve, reject) => {
+      getStepCount((err, result) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+          return;
+        }
+        resolve(result);
+      });
+    });
+
+    data.distance = await new Promise((resolve, reject) => {
+      getDistance((err, result) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+          return;
+        }
+        resolve(result);
+      });
+    });
+
+    const caloriesResult = await new Promise((resolve, reject) => {
+      getCalories((err, result) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+          return;
+        }
+        resolve(result);
+      });
+    });
+
+    const keys = Object.keys(caloriesResult);
+    data.calories = caloriesResult[keys[0]];
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
 };

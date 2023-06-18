@@ -65,3 +65,21 @@ export const getCalories = async () => {
     throw new Error(error.message);
   }
 };
+
+export const fetchActivityData = async () => {
+  try {
+    const authResult = await authorizeFit();
+    const resSteps = await GoogleFit.getDailyStepCountSamples(opt);
+    const resDistance = await GoogleFit.getDailyDistanceSamples(opt);
+    const resCalories = await GoogleFit.getDailyCalorieSamples(opt);
+    console.log('googleFit data');
+    return {
+      date: resCalories[0].endDate,
+      steps: resSteps[1].steps[0].value,
+      distance: resDistance[0].distance,
+      calories: Math.abs(resCalories[0].calorie),
+    };
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
