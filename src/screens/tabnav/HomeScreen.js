@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Platform } from 'react-native';
-import { fetchActivityData } from '../../api/healthInfoAPI';
 
 // get Data when user open app or Home screen
 
