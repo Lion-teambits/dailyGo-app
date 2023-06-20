@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { NativeBaseProvider } from 'native-base';
 import AppStack from './src/stack/AppStack';
-import startBackgroundTask from './utils/startBackgroundTask';
+import startBackgroundTask from './src/services/startBackgroundTask';
 
 const App = () => {
   useEffect(() => {
-    // start background task after mount
+    // start background task after mounting
     startBackgroundTask();
   }, []);
 
