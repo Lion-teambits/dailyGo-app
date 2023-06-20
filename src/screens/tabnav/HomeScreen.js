@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Platform } from 'react-native';
-import updateDatabase from '../../services/updateDatabase';
-import { retrieveChallenges } from '../../api/challengeService';
 
 // get Data when user open app or Home screen
 
