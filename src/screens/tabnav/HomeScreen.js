@@ -21,7 +21,8 @@ const HomeScreen = () => {
       setIsLoading(false);
     }
 
-    initActivityDataInDB(TEST_UID);
+    // Please uncomment to test database sync
+    // initActivityDataInDB(TEST_UID);
 
     if (Platform.OS === "ios") {
       setOs("iOS");

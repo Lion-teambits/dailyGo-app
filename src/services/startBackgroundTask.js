@@ -18,7 +18,7 @@ const startBackgroundTask = async () => {
 
   const onTimeout = (taskId) => {
     console.warn('[BackgroundFetch] TIMEOUT task: ', taskId);
-    // BackgroundFetch.finish(taskId); // This code is commented out to start the next task, even if this task times out (experiment)
+    BackgroundFetch.finish(taskId); 
   };
 
   const fetchConfig = {
