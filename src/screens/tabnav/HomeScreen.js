@@ -1,25 +1,48 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Platform } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { View, Text, Platform } from "react-native";
+import updateDatabase from "../../services/updateDatabase";
+import { TEST_UID } from "../../api/constants";
 
-// get Data when user open app or Home screen
+// Get activity data & update DB & store updated userInfo & challengeInfo
+
+// Check challenge achievement & update DB
 
 // setTimer to get data in foregraound
 
 const HomeScreen = () => {
-
-  const [os, setOs] = useState('');
+  const [os, setOs] = useState("");
+  const [userInfo, setUserInfo] = useState(null); 
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (Platform.OS === 'ios') {
-      setOs('iOS');
+    async function initActivityDataInDB(user_id) {
+      const userInfo = await updateDatabase(user_id);
+      setUserInfo(userInfo);
+      setIsLoading(false);
+    }
+
+    // Please uncomment to test database sync
+    // initActivityDataInDB(TEST_UID);
+
+    if (Platform.OS === "ios") {
+      setOs("iOS");
     } else {
-      setOs('Android');
+      setOs("Android");
     }
   }, []);
+
+  if (isLoading) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <View>
       <Text>This is {os}</Text>
+      <Text>{JSON.stringify(userInfo)}</Text>
     </View>
   );
 };
