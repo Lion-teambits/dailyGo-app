@@ -1,14 +1,12 @@
-import axios from 'axios';
-import { BACKEND_URL } from './constants';
+import axios from "axios";
+import { BACKEND_URL } from "./constants";
 
-const BASE_URL = BACKEND_URL + '/api/v1';
+const BASE_URL = BACKEND_URL + "/api/v1";
 
 // Retrieve single badge data
 export const retreiveBadgeInfo = async (badge_id) => {
   try {
-    const badgeInfo = await axios.get(
-      BASE_URL + '/badge/' + badge_id
-    );
+    const badgeInfo = await axios.get(`${BASE_URL}/badge/${badge_id}`);
     return badgeInfo.data;
   } catch (error) {
     throw error;
