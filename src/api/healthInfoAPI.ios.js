@@ -123,7 +123,7 @@ export const fetchActivityData = async () => {
         resolve(result);
       });
     });
-    activityObj.steps = stepsResult;
+    activityObj.steps = stepsResult
 
     const distancesResult = await new Promise((resolve, reject) => {
       getDistance((err, result) => {
@@ -135,7 +135,7 @@ export const fetchActivityData = async () => {
         resolve(result);
       });
     });
-    activityObj.distance = distancesResult;
+    activityObj.distance = distancesResult.toFixed(2);
 
     const caloriesResult = await new Promise((resolve, reject) => {
       getCalories((err, result) => {
@@ -150,11 +150,11 @@ export const fetchActivityData = async () => {
 
     const keys = Object.keys(caloriesResult);
     if (caloriesResult[keys[0]]) {
-      activityObj.calories = caloriesResult[keys[0]];
+      activityObj.calories = caloriesResult[keys[0]].toFixed(2);
     }
 
     console.log('Apple Healthkit data: ', activityObj);
-    return activityObj;
+    return activityObj
   } catch (error) {
     console.error(error);
   }

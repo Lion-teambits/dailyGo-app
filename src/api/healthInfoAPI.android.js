@@ -1,4 +1,4 @@
-import GoogleFit, { Scopes } from 'react-native-google-fit';
+import GoogleFit, { Scopes } from "react-native-google-fit";
 
 /* Permission options */
 const options = {
@@ -46,7 +46,7 @@ export const fetchActivityData = async () => {
 
     // Find steps data
     const mergeStepDeltasData = resSteps.find(
-      (item) => item.source === 'com.google.android.gms:merge_step_deltas'
+      (item) => item.source === "com.google.android.gms:merge_step_deltas"
     );
     if (mergeStepDeltasData.steps.length > 0) {
       activityObj.steps = mergeStepDeltasData.steps[0].value;
@@ -54,15 +54,15 @@ export const fetchActivityData = async () => {
 
     // Add distance
     if (resDistance.length > 0) {
-      activityObj.distance = resDistance[0].distance;
+      activityObj.distance = resDistance[0].distance.toFixed(2);
     }
 
     // Add calories (need to be fixed)
     if (resCalories.length > 0) {
-      activityObj.calories = Math.abs(resCalories[0].calorie);
+      activityObj.calories = Math.abs(resCalories[0].calorie).toFixed(2);
     }
 
-    console.log('googleFit data: ', activityObj);
+    console.log("googleFit data: ", activityObj);
     return activityObj;
   } catch (error) {
     throw new Error(error.message);
