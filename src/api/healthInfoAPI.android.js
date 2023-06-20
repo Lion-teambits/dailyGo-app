@@ -22,6 +22,7 @@ export async function authorizeFit() {
 // GET health info
 // date constant
 const today = new Date();
+// today.setDate(today.getDate() - 1); // yesterday data for testing
 today.setHours(0, 0, 0, 0);
 
 const opt = {
@@ -29,56 +30,40 @@ const opt = {
   endDate: new Date().toISOString(),
 };
 
-// Today's current step count
-export const getStepCount = async () => {
-  try {
-    const authResult = await authorizeFit();
-    const res = await GoogleFit.getDailyStepCountSamples(opt);
-    const dateString = res[1].steps[0].date;
-
-    return { [dateString]: res[1].steps[0].value };
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
-
-export const getDistance = async () => {
-  try {
-    const authResult = await authorizeFit();
-    const res = await GoogleFit.getDailyDistanceSamples(opt);
-    const dateString = res[0].startDate.split('T')[0];
-
-    return { [dateString]: res[0].distance };
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
-
-export const getCalories = async () => {
-  try {
-    const authResult = await authorizeFit();
-    const res = await GoogleFit.getDailyCalorieSamples(opt);
-    const dateString = res[0].startDate.split('T')[0];
-
-    return { [dateString]: Math.abs(res[0].calorie) };
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
-
 export const fetchActivityData = async () => {
+  let activityObj = {
+    date: opt.startDate,
+    steps: 0,
+    distance: 0,
+    calories: 0,
+  };
+
   try {
     const authResult = await authorizeFit();
     const resSteps = await GoogleFit.getDailyStepCountSamples(opt);
     const resDistance = await GoogleFit.getDailyDistanceSamples(opt);
     const resCalories = await GoogleFit.getDailyCalorieSamples(opt);
-    console.log('googleFit data');
-    return {
-      date: resCalories[0].endDate,
-      steps: resSteps[1].steps[0].value,
-      distance: resDistance[0].distance,
-      calories: Math.abs(resCalories[0].calorie),
-    };
+
+    // Find steps data
+    const mergeStepDeltasData = resSteps.find(
+      (item) => item.source === 'com.google.android.gms:merge_step_deltas'
+    );
+    if (mergeStepDeltasData.steps.length > 0) {
+      activityObj.steps = mergeStepDeltasData.steps[0].value;
+    }
+
+    // Add distance
+    if (resDistance.length > 0) {
+      activityObj.distance = resDistance[0].distance;
+    }
+
+    // Add calories (need to be fixed)
+    if (resCalories.length > 0) {
+      activityObj.calories = Math.abs(resCalories[0].calorie);
+    }
+
+    console.log('googleFit data: ', activityObj);
+    return activityObj;
   } catch (error) {
     throw new Error(error.message);
   }

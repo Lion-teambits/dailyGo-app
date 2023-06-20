@@ -94,7 +94,12 @@ export const getCalories = (callback) => {
   });
 };
 export const fetchActivityData = async () => {
-  let data = { date: today, steps: 0, distance: 0, calories: 0 };
+  let activityObj = {
+    date: today.toISOString(),
+    steps: 0,
+    distance: 0,
+    calories: 0,
+  };
 
   try {
     await new Promise((resolve, reject) => {
@@ -108,7 +113,7 @@ export const fetchActivityData = async () => {
       });
     });
 
-    data.steps = await new Promise((resolve, reject) => {
+    const stepsResult = await new Promise((resolve, reject) => {
       getStepCount((err, result) => {
         if (err) {
           console.error(err);
@@ -118,8 +123,9 @@ export const fetchActivityData = async () => {
         resolve(result);
       });
     });
+    activityObj.steps = stepsResult;
 
-    data.distance = await new Promise((resolve, reject) => {
+    const distancesResult = await new Promise((resolve, reject) => {
       getDistance((err, result) => {
         if (err) {
           console.error(err);
@@ -129,6 +135,7 @@ export const fetchActivityData = async () => {
         resolve(result);
       });
     });
+    activityObj.distance = distancesResult;
 
     const caloriesResult = await new Promise((resolve, reject) => {
       getCalories((err, result) => {
@@ -142,9 +149,12 @@ export const fetchActivityData = async () => {
     });
 
     const keys = Object.keys(caloriesResult);
-    data.calories = caloriesResult[keys[0]];
-    console.log(data);
-    return data;
+    if (caloriesResult[keys[0]]) {
+      activityObj.calories = caloriesResult[keys[0]];
+    }
+
+    console.log('Apple Healthkit data: ', activityObj);
+    return activityObj;
   } catch (error) {
     console.error(error);
   }
