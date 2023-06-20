@@ -1,5 +1,5 @@
 import BackgroundFetch from 'react-native-background-fetch';
-import { fetchActivityData } from '../src/api/healthInfoAPI';
+import { fetchActivityData } from '../api/healthInfoAPI';
 
 const startBackgroundTask = async () => {
   // callback function
@@ -33,14 +33,14 @@ const startBackgroundTask = async () => {
 };
 
 const fetchActivityDataFromAPI = async () => {
-  console.log('Fetching activity data...');
+  console.log('Fetching activity data on background...');
 
   // execute fetchActivityData
   try {
     const result = await fetchActivityData();
-    console.log('Fetched data:', result);
+    console.log('[Background] Fetched data:', result);
   } catch (error) {
-    console.error('Error fetching data:', error);
+    console.error('[Background] Error fetching data:', error);
   }
 };
 
