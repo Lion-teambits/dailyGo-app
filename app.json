@@ -17,7 +17,10 @@
       "bundleIdentifier": "com.lion-teambits.dailyGo-app",
       "infoPlist": {
         "UIBackgroundModes": ["processing", "fetch"],
-        "BGTaskSchedulerPermittedIdentifiers": ["com.transistorsoft.fetch", "com.transistorsoft.customtask"]
+        "BGTaskSchedulerPermittedIdentifiers": [
+          "com.transistorsoft.fetch",
+          "com.transistorsoft.customtask"
+        ]
       }
     },
     "android": {
@@ -30,6 +33,7 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": ["react-native-health", "react-native-background-fetch"],
-    "owner": "teambits"
+    "owner": "teambits",
+    "scheme": "dailyGo-app"
   }
 }
