@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Center, Box, Heading, Button } from "native-base";
+import { View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Form from "../../components/forms/Form";
 import * as Google from "expo-auth-session/providers/google";
@@ -48,21 +49,12 @@ const LoginScreen = ({ navigation }) => {
   return (
     <Center flex={1}>
       <Box safeArea p="2" py="8" w="90%" maxW="290">
-        <Heading
-          size="lg"
-          fontWeight="600"
-          color="coolGray"
-          _dark={{ color: "warmGray" }}
-        >
-          Login
-        </Heading>
-        <Button
-          variant="outline"
-          colorScheme="black"
-          onPress={handleLoginGmail}
-          startIcon={<Ionicons name="logo-google" />}
-        >
-          Login with Gmail
+        <Heading>Login</Heading>
+        <Button onPress={handleLoginGmail}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Ionicons name="logo-google" />
+            <Text style={{ marginLeft: 5 }}>Login with Gmail</Text>
+          </View>
         </Button>
 
         <Form

@@ -1,5 +1,7 @@
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Dimensions } from "react-native";
+
+const windowWidth = Dimensions.get("window").width;
 
 const CarouselItem = ({ item }) => {
   return (
@@ -15,11 +17,11 @@ const styles = {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    width: windowWidth - 120,
   },
   image: {
     width: 200,
     height: 200,
-    resizeMode: "cover",
     marginBottom: 10,
   },
   description: {
