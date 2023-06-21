@@ -1,5 +1,6 @@
 import React from "react";
 import { Center, Box, Heading, Button } from "native-base";
+import { View, Text } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
 import Form from "../../components/forms/Form";
 
@@ -19,22 +20,13 @@ const SignupScreen = ({ navigation }) => {
   return (
     <Center flex={1}>
       <Box safeArea p="2" py="8" w="90%" maxW="290">
-        <Heading
-          size="lg"
-          fontWeight="600"
-          color="coolGray"
-          _dark={{ color: "warmGray" }}
-        >
-          Sign Up
-        </Heading>
+        <Heading>Sign Up</Heading>
 
-        <Button
-          variant="outline"
-          colorScheme="black"
-          onPress={handleSignupGmail}
-          startIcon={<Ionicons name="logo-google" />}
-        >
-          Sign Up with Gmail
+        <Button onPress={handleSignupGmail}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Ionicons name="logo-google" />
+            <Text style={{ marginLeft: 5 }}>Login with Gmail</Text>
+          </View>
         </Button>
 
         <Form
