@@ -1,4 +1,7 @@
-import { BACKEND_URL as envBackendURL, TEST_UID as test_uid } from "@env";
+import {
+  BACKEND_SERVER_URL as envBackendURL,
+  TEST_UID as test_uid,
+} from "@env";
 
 export const BACKEND_URL = envBackendURL;
 

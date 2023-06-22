@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   VStack,
   FormControl,
@@ -16,6 +16,16 @@ const Form = ({
   linkText,
   showNameField,
 }) => {
+  const [email, setEmail] = useState("");
+
+  const handleEmailChange = (value) => {
+    setEmail(value);
+  };
+
+  const handleFormSubmit = () => {
+    handleSubmit(email);
+  };
+
   return (
     <VStack space={3} mt="5">
       {showNameField && (
@@ -26,13 +36,18 @@ const Form = ({
       )}
       <FormControl>
         <FormControl.Label>Email</FormControl.Label>
-        <Input placeholder="Email" />
+        <Input
+          placeholder="Email"
+          value={email}
+          onChangeText={handleEmailChange}
+          autoCapitalize="none"
+        />
       </FormControl>
       <FormControl>
         <FormControl.Label>Password</FormControl.Label>
         <Input type="password" placeholder="Password" secureTextEntry />
       </FormControl>
-      <Button mt="2" colorScheme="indigo" onPress={handleSubmit}>
+      <Button mt="2" colorScheme="indigo" onPress={handleFormSubmit}>
         {buttonText}
       </Button>
       <HStack mt="6" justifyContent="center">

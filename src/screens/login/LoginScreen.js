@@ -13,6 +13,7 @@ import {
 import { auth } from "../../config/firebaseConfig";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { IOS_CLIENT_ID, ANDROID_CLIENT_ID } from "@env";
+import { retrieveUserInfo } from "../../api/userService";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -37,9 +38,19 @@ const LoginScreen = ({ navigation }) => {
     promptAsync();
   };
 
-  const handleLoginEmail = () => {
-    // Logic for signing in with email and password
-    navigation.navigate("Onboarding");
+  const handleLoginEmail = async (value) => {
+    // Pass Dummy user data bacause google login fail issue (Android device)
+    try {
+      await AsyncStorage.setItem("@uid", value);
+      const userInfo = await retrieveUserInfo(value);
+      if (userInfo == null) {
+        navigation.navigate("Onboarding");
+      } else {
+        navigation.navigate("HomeScreen");
+      }
+    } catch {
+      navigation.navigate("Onboarding");
+    }
   };
 
   const handleSignup = () => {
