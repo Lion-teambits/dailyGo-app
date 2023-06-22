@@ -8,6 +8,8 @@ import OnboardingScreen from "../screens/login/OnboardingScreen";
 import PreferencesScreen from "../screens/login/PreferencesScreen";
 import TabStack from "./TabStack";
 import ChallengeDetailScreen from "../screens/ChallengeDetailScreen";
+import BadgeList from "../components/list/BadgeList";
+import BadgeItem from "../components/listitems/BadgeItem";
 
 const Stack = createStackNavigator();
 
@@ -33,6 +35,8 @@ const AppStack = () => {
           name="ChallengeDetail"
           component={ChallengeDetailScreen}
         />
+        <Stack.Screen name="Badges" component={BadgeList} />
+        <Stack.Screen name="BadgeDetail" component={BadgeItem} />
       </Stack.Navigator>
     </NavigationContainer>
   );
