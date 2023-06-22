@@ -7,6 +7,7 @@ import SignupScreen from "../screens/login/SignupScreen";
 import OnboardingScreen from "../screens/login/OnboardingScreen";
 import PreferencesScreen from "../screens/login/PreferencesScreen";
 import TabStack from "./TabStack";
+import ChallengeDetailScreen from "../screens/ChallengeDetailScreen";
 
 const Stack = createStackNavigator();
 
@@ -27,6 +28,10 @@ const AppStack = () => {
           name="HomeScreen"
           component={TabStack}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ChallengeDetail"
+          component={ChallengeDetailScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
