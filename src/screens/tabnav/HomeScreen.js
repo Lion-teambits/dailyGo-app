@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Platform } from "react-native";
-import updateDatabase from "../../services/updateDatabase";
+import saveActivityDataToDatabase from "../../services/saveActivityDataToDatabase";
 import { TEST_UID } from "../../api/constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Get activity data & update DB & store updated userInfo & challengeInfo
 
@@ -11,12 +12,13 @@ import { TEST_UID } from "../../api/constants";
 
 const HomeScreen = () => {
   const [os, setOs] = useState("");
-  const [userInfo, setUserInfo] = useState(null); 
+  const [userInfo, setUserInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function initActivityDataInDB(user_id) {
-      const userInfo = await updateDatabase(user_id);
+      // const uid = await AsyncStorage.getItem("@uid");
+      const userInfo = await saveActivityDataToDatabase(user_id);
       setUserInfo(userInfo);
       setIsLoading(false);
     }
