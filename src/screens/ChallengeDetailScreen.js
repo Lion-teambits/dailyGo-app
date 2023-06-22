@@ -1,11 +1,8 @@
-import { Text, View } from "native-base";
+import ChallengeDetailContainer from "../components/containers/ChallengeDetailContainer";
 
-const ChallengeDetailScreen = () => {
-  return (
-    <View>
-      <Text>Challenge Detail</Text>
-    </View>
-  );
+const ChallengeDetailScreen = ({ route }) => {
+  const { challenge } = route.params;
+  return <ChallengeDetailContainer challenge={challenge} />;
 };
 
 export default ChallengeDetailScreen;
