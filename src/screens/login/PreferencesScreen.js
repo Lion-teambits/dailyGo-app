@@ -1,10 +1,21 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
+import { createUserInfo } from "../../api/userService";
+
+const name = "Mufasa";
+const photo =
+  "https://cdn.pixabay.com/photo/2021/05/15/10/59/lion-6255523_1280.jpg";
 
 const PreferencesScreen = ({ navigation }) => {
-  const handleAnswer = () => {
-    // Logic for handling the selected answer
-    navigation.navigate("HomeScreen");
+  const handleAnswer = async (steps) => {
+    try {
+      const uid = await AsyncStorage.getItem("@uid");
+      await createUserInfo(name, photo, steps, uid);
+      navigation.navigate("HomeScreen");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -12,13 +23,22 @@ const PreferencesScreen = ({ navigation }) => {
       <Text style={styles.questionText}>
         How much do you think you walk on your daily basis?
       </Text>
-      <TouchableOpacity style={styles.button} onPress={handleAnswer}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => handleAnswer(3000)}
+      >
         <Text style={styles.buttonText}>I don’t walk much</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleAnswer}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => handleAnswer(5000)}
+      >
         <Text style={styles.buttonText}>I walk a little bit</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleAnswer}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => handleAnswer(8000)}
+      >
         <Text style={styles.buttonText}>
           I usually walk, but I want a challenge
         </Text>
