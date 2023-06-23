@@ -29,3 +29,17 @@ export const retrieveChallenges = async (userInfoObj) => {
 
   return results;
 };
+
+// Update challenge
+export const updateChallenge = async (challenge_id, newChallengeData) => {
+  try {
+    const challenge = await axios.put(
+      `${BASE_URL}/challenge/${challenge_id}`,
+      newChallengeData
+    );
+    return challenge.data;
+  } catch (error) {
+    console.log("Error in updateChallenge");
+    throw error;
+  }
+};
