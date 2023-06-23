@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Platform } from "react-native";
-import saveActivityDataToDatabase from "../../services/saveActivityDataToDatabase";
+import saveActivityDataToDatabase from "../../services/saveActivityDataAndCheckChallengeProgress";
 import { TEST_UID } from "../../api/constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -19,12 +19,15 @@ const HomeScreen = () => {
     async function initActivityDataInDB(user_id) {
       // const uid = await AsyncStorage.getItem("@uid");
       const userInfo = await saveActivityDataToDatabase(user_id);
+
       setUserInfo(userInfo);
       setIsLoading(false);
+      console.log("Home: ", userInfo);
     }
 
     // Please uncomment to test database sync
-    // initActivityDataInDB(TEST_UID);
+    // Need to get all data what I need it here (challenge data, modal trigger)
+    initActivityDataInDB(TEST_UID);
 
     if (Platform.OS === "ios") {
       setOs("iOS");
