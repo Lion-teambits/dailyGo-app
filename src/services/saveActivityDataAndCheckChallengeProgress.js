@@ -10,6 +10,7 @@ import {
   increaseStreakDays,
   resetStreakOrUseHeart,
 } from "./checkChallengeAchievement";
+import { retrieveChallenges } from "../api/challengeService";
 
 // Fetch activity data & update database
 async function saveActivityDataAndCheckChallengeProgress(user_id) {
@@ -22,7 +23,6 @@ async function saveActivityDataAndCheckChallengeProgress(user_id) {
     heartTmr: 0,
     activityData: {},
   };
-  let eventAndCoopChallenge = [];
 
   try {
     // Fetch activity data
@@ -31,6 +31,8 @@ async function saveActivityDataAndCheckChallengeProgress(user_id) {
     // Retrieve user data from database
     const userInfo = await retrieveUserInfo(user_id);
     const todayRecord = await retrieveDailyRecord(userInfo.today_record);
+
+    const challngesArray = await retrieveChallenges(userInfo);
 
     // Check if there is daily record which has the same date
     const isExistingRecord = todayRecord.date === activityData.date;
@@ -60,7 +62,9 @@ async function saveActivityDataAndCheckChallengeProgress(user_id) {
 
     // If daily challenge achieved
     if (userInfo.daily_mode < activityData.steps) {
-      console.log("Woo hoo!!! Daily Challenge achieved!!! It's time to receive rewards!!");
+      console.log(
+        "Woo hoo!!! Daily Challenge achieved!!! It's time to receive rewards!!"
+      );
 
       if (!userInfo.finish_daily_goal) {
         const streakDaysAndReward = await calculateStreakDaysAndReward(user_id);
@@ -72,28 +76,18 @@ async function saveActivityDataAndCheckChallengeProgress(user_id) {
         console.log("achieved & updated dailyChallenge: ", dailyChallenge);
         return {
           dailyChallenge: dailyChallenge,
-          eventAndCoopChallenge: eventAndCoopChallenge,
+          eventAndCoopChallenge: challngesArray,
         };
       }
     }
 
-    // update userInfo
-    // if (
-    //   !userInfo.finish_daily_goal &&
-    //   userInfo.daily_mode < activityData.steps
-    // ) {
-    //   // handle fireflies, streak days, hearts, finish_daily_goal
-    //   console.log("Woo hoo!!! Daily Challenge achieved!!!!!");
-    //   const result = await increaseStreakDays(user_id);
-    // }
+    // Return activity data and progress of daily challenge
     dailyChallenge = { ...dailyChallenge, activityData: activityData };
     console.log("updated dailyChallenge: ", dailyChallenge);
-    console.log("Finish updating database");
-    // const updatedUserInfo = await retrieveUserInfo(user_id);
-
+    console.log("Finish updating daily record");
     return {
       dailyChallenge: dailyChallenge,
-      eventAndCoopChallenge: eventAndCoopChallenge,
+      eventAndCoopChallenge: challngesArray,
     };
   } catch (error) {
     console.error(

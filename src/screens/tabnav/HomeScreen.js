@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Platform } from "react-native";
+import { View, Text, Platform, ScrollView } from "react-native";
 import saveActivityDataToDatabase from "../../services/saveActivityDataAndCheckChallengeProgress";
 import { TEST_UID } from "../../api/constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -12,28 +12,27 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HomeScreen = () => {
   const [os, setOs] = useState("");
-  const [userInfo, setUserInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [dailyChallenge, setDailyChallenge] = useState({});
+  const [ongoingChallengesState, setOngoingChallengesState] = useState([]);
 
   useEffect(() => {
     async function initActivityDataInDB(user_id) {
       // const uid = await AsyncStorage.getItem("@uid");
-      const userInfo = await saveActivityDataToDatabase(user_id);
+      const ongoingChallenges = await saveActivityDataToDatabase(user_id);
 
-      setUserInfo(userInfo);
       setIsLoading(false);
-      console.log("Home: ", userInfo);
+      console.log("Home: ", ongoingChallenges);
+      setDailyChallenge(ongoingChallenges.dailyChallenge);
+      setOngoingChallengesState([
+        ...ongoingChallengesState,
+        ongoingChallenges.eventAndCoopChallenge,
+      ]);
     }
 
     // Please uncomment to test database sync
     // Need to get all data what I need it here (challenge data, modal trigger)
     initActivityDataInDB(TEST_UID);
-
-    if (Platform.OS === "ios") {
-      setOs("iOS");
-    } else {
-      setOs("Android");
-    }
   }, []);
 
   if (isLoading) {
@@ -45,10 +44,15 @@ const HomeScreen = () => {
   }
 
   return (
-    <View>
-      <Text>This is {os}</Text>
-      <Text>{JSON.stringify(userInfo)}</Text>
+    <ScrollView>
+      <Text>Daily Challenge: {JSON.stringify(dailyChallenge)}</Text>
+      <View>
+        <Text>Event Challenge & Coop Challenge</Text>
+      {ongoingChallengesState.map((item, index) => (
+        <Text key={index}>{JSON.stringify(item)}</Text>
+      ))}
     </View>
+    </ScrollView>
   );
 };
 
