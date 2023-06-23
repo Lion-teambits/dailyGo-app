@@ -32,7 +32,7 @@ const HomeScreen = () => {
 
     // Please uncomment to test database sync
     // Need to get all data what I need it here (challenge data, modal trigger)
-    initActivityDataInDB(TEST_UID);
+    // initActivityDataInDB(TEST_UID);
   }, []);
 
   if (isLoading) {
