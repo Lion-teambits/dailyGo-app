@@ -1,17 +1,45 @@
+import { updateChallenge } from "../api/challengeService";
 import { fetchActivityData } from "../api/healthInfoAPI.ios";
 import { retrieveUserInfo, updateUserInfo } from "../api/userService";
 
-async function checkEventAndCoopChallengeAchievement(user_id, step_difference) {
+export const addStepsAndCheckProgress = async (
+  challengeArray,
+  step_difference
+) => {
+  // console.log("challengeArray", challengeArray);
+  // console.log("step_difference", step_difference);
   // Retroeve ongoing event and coop challenges
   // Add steps to them
-  // Check each challenge progress
+  let updatedAndCheckedChallenges = challengeArray.map((challenge) => {
+    // Add steps to them
+    challenge.current_steps += step_difference;
+    // Check each challenge progress
+    if (challenge.target_steps < challenge.current_steps) {
+      // set true and display button to get rewards
+      challenge.finish_challenge = true;
+    }
+    return challenge;
+  });
 
-  // If steps achieves target_steps
-  // set true and display button to get rewards
+  async function updateChallengeAsync(challenge) {
+    updateChallenge(challenge._id, challenge);
+  }
+
+  async function updateChallengesAsync(array) {
+    const updatePromises = array.map((object) => {
+      return updateChallengeAsync(object);
+    });
+
+    await Promise.all(updatePromises);
+
+    return;
+  }
+
+  const result = await updateChallengesAsync(updatedAndCheckedChallenges);
 
   // return current status of all challenges (evnet & coop challenge)
-  return;
-}
+  return result;
+};
 
 // Not achieved daily challenge
 export const resetStreakOrUseHeart = async (user_id) => {
@@ -86,6 +114,6 @@ export const calculateStreakDaysAndReward = async (user_id) => {
       returnObj.heartTmr = 0;
     }
   }
-  console.log("calculateStreakDaysAndReward: ", returnObj);
+  // console.log("calculateStreakDaysAndReward: ", returnObj);
   return returnObj;
 };
