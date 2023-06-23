@@ -6,12 +6,24 @@ import {
   updateDailyRecord,
 } from "../api/dailyRecordService";
 import {
+  calculateStreakDaysAndReward,
   increaseStreakDays,
   resetStreakOrUseHeart,
 } from "./checkChallengeAchievement";
 
 // Fetch activity data & update database
-async function saveActivityDataToDatabase(user_id) {
+async function saveActivityDataAndCheckChallengeProgress(user_id) {
+  let dailyChallenge = {
+    achieved: false,
+    streakDays: 0,
+    firefliesToday: 0,
+    heartToday: 0,
+    firefliesTmr: 0,
+    heartTmr: 0,
+    activityData: {},
+  };
+  let eventAndCoopChallenge = [];
+
   try {
     // Fetch activity data
     const activityData = await fetchActivityData();
@@ -47,20 +59,42 @@ async function saveActivityDataToDatabase(user_id) {
     }
 
     // If daily challenge achieved
-    if (
-      !userInfo.finish_daily_goal &&
-      userInfo.daily_mode < activityData.steps
-    ) {
-      // handle fireflies, streak days, hearts, finish_daily_goal
-      console.log("Woo hoo!!! Daily Challenge achieved!!!!!");
-      await increaseStreakDays(user_id);
-      //
-      // [Todo: Rena] Trigger Success Modal
-      //
+    if (userInfo.daily_mode < activityData.steps) {
+      console.log("Woo hoo!!! Daily Challenge achieved!!! It's time to receive rewards!!");
+
+      if (!userInfo.finish_daily_goal) {
+        const streakDaysAndReward = await calculateStreakDaysAndReward(user_id);
+        dailyChallenge = {
+          ...dailyChallenge,
+          ...streakDaysAndReward,
+          activityData: activityData,
+        };
+        console.log("achieved & updated dailyChallenge: ", dailyChallenge);
+        return {
+          dailyChallenge: dailyChallenge,
+          eventAndCoopChallenge: eventAndCoopChallenge,
+        };
+      }
     }
 
+    // update userInfo
+    // if (
+    //   !userInfo.finish_daily_goal &&
+    //   userInfo.daily_mode < activityData.steps
+    // ) {
+    //   // handle fireflies, streak days, hearts, finish_daily_goal
+    //   console.log("Woo hoo!!! Daily Challenge achieved!!!!!");
+    //   const result = await increaseStreakDays(user_id);
+    // }
+    dailyChallenge = { ...dailyChallenge, activityData: activityData };
+    console.log("updated dailyChallenge: ", dailyChallenge);
     console.log("Finish updating database");
-    return await retrieveUserInfo(user_id);
+    // const updatedUserInfo = await retrieveUserInfo(user_id);
+
+    return {
+      dailyChallenge: dailyChallenge,
+      eventAndCoopChallenge: eventAndCoopChallenge,
+    };
   } catch (error) {
     console.error(
       "An error occurred while saving activity data in database: ",
@@ -69,7 +103,7 @@ async function saveActivityDataToDatabase(user_id) {
   }
 }
 
-export default saveActivityDataToDatabase;
+export default saveActivityDataAndCheckChallengeProgress;
 
 // Create a new daily record and update user info in DB
 export const createDailyRecordAndUpdateFields = async (
