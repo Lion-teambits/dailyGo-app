@@ -2,83 +2,16 @@ import { fetchActivityData } from "../api/healthInfoAPI.ios";
 import { retrieveUserInfo, updateUserInfo } from "../api/userService";
 
 async function checkEventAndCoopChallengeAchievement(user_id, step_difference) {
-  // Fetch current activity data
-  const activityData = await fetchActivityData();
+  // Retroeve ongoing event and coop challenges
+  // Add steps to them
+  // Check each challenge progress
 
-  // Retrieve daily challenge goal (could be Recoil)
-  const userInfo = await retrieveUserInfo();
+  // If steps achieves target_steps
+  // set true and display button to get rewards
 
-  // Event challenge
-  // Coop challenge
-  // Retrieve ongoing event challenge
-  // Check challenge achievement
-
-  // return current status of all challenges (daily challenge, evnet challenge, coop challenge)
+  // return current status of all challenges (evnet & coop challenge)
   return;
 }
-
-// Handle daily challenge achievement
-// Achieved daily challenge
-// export const increaseStreakDays = async (user_id) => {
-//   let returnObj = {
-//     achieved: true,
-//     streakDays: 0,
-//     firefliesToday: 0,
-//     firefliesTmr: 0,
-//     heartToday: 0,
-//     heartTmr: 0,
-//   };
-
-//   const userInfo = await retrieveUserInfo(user_id);
-
-//   let totalStreakDays = userInfo.streak_days;
-//   let totalFireFlies = userInfo.fireflies;
-
-//   // Increase streak_days
-//   totalStreakDays++;
-//   returnObj.streakDays = totalStreakDays;
-
-//   // Add fireflies depends on streak days
-//   if (totalStreakDays <= 3) {
-//     totalFireFlies++;
-//     returnObj.firefliesToday = 1;
-//     returnObj.firefliesTmr = 1;
-//   } else if (totalStreakDays <= 6) {
-//     totalFireFlies = totalFireFlies + 2;
-//     returnObj.firefliesToday = 2;
-//   } else {
-//     totalFireFlies = totalFireFlies + 3;
-//     returnObj.firefliesToday = 3;
-//   }
-
-//   // Increase Hearts if necessary
-//   let totalHearts = userInfo.hearts;
-//   if (totalHearts < 3 && totalStreakDays > 7) {
-//     totalHearts++;
-//     returnObj.heartToday = 1;
-//     returnObj.heartTmr = 1;
-//     if (totalHearts == 3) {
-//       returnObj.heartTmr = 0;
-//     }
-//   }
-
-//   const updatedUserInfo = {
-//     ...userInfo,
-//     streak_days: totalStreakDays,
-//     fireflies: totalFireFlies,
-//     hearts: totalHearts,
-//     finish_daily_goal: true,
-//   };
-
-//   try {
-//     const result = await updateUserInfo(userInfo, updatedUserInfo);
-
-//     return returnObj;
-//   } catch (error) {
-//     console.log("Error in increaseStreakDays");
-//     throw error;
-//   }
-// };
 
 // Not achieved daily challenge
 export const resetStreakOrUseHeart = async (user_id) => {
