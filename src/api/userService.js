@@ -22,8 +22,10 @@ export const createUserInfo = async (name, photo, targetSteps, uid) => {
 export const retrieveUserInfo = async (user_id) => {
   try {
     const userData = await axios.get(`${BASE_URL}/user/${user_id}`);
+    // console.log("retrieveUserInfo: ", userData.data);
     return userData.data;
   } catch (error) {
+    // console.log("retrieveUserInfo Error: ", error.message);
     throw error;
   }
 };

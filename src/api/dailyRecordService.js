@@ -9,8 +9,10 @@ export const retrieveDailyRecord = async (dailyRecord_id) => {
     const dailyRecord = await axios.get(
       `${BASE_URL}/dailyRecord/id/${dailyRecord_id}`
     );
+    // console.log("retrieveDailyRecord: ", dailyRecord.data);
     return dailyRecord.data;
   } catch (error) {
+    // console.log("retrieveDailyRecord Error: ", error.message);
     throw error;
   }
 };
@@ -39,7 +41,7 @@ export const updateDailyRecord = async (existingRecord_id, newActivityData) => {
     );
     return dailyRecord.data;
   } catch (error) {
-    console.log('Error in updateDailyRecord');
+    console.log("Error in updateDailyRecord");
     throw error;
   }
 };
@@ -47,7 +49,10 @@ export const updateDailyRecord = async (existingRecord_id, newActivityData) => {
 // Create new daily record
 export const createDailyRecord = async (activityData) => {
   try {
-    const newDailyRecord = await axios.post(`${BASE_URL}/dailyRecord`, activityData);
+    const newDailyRecord = await axios.post(
+      `${BASE_URL}/dailyRecord`,
+      activityData
+    );
     return newDailyRecord.data;
   } catch (error) {
     throw error;
