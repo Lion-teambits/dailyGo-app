@@ -6,6 +6,7 @@ import {
   updateDailyRecord,
 } from "../api/dailyRecordService";
 import {
+  addStepsAndCheckProgress,
   calculateStreakDaysAndReward,
   increaseStreakDays,
   resetStreakOrUseHeart,
@@ -16,12 +17,14 @@ import { retrieveChallenges } from "../api/challengeService";
 async function saveActivityDataAndCheckChallengeProgress(user_id) {
   let dailyChallenge = {
     achieved: false,
+    daily_goal: 0,
     streakDays: 0,
     firefliesToday: 0,
     heartToday: 0,
     firefliesTmr: 0,
     heartTmr: 0,
     activityData: {},
+    type: 0,
   };
 
   try {
@@ -41,7 +44,11 @@ async function saveActivityDataAndCheckChallengeProgress(user_id) {
       //
       // Can be calculated the difference of steps here
       // and apply it to event & coop challenge
-      // addStepsToChallenges(challengeArr, today_record.steps - activityData.steps)
+      const differenceOfSteps = activityData.steps - todayRecord.steps;
+      const responseChallenges = await addStepsAndCheckProgress(
+        challngesArray,
+        differenceOfSteps
+      );
       //
 
       // Update daily record
@@ -72,8 +79,9 @@ async function saveActivityDataAndCheckChallengeProgress(user_id) {
           ...dailyChallenge,
           ...streakDaysAndReward,
           activityData: activityData,
+          daily_goal: userInfo.daily_mode,
         };
-        console.log("achieved & updated dailyChallenge: ", dailyChallenge);
+        // console.log("achieved & updated dailyChallenge: ", dailyChallenge);
         return {
           dailyChallenge: dailyChallenge,
           eventAndCoopChallenge: challngesArray,
@@ -83,7 +91,7 @@ async function saveActivityDataAndCheckChallengeProgress(user_id) {
 
     // Return activity data and progress of daily challenge
     dailyChallenge = { ...dailyChallenge, activityData: activityData };
-    console.log("updated dailyChallenge: ", dailyChallenge);
+    // console.log("updated dailyChallenge: ", dailyChallenge);
     console.log("Finish updating daily record");
     return {
       dailyChallenge: dailyChallenge,
