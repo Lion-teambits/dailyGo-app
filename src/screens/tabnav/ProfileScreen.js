@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,20 +8,42 @@ import {
   TextInput,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import image1 from "../../../assets/images/image1.jpeg";
-import image2 from "../../../assets/images/image2.jpeg";
-import image3 from "../../../assets/images/image3.jpeg";
-import image4 from "../../../assets/images/image4.jpeg";
+import axios from "axios";
+const image1 =
+  "https://www.nicepng.com/png/detail/131-1317123_panini-caps-lion-king-02-mufasa-mufasa-lion.png";
+const image2 =
+  "https://www.nicepng.com/png/detail/789-7893464_lion-cartoon-clip-art-cartoon-lion-png.png";
+const image3 =
+  "https://www.nicepng.com/png/detail/1-17925_render-kon-bleach-mod-soul-ame-artificielle-peluche.png";
+const image4 =
+  "https://www.nicepng.com/png/detail/316-3164745_beautiful-images-of-wolf-cubs-the-lion-king.png";
+import { useNavigation } from "@react-navigation/native";
+import { BACKEND_URL } from "@env";
 
-// Profile page component
 const ProfileScreen = () => {
   const [editMode, setEditMode] = useState(false);
-  const [name, setName] = useState("John Doe");
+  const [name, setName] = useState("");
   const [selectedImage, setSelectedImage] = useState(image1);
   const [applyChanges, setApplyChanges] = useState(false);
   const [dailyModeValue, setDailyModeValue] = useState(0);
   const [pushNotificationEnabled, setPushNotificationEnabled] = useState(true);
   const nameInputRef = useRef(null);
+  const [userData, setUserData] = useState(null);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    axios
+      .get(`${BACKEND_URL}/api/v1/user/111`)
+      .then((response) => {
+        const userData = response.data;
+        setUserData(userData);
+        setName(userData.name);
+        setDailyModeValue(userData.daily_mode);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const handleEditProfile = () => {
     setEditMode(true);
@@ -32,13 +54,25 @@ const ProfileScreen = () => {
   };
 
   const handleApplyChanges = () => {
-    setEditMode(false);
-    setApplyChanges(true);
+    axios
+      .put(`${BACKEND_URL}/api/v1/user/111`, {
+        photo: selectedImage,
+      })
+      .then((response) => {
+        setEditMode(false);
+        setApplyChanges(true);
+        setUserData((prevUserData) => ({
+          ...prevUserData,
+          photo: selectedImage,
+        }));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleCancelChanges = () => {
     setEditMode(false);
-    setSelectedImage(image1);
     setApplyChanges(false);
   };
 
@@ -59,8 +93,24 @@ const ProfileScreen = () => {
   };
 
   const handleLogout = () => {
-    // Handle logout logic here
+    navigation.navigate("Login");
   };
+
+  useEffect(() => {
+    if (name && dailyModeValue) {
+      axios
+        .put(`${BACKEND_URL}/api/v1/user/111`, {
+          name,
+          daily_mode: dailyModeValue,
+        })
+        .then((response) => {
+          setApplyChanges(true);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [name, dailyModeValue]);
 
   return (
     <View style={styles.container}>
@@ -73,7 +123,14 @@ const ProfileScreen = () => {
                 selectedImage === image1 && styles.selectedImage,
               ]}
             >
-              <Image source={image1} style={styles.avatarImage} />
+              {selectedImage === image1 ? (
+                <Image
+                  source={{ uri: selectedImage }}
+                  style={styles.avatarImage}
+                />
+              ) : (
+                <Image source={{ uri: image1 }} style={styles.avatarImage} />
+              )}
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleImageSelection(image2)}>
@@ -83,7 +140,14 @@ const ProfileScreen = () => {
                 selectedImage === image2 && styles.selectedImage,
               ]}
             >
-              <Image source={image2} style={styles.avatarImage} />
+              {selectedImage === image2 ? (
+                <Image
+                  source={{ uri: selectedImage }}
+                  style={styles.avatarImage}
+                />
+              ) : (
+                <Image source={{ uri: image2 }} style={styles.avatarImage} />
+              )}
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleImageSelection(image3)}>
@@ -93,7 +157,14 @@ const ProfileScreen = () => {
                 selectedImage === image3 && styles.selectedImage,
               ]}
             >
-              <Image source={image3} style={styles.avatarImage} />
+              {selectedImage === image3 ? (
+                <Image
+                  source={{ uri: selectedImage }}
+                  style={styles.avatarImage}
+                />
+              ) : (
+                <Image source={{ uri: image3 }} style={styles.avatarImage} />
+              )}
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleImageSelection(image4)}>
@@ -103,7 +174,14 @@ const ProfileScreen = () => {
                 selectedImage === image4 && styles.selectedImage,
               ]}
             >
-              <Image source={image4} style={styles.avatarImage} />
+              {selectedImage === image4 ? (
+                <Image
+                  source={{ uri: selectedImage }}
+                  style={styles.avatarImage}
+                />
+              ) : (
+                <Image source={{ uri: image4 }} style={styles.avatarImage} />
+              )}
             </View>
           </TouchableOpacity>
 
@@ -114,10 +192,13 @@ const ProfileScreen = () => {
             <Text style={styles.cancelButton}>Cancel</Text>
           </TouchableOpacity>
         </View>
-      ) : (
+      ) : userData ? (
         <View style={styles.profileInfoContainer}>
           <TouchableOpacity onPress={handleEditProfile}>
-            <Image source={selectedImage} style={styles.profileImage} />
+            <Image
+              source={{ uri: userData.photo }}
+              style={styles.profileImage}
+            />
             <Text style={styles.editButton}>Edit</Text>
           </TouchableOpacity>
 
@@ -152,6 +233,8 @@ const ProfileScreen = () => {
             <Text style={styles.logoutButton}>Logout</Text>
           </TouchableOpacity>
         </View>
+      ) : (
+        <Text>Loading...</Text>
       )}
     </View>
   );
