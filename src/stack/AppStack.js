@@ -7,7 +7,7 @@ import SignupScreen from "../screens/login/SignupScreen";
 import OnboardingScreen from "../screens/login/OnboardingScreen";
 import PreferencesScreen from "../screens/login/PreferencesScreen";
 import TabStack from "./TabStack";
-import ChallengeDetailScreen from "../screens/ChallengeDetailScreen";
+import ChallengeDetailScreen from "../screens/challenge/ChallengeDetailScreen";
 import BadgeList from "../components/list/BadgeList";
 import BadgeItem from "../components/listitems/BadgeItem";
 

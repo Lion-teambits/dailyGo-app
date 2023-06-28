@@ -1,4 +1,4 @@
-import ChallengeDetailContainer from "../components/containers/ChallengeDetailContainer";
+import ChallengeDetailContainer from "../../components/containers/ChallengeDetailContainer";
 
 const ChallengeDetailScreen = ({ route }) => {
   const { challenge } = route.params;
