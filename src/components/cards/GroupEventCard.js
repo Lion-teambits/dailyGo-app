@@ -1,7 +1,14 @@
 import { Box, Button, HStack, Heading, Image, Text, VStack } from "native-base";
 import { IMAGE_GROUP_EVENT_LIST } from "../../constants/imagePaths";
+import { useNavigation } from "@react-navigation/native";
 
 const GroupEventCard = () => {
+  const navigation = useNavigation();
+
+  const navigateToGroupSearch = () => {
+    navigation.navigate("GroupChallenge");
+  };
+
   return (
     <Box
       paddingY={2}
@@ -27,7 +34,11 @@ const GroupEventCard = () => {
           </Box>
           <Box>
             <VStack>
-              <Button borderRadius={50} margin={1}>
+              <Button
+                borderRadius={50}
+                margin={1}
+                onPress={navigateToGroupSearch}
+              >
                 Join Event
               </Button>
               <Button borderRadius={50} margin={1}>
