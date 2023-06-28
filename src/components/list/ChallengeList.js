@@ -18,7 +18,8 @@ const ChallengeList = () => {
       renderItem={({ item }) => (
         <TouchableOpacity onPress={() => navigateToDetail(item)}>
           <Box
-            style={{ borderRadius: 10, margin: 10 }}
+            borderRadius={10}
+            margin={3}
             bg="white"
             shadow={2}
             overflow="hidden"

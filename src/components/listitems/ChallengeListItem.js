@@ -2,9 +2,9 @@ import { Box, HStack, Heading, Image, Text, VStack, View } from "native-base";
 
 const ChallengeListItem = ({ challenge }) => {
   return (
-    <Box paddingY={2} paddingLeft={4}>
+    <Box paddingY={2} paddingX={4}>
       <HStack space={1}>
-        <Box minWidth={"65%"}>
+        <Box minWidth={"70%"}>
           <VStack>
             <Text>{challenge.status}</Text>
             <Heading size={"sm"}>{challenge.title}</Heading>
