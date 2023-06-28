@@ -2,7 +2,7 @@ export const challenges = [
   {
     id: 1,
     title: "Summer Jam",
-    image: require("../../assets/images/challenge/summer_2023.jpg"),
+    image: require("../../assets/images/monsters/Froggy.png"),
     description: "Summer time, yummy fireflese",
     targetSteps: 30000,
     currentSteps: 15000,
@@ -13,7 +13,7 @@ export const challenges = [
   {
     id: 2,
     title: "Christmas event",
-    image: require("../../assets/images/challenge/christmas_2023.jpg"),
+    image: require("../../assets/images/monsters/Takoyaki.png"),
     description: "Christmas time, yummy fireflese",
     targetSteps: 20000,
     currentSteps: 0,
@@ -24,7 +24,7 @@ export const challenges = [
   {
     id: 3,
     title: "Christmas event2",
-    image: require("../../assets/images/challenge/christmas_2023.jpg"),
+    image: require("../../assets/images/monsters/Piñata.png"),
     description: "Christmas time, yummy fireflese",
     targetSteps: 20000,
     currentSteps: 0,
@@ -35,7 +35,7 @@ export const challenges = [
   {
     id: 4,
     title: "Christmas event3",
-    image: require("../../assets/images/challenge/christmas_2023.jpg"),
+    image: require("../../assets/images/monsters/Lava.png"),
     description: "Christmas time, yummy fireflese",
     targetSteps: 20000,
     currentSteps: 0,
@@ -46,7 +46,7 @@ export const challenges = [
   {
     id: 5,
     title: "Christmas event4",
-    image: require("../../assets/images/challenge/christmas_2023.jpg"),
+    image: require("../../assets/images/monsters/Trickster.png"),
     description: "Christmas time, yummy fireflese",
     targetSteps: 20000,
     currentSteps: 0,
