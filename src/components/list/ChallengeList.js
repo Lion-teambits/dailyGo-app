@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { Container, FlatList, View } from "native-base";
+import { Card, Container, FlatList, View } from "native-base";
 import { challenges } from "../../data/challengeData";
 import { TouchableOpacity } from "react-native";
 import ChallengeListItem from "../listitems/ChallengeListItem";
@@ -17,7 +17,9 @@ const ChallengeList = () => {
       keyExtractor={(challenge) => challenge.id.toString()}
       renderItem={({ item }) => (
         <TouchableOpacity onPress={() => navigateToDetail(item)}>
-          <ChallengeListItem challenge={item} />
+          <Card style={{ borderRadius: 10, margin: 10 }}>
+            <ChallengeListItem challenge={item} />
+          </Card>
         </TouchableOpacity>
       )}
     />

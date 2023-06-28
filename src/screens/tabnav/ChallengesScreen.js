@@ -1,12 +1,15 @@
 import React from "react";
 import { View, Text } from "react-native";
 import ChallengeList from "../../components/list/ChallengeList";
+import { ScrollView } from "native-base";
 
 const ChallengesScreen = () => {
   return (
-    <View>
-      <ChallengeList />
-    </View>
+    <ScrollView>
+      <View>
+        <ChallengeList />
+      </View>
+    </ScrollView>
   );
 };
 
