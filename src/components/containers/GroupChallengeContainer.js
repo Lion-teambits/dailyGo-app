@@ -1,24 +1,47 @@
 import { Box, Heading, Image, Text, VStack } from "native-base";
 import { IMAGE_GROUP_EVENT_LIST } from "../../constants/imagePaths";
 import SearchForm from "../forms/SearchForm";
+import { retrieveGroupChallengeInfo } from "../../api/groupChallengeService";
+import { useState } from "react";
+import ChallengeDetailContainer from "./ChallengeDetailContainer";
 
 const GroupChallengeContainer = () => {
-  const handleGroupChallengeSearch = (value) => {
-    console.log("[dev]code: ", value);
+  const [groupInfo, setGroupInfo] = useState("");
+  const handleGroupChallengeSearch = async (value) => {
+    if (value === "") {
+      setGroupInfo("");
+      alert("Input code");
+      return;
+    }
+    try {
+      const groupChallengeInfo = await retrieveGroupChallengeInfo(value);
+      setGroupInfo(groupChallengeInfo);
+    } catch (error) {
+      console.log("[dev]Error: ", error);
+      setGroupInfo("");
+      alert("code not found");
+    }
   };
 
   return (
     <VStack marginX={4}>
       <Text>Group event code</Text>
       <SearchForm handleSubmit={handleGroupChallengeSearch} />
-      <Box justifyContent="center" alignItems="center">
-        <Heading>Join your friends</Heading>
-        <Image
-          alt="Monster Friends Image"
-          source={IMAGE_GROUP_EVENT_LIST}
-          style={{ width: 314, height: 165 }}
-        />
-      </Box>
+      {groupInfo ? (
+        <Box>
+          <Text>{groupInfo.toString}</Text>
+          <ChallengeDetailContainer challenge={groupInfo} />
+        </Box>
+      ) : (
+        <Box justifyContent="center" alignItems="center">
+          <Heading>Join your friends</Heading>
+          <Image
+            alt="Monster Friends Image"
+            source={IMAGE_GROUP_EVENT_LIST}
+            style={{ width: 314, height: 165 }}
+          />
+        </Box>
+      )}
     </VStack>
   );
 };

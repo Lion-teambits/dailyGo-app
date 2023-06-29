@@ -31,7 +31,11 @@ const ChallengeListItem = ({ challenge }) => {
           justifyContent="center"
           alignItems="center"
         >
-          <Image alt={challenge.title} source={challenge.image} size="xl" />
+          <Image
+            alt={challenge.title}
+            source={challenge.monster_image}
+            size="xl"
+          />
         </Box>
       </HStack>
     </Box>
