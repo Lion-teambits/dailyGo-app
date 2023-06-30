@@ -9,19 +9,29 @@ import {
   updateDailyRecord,
 } from "../api/dailyRecordService";
 import { retrieveUserInfo, updateUserInfo } from "../api/userService";
+import { calculateTimeLeft } from "./calculateLeftTime";
 
 export const checkDailyChallengeProgress = async (user_id) => {
   const userInfo = await retrieveUserInfo(user_id);
   const dailyRecord = await retrieveDailyRecord(userInfo.today_record);
 
+  // Calculate time left
+  const endTime = new Date();
+  endTime.setHours(23, 59, 0, 0);
+  const timeLeft = calculateTimeLeft(endTime);
+
   // check challenge status
   // if (userInfo.daily_goal_status === "ongoing") {
   if (userInfo.daily_goal_status === 3) {
-    return { dailyRecord: dailyRecord, reward: null };
+    return { activityData: dailyRecord, reward: null, timeLeft: timeLeft };
   } else if (userInfo.daily_goal_status === 2) {
     const rewardObj = await calculateStreakDaysAndReward(user_id);
 
-    return { dailyRecord: dailyRecord, reward: rewardObj };
+    return {
+      activityData: dailyRecord,
+      reward: rewardObj,
+      timeLeft: timeLeft,
+    };
   } else {
     let challengeStatus = dailyRecord.steps > userInfo.preferred_daily_mode;
     if (challengeStatus) {
@@ -32,8 +42,17 @@ export const checkDailyChallengeProgress = async (user_id) => {
       const updatedDailyRecord = await updateDailyRecord(dailyRecord._id, {
         streak_status: "continue",
       });
-      return { dailyRecord: updatedDailyRecord, reward: rewardObj };
+      return {
+        activityData: updatedDailyRecord,
+        reward: rewardObj,
+        timeLeft: timeLeft,
+      };
     }
+    return {
+      activityData: dailyRecord,
+      reward: null,
+      timeLeft: timeLeft,
+    };
   }
 };
 

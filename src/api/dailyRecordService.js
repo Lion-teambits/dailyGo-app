@@ -9,7 +9,7 @@ export const retrieveDailyRecord = async (dailyRecord_id) => {
     const dailyRecord = await axios.get(
       `${BASE_URL}/dailyRecord/${dailyRecord_id}`
     );
-    console.log("retrieveDailyRecord: ", dailyRecord.data);
+    // console.log("retrieveDailyRecord: ", dailyRecord.data);
     return dailyRecord.data;
   } catch (error) {
     console.log("retrieveDailyRecord Error: ", error.message);
@@ -20,7 +20,6 @@ export const retrieveDailyRecord = async (dailyRecord_id) => {
 // Update daily record
 export const updateDailyRecord = async (record_id, newActivityData) => {
   try {
-    console.log(record_id, newActivityData);
     const dailyRecord = await retrieveDailyRecord(record_id);
     const updatedDailyRecord = { ...dailyRecord, ...newActivityData };
     const resUpdatedDailyRecord = await axios.put(

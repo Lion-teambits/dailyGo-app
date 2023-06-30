@@ -23,6 +23,7 @@ async function saveActivityData(user_id) {
 
     // Check if there is daily record which has the same date
     const isExistingRecord = todayRecord.date === activityData.date;
+    console.log("isExistingRecord: ",isExistingRecord);
     // if today_record contains the same day daily_record id, update the data in DB, else create new record & update today_record and past_records in user info
     if (isExistingRecord) {
       // Calculated the difference of steps here

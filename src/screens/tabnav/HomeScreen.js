@@ -16,17 +16,20 @@ import { checkDailyChallengeProgress } from "../../services/checkChallengeProgre
 const HomeScreen = () => {
   const [userInfo, setUserInfo] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const [ongoingChallengesState, setOngoingChallengesState] = useState([]);
+  const [ongoingChallenges, setOngoingChallenges] = useState([]);
 
   useEffect(() => {
     async function initActivityDataInDB(user_id) {
-      const ongoingChallenges = await saveActivityData(user_id);
+      await saveActivityData(user_id);
       const dailyChallengeStatus = await checkDailyChallengeProgress(user_id);
-      // setOngoingChallengesState([
-      //   ...ongoingChallenges.eventAndCoopChallenge,
-      //   ongoingChallenges.dailyChallenge,
-      // ]);
+      setOngoingChallenges((prevChallenges) => [
+        ...prevChallenges,
+        { daily: dailyChallengeStatus },
+      ]);
 
+      // [TODO: Check Event and Coop challenge progress]
+      // const EventAndCoopChallengeStatus = await function(user_id);
+      
       const responseUserInfo = await retrieveUserInfo(user_id);
       setUserInfo(responseUserInfo);
       setIsLoading(false);
@@ -52,7 +55,7 @@ const HomeScreen = () => {
         <Text>hearts: {userInfo.hearts}</Text>
         <Text>fireflies: {userInfo.fireflies}</Text>
       </View>
-      {/* <OngoingChallengeContainer challengeArr={ongoingChallengesState} /> */}
+      <OngoingChallengeContainer ongoingChallenges={ongoingChallenges} />
     </SafeAreaView>
   );
 };
