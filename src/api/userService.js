@@ -31,14 +31,14 @@ export const retrieveUserInfo = async (user_id) => {
 };
 
 // Update user info
-export const updateUserInfo = async (userInfoObj, updatedFields) => {
+export const updateUserInfo = async (user_id, updatedFields) => {
   try {
-    const userInfo = await retrieveUserInfo(userInfoObj.uid);
+    const userInfo = await retrieveUserInfo(user_id);
 
     const updatedUserInfo = { ...userInfo, ...updatedFields };
     // Update user info in DB
     const updatedUserInfoRes = await axios.put(
-      `${BASE_URL}/user/${userInfoObj._id}`,
+      `${BASE_URL}/user/${userInfo._id}`,
       updatedUserInfo
     );
 

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, SafeAreaView } from "react-native";
-import saveActivityDataToDatabase from "../../services/saveActivityDataAndCheckChallengeProgress";
+import saveActivityData from "../../services/saveActivityData";
 import { TEST_UID } from "../../api/constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { retrieveUserInfo } from "../../api/userService";
 import OngoingChallengeContainer from "../../components/containers/OngoingChallengeContainer";
+import { checkDailyChallengeProgress } from "../../services/checkChallengeProgress";
 
 // Get activity data & update DB & store updated userInfo & challengeInfo
 
@@ -19,13 +20,12 @@ const HomeScreen = () => {
 
   useEffect(() => {
     async function initActivityDataInDB(user_id) {
-      const ongoingChallenges = await saveActivityDataToDatabase(user_id);
-
-      console.log("Home: ", ongoingChallenges);
-      setOngoingChallengesState([
-        ...ongoingChallenges.eventAndCoopChallenge,
-        ongoingChallenges.dailyChallenge,
-      ]);
+      const ongoingChallenges = await saveActivityData(user_id);
+      const dailyChallengeStatus = await checkDailyChallengeProgress(user_id);
+      // setOngoingChallengesState([
+      //   ...ongoingChallenges.eventAndCoopChallenge,
+      //   ongoingChallenges.dailyChallenge,
+      // ]);
 
       const responseUserInfo = await retrieveUserInfo(user_id);
       setUserInfo(responseUserInfo);
@@ -52,7 +52,7 @@ const HomeScreen = () => {
         <Text>hearts: {userInfo.hearts}</Text>
         <Text>fireflies: {userInfo.fireflies}</Text>
       </View>
-      <OngoingChallengeContainer challengeArr={ongoingChallengesState} />
+      {/* <OngoingChallengeContainer challengeArr={ongoingChallengesState} /> */}
     </SafeAreaView>
   );
 };
