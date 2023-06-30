@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, SafeAreaView } from "react-native";
-import saveActivityDataToDatabase from "../../services/saveActivityDataAndCheckChallengeProgress";
+import saveActivityData from "../../services/saveActivityData";
 import { TEST_UID } from "../../api/constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { retrieveUserInfo } from "../../api/userService";
 import OngoingChallengeContainer from "../../components/containers/OngoingChallengeContainer";
+import { checkDailyChallengeProgress } from "../../services/checkChallengeProgress";
 
 // Get activity data & update DB & store updated userInfo & challengeInfo
 
@@ -15,18 +16,20 @@ import OngoingChallengeContainer from "../../components/containers/OngoingChalle
 const HomeScreen = () => {
   const [userInfo, setUserInfo] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const [ongoingChallengesState, setOngoingChallengesState] = useState([]);
+  const [ongoingChallenges, setOngoingChallenges] = useState([]);
 
   useEffect(() => {
     async function initActivityDataInDB(user_id) {
-      const ongoingChallenges = await saveActivityDataToDatabase(user_id);
-
-      console.log("Home: ", ongoingChallenges);
-      setOngoingChallengesState([
-        ...ongoingChallenges.eventAndCoopChallenge,
-        ongoingChallenges.dailyChallenge,
+      await saveActivityData(user_id);
+      const dailyChallengeStatus = await checkDailyChallengeProgress(user_id);
+      setOngoingChallenges((prevChallenges) => [
+        ...prevChallenges,
+        { daily: dailyChallengeStatus },
       ]);
 
+      // [TODO: Check Event and Coop challenge progress]
+      // const EventAndCoopChallengeStatus = await function(user_id);
+      
       const responseUserInfo = await retrieveUserInfo(user_id);
       setUserInfo(responseUserInfo);
       setIsLoading(false);
@@ -52,7 +55,7 @@ const HomeScreen = () => {
         <Text>hearts: {userInfo.hearts}</Text>
         <Text>fireflies: {userInfo.fireflies}</Text>
       </View>
-      <OngoingChallengeContainer challengeArr={ongoingChallengesState} />
+      <OngoingChallengeContainer ongoingChallenges={ongoingChallenges} />
     </SafeAreaView>
   );
 };

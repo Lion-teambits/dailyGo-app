@@ -3,39 +3,29 @@ import { useEffect, useState } from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
 import image1 from "../../../assets/images/image1.jpeg";
 
-const OngoingChallengeCard = ({ ongoingChallenge, width }) => {
+const OngoingChallengeCard = ({ ongoingChallenge, type, width }) => {
   // console.log("OngoingChallengeCard", ongoingChallenge);
   const [challengeType, setChallengeType] = useState("Daily");
   const [progressRate, setProgressRate] = useState(null);
   const [steps, setSteps] = useState(0);
   const [distance, setDistance] = useState(0);
   const [calories, setCalories] = useState(0);
+  const [timeLeft, setLeftTime] = useState("");
+
   useEffect(() => {
-    if (ongoingChallenge.type === 1) {
-      setChallengeType("Event");
-      setProgressRate(
-        (ongoingChallenge.current_steps / ongoingChallenge.target_steps) * 100
-      );
-      setSteps(ongoingChallenge.current_steps);
-    } else if (ongoingChallenge.type === 2) {
-      setChallengeType("Coop");
-      setProgressRate(
-        (ongoingChallenge.current_steps / ongoingChallenge.target_steps) * 100
-      );
-      setSteps(ongoingChallenge.current_steps);
-    } else {
-      setProgressRate(
-        (ongoingChallenge.activityData.steps / ongoingChallenge.daily_goal) *
-          100
-      );
-      setSteps(ongoingChallenge.activityData.steps)
-      setDistance(ongoingChallenge.activityData.distance)
-      setCalories(ongoingChallenge.activityData.calories)
-    }
+    setProgressRate(
+      (ongoingChallenge.activityData.steps / ongoingChallenge.daily_goal) * 100
+    );
+    setSteps(ongoingChallenge.activityData.steps);
+    setDistance(ongoingChallenge.activityData.distance);
+    setCalories(ongoingChallenge.activityData.calories);
+    setLeftTime(ongoingChallenge.timeLeft);
   }, [ongoingChallenge]);
+
   return (
     <View style={[styles.card, { width: width }]}>
       <Text style={styles.cardTitle}>{challengeType} Goal</Text>
+      <Text>Time left: {timeLeft}</Text>
       <Image
         source={image1}
         style={styles.image}

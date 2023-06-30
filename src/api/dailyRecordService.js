@@ -7,39 +7,26 @@ const BASE_URL = BACKEND_URL + "/api/v1";
 export const retrieveDailyRecord = async (dailyRecord_id) => {
   try {
     const dailyRecord = await axios.get(
-      `${BASE_URL}/dailyRecord/id/${dailyRecord_id}`
+      `${BASE_URL}/dailyRecord/${dailyRecord_id}`
     );
     // console.log("retrieveDailyRecord: ", dailyRecord.data);
     return dailyRecord.data;
   } catch (error) {
-    // console.log("retrieveDailyRecord Error: ", error.message);
+    console.log("retrieveDailyRecord Error: ", error.message);
     throw error;
   }
 };
 
-// Retrieve all past daily records for a specific user
-export const retrievePastRecords = async (userInfoObj) => {
-  const pastRecords = userInfoObj.past_records;
-  const results = [];
-
-  for (const dailyRecord_id of pastRecords) {
-    const recordData = await retrieveDailyRecord(dailyRecord_id);
-    if (recordData) {
-      results.push(recordData);
-    }
-  }
-
-  return results;
-};
-
 // Update daily record
-export const updateDailyRecord = async (existingRecord_id, newActivityData) => {
+export const updateDailyRecord = async (record_id, newActivityData) => {
   try {
-    const dailyRecord = await axios.put(
-      `${BASE_URL}/dailyRecord/${existingRecord_id}`,
-      newActivityData
+    const dailyRecord = await retrieveDailyRecord(record_id);
+    const updatedDailyRecord = { ...dailyRecord, ...newActivityData };
+    const resUpdatedDailyRecord = await axios.put(
+      `${BASE_URL}/dailyRecord/${record_id}`,
+      { updatedDailyRecord }
     );
-    return dailyRecord.data;
+    return resUpdatedDailyRecord.data;
   } catch (error) {
     console.log("Error in updateDailyRecord");
     throw error;
@@ -47,12 +34,13 @@ export const updateDailyRecord = async (existingRecord_id, newActivityData) => {
 };
 
 // Create new daily record
-export const createDailyRecord = async (activityData) => {
+export const createDailyRecord = async (activityData, user_id) => {
   try {
-    const newDailyRecord = await axios.post(
-      `${BASE_URL}/dailyRecord`,
-      activityData
-    );
+    const newDailyRecord = await axios.post(`${BASE_URL}/dailyRecord`, {
+      ...activityData,
+      uid: user_id,
+      streak_status: "continued", // default
+    });
     return newDailyRecord.data;
   } catch (error) {
     throw error;
