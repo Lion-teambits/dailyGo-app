@@ -18,7 +18,7 @@ const image3 =
 const image4 =
   "https://www.nicepng.com/png/detail/316-3164745_beautiful-images-of-wolf-cubs-the-lion-king.png";
 import { useNavigation } from "@react-navigation/native";
-import { BACKEND_URL } from "@env";
+import { BACKEND_SERVER_URL } from "@env";
 
 const ProfileScreen = () => {
   const [editMode, setEditMode] = useState(false);
@@ -33,12 +33,12 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     axios
-      .get(`${BACKEND_URL}/api/v1/user/111`)
+      .get(`${BACKEND_SERVER_URL}/api/v1/user/111`)
       .then((response) => {
         const userData = response.data;
         setUserData(userData);
         setName(userData.name);
-        setDailyModeValue(userData.daily_mode);
+        setDailyModeValue(userData.preferred_daily_mode);
       })
       .catch((error) => {
         console.log(error);
@@ -55,15 +55,15 @@ const ProfileScreen = () => {
 
   const handleApplyChanges = () => {
     axios
-      .put(`${BACKEND_URL}/api/v1/user/111`, {
-        photo: selectedImage,
+      .put(`${BACKEND_SERVER_URL}/api/v1/user/111`, {
+        avatar: selectedImage,
       })
       .then((response) => {
         setEditMode(false);
         setApplyChanges(true);
         setUserData((prevUserData) => ({
           ...prevUserData,
-          photo: selectedImage,
+          avatar: selectedImage,
         }));
       })
       .catch((error) => {
@@ -99,9 +99,9 @@ const ProfileScreen = () => {
   useEffect(() => {
     if (name && dailyModeValue) {
       axios
-        .put(`${BACKEND_URL}/api/v1/user/111`, {
+        .put(`${BACKEND_SERVER_URL}/api/v1/user/111`, {
           name,
-          daily_mode: dailyModeValue,
+          preferred_daily_mode: dailyModeValue,
         })
         .then((response) => {
           setApplyChanges(true);
@@ -196,7 +196,7 @@ const ProfileScreen = () => {
         <View style={styles.profileInfoContainer}>
           <TouchableOpacity onPress={handleEditProfile}>
             <Image
-              source={{ uri: userData.photo }}
+              source={{ uri: userData.avatar }}
               style={styles.profileImage}
             />
             <Text style={styles.editButton}>Edit</Text>
