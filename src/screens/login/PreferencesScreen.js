@@ -11,7 +11,9 @@ const PreferencesScreen = ({ navigation }) => {
   const handleAnswer = async (steps) => {
     try {
       const uid = await AsyncStorage.getItem("@uid");
-      await createUserInfo(name, photo, steps, uid);
+      if (!(uid === null)) {
+        await createUserInfo(name, photo, steps, uid);
+      }
       navigation.navigate("HomeScreen");
     } catch (error) {
       console.log(error);

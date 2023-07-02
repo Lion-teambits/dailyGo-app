@@ -7,8 +7,8 @@ export const createUserInfo = async (name, photo, targetSteps, uid) => {
   try {
     const userInitData = {
       name: name,
-      photo: photo,
-      daily_mode: targetSteps,
+      avatar: photo,
+      preferred_daily_mode: targetSteps,
       uid: uid,
     };
 
