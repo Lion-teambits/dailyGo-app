@@ -1,4 +1,4 @@
-import { Box, HStack, Heading, Image, Text, VStack, View } from "native-base";
+import { Box, HStack, Heading, Image, Text, VStack } from "native-base";
 import { eventDateStatus } from "../../utils/dateUtils";
 
 const ChallengeListItem = ({ challenge }) => {
