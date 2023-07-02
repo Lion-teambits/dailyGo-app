@@ -41,6 +41,8 @@ const LoginScreen = ({ navigation }) => {
   const handleLoginEmail = async (value) => {
     // Pass Dummy user data bacause google login fail issue (Android device)
     try {
+      const currentDate = new Date();
+      console.log("currentDate: ", currentDate);
       await AsyncStorage.setItem("@uid", value);
       const userInfo = await retrieveUserInfo(value);
       if (userInfo == null) {
