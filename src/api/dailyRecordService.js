@@ -24,7 +24,7 @@ export const updateDailyRecord = async (record_id, newActivityData) => {
     const updatedDailyRecord = { ...dailyRecord, ...newActivityData };
     const resUpdatedDailyRecord = await axios.put(
       `${BASE_URL}/dailyRecord/${record_id}`,
-      { updatedDailyRecord }
+      updatedDailyRecord
     );
     return resUpdatedDailyRecord.data;
   } catch (error) {
