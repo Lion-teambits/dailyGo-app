@@ -22,10 +22,8 @@ export const createUserInfo = async (name, photo, targetSteps, uid) => {
 export const retrieveUserInfo = async (user_id) => {
   try {
     const userData = await axios.get(`${BASE_URL}/user/${user_id}`);
-    // console.log("retrieveUserInfo: ", userData.data);
     return userData.data;
   } catch (error) {
-    // console.log("retrieveUserInfo Error: ", error.message);
     throw error;
   }
 };
@@ -33,13 +31,9 @@ export const retrieveUserInfo = async (user_id) => {
 // Update user info
 export const updateUserInfo = async (user_id, updatedFields) => {
   try {
-    const userInfo = await retrieveUserInfo(user_id);
-
-    const updatedUserInfo = { ...userInfo, ...updatedFields };
-    // Update user info in DB
     const updatedUserInfoRes = await axios.put(
-      `${BASE_URL}/user/${userInfo._id}`,
-      updatedUserInfo
+      `${BASE_URL}/user/${user_id}`,
+      updatedFields
     );
 
     return updatedUserInfoRes.data;

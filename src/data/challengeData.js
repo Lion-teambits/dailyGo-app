@@ -1,6 +1,6 @@
 export const challenges = [
   {
-    id: 1,
+    _id: 1,
     start_date: "2023-06-01",
     expired_date: "2023-08-31",
     title: "Summer Jam",
@@ -11,7 +11,7 @@ export const challenges = [
     badge_info: "",
   },
   {
-    id: 2,
+    _id: 2,
     start_date: "2023-06-01",
     expired_date: "2023-08-31",
     title: "Water, Melon, Sugar",
@@ -22,7 +22,7 @@ export const challenges = [
     badge_info: "",
   },
   {
-    id: 3,
+    _id: 3,
     start_date: "2023-08-01",
     expired_date: "2023-08-31",
     title: "Wizards United",

@@ -15,7 +15,10 @@ const ChallengeDetailScreen = ({ route }) => {
 
   return (
     <ScrollView>
-      <ChallengeDetailContainer challenge={challenge} />
+      <ChallengeDetailContainer
+        challenge={challenge}
+        isGroupChallenge={false}
+      />
     </ScrollView>
   );
 };

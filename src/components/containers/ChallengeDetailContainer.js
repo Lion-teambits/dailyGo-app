@@ -1,18 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
-import {
-  Box,
-  Button,
-  HStack,
-  Heading,
-  Image,
-  Text,
-  VStack,
-  View,
-} from "native-base";
+import { Box, Button, HStack, Heading, Image, Text, VStack } from "native-base";
 import { eventDateStatus } from "../../utils/dateUtils";
+import { DISABLED, SECONDARY_MEDIUM } from "../../constants/colorCodes";
+import { createChallengeProgress } from "../../api/challengeProgressService";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { retrieveUserInfo, updateUserInfo } from "../../api/userService";
 
 const ChallengeDetailContainer = (props) => {
-  const { challenge } = props;
+  const { challenge, isGroupChallenge } = props;
   const navigation = useNavigation();
 
   const { status, timeDifference } = eventDateStatus(
@@ -21,14 +16,48 @@ const ChallengeDetailContainer = (props) => {
     false
   );
 
-  const startEvent = () => {
-    // Handle start event button press
-    console.log("Event started!");
+  const joinEvent = async () => {
+    try {
+      // 1. Make challengeProgress event
+      console.log("challenge: ", challenge);
+      const challengProgressData = await createChallengeProgress(
+        challenge,
+        isGroupChallenge
+      );
+      console.log("[Dev]challengProgressData: ", challengProgressData);
+
+      // 2. Add challengeProgress id to event_challenge_id attribute of user document
+      const uid = await AsyncStorage.getItem("@uid");
+      const userData = await retrieveUserInfo(uid);
+
+      const isIdAlreadyExists = userData.event_challenge_progress.includes(
+        challengProgressData._id
+      );
+
+      if (!isIdAlreadyExists) {
+        if (isGroupChallenge) {
+          userData.group_challenge_progress.push(challengProgressData._id);
+          await updateUserInfo(uid, {
+            group_challenge_progress: userData.group_challenge_progress,
+          });
+        } else {
+          userData.event_challenge_progress.push(challengProgressData._id);
+          await updateUserInfo(uid, {
+            event_challenge_progress: userData.event_challenge_progress,
+          });
+        }
+      }
+      navigation.goBack();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const goBackToChallenges = () => {
     navigation.goBack();
   };
+
+  const isJoinDisabled = status === "UPCOMING EVENT";
 
   return (
     <VStack space={1} margin={4}>
@@ -48,7 +77,9 @@ const ChallengeDetailContainer = (props) => {
           margin={1}
           width={"100%"}
           borderRadius={50}
-          onPress={startEvent}
+          onPress={joinEvent}
+          disabled={isJoinDisabled}
+          backgroundColor={isJoinDisabled ? DISABLED : SECONDARY_MEDIUM}
         >
           Join Event
         </Button>
@@ -57,6 +88,7 @@ const ChallengeDetailContainer = (props) => {
           width={"100%"}
           borderRadius={50}
           onPress={goBackToChallenges}
+          variant="unstyled"
         >
           Go Back to Challenges
         </Button>
