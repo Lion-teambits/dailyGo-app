@@ -14,7 +14,7 @@ const ChallengeList = () => {
   return (
     <FlatList
       data={challenges}
-      keyExtractor={(challenge) => challenge.id.toString()}
+      keyExtractor={(challenge) => challenge._id.toString()}
       renderItem={({ item }) => (
         <TouchableOpacity onPress={() => navigateToDetail(item)}>
           <Box

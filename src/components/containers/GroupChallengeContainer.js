@@ -30,7 +30,10 @@ const GroupChallengeContainer = () => {
       {groupInfo ? (
         <Box>
           <Text>{groupInfo.toString}</Text>
-          <ChallengeDetailContainer challenge={groupInfo} />
+          <ChallengeDetailContainer
+            challenge={groupInfo}
+            isGroupChallenge={true}
+          />
         </Box>
       ) : (
         <Box justifyContent="center" alignItems="center">
