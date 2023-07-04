@@ -30,11 +30,11 @@ export const createChallengeProgress = async (challenge, isGroupChallenge) => {
   }
 };
 
-// Retrieve single challenge information
-export const retrieveChallengeInfo = async (challenge_id) => {
+// Retrieve single challenge progress
+export const retrieveChallengeProgressInfo = async (challengeProgress_id) => {
   try {
     const challengeInfo = await axios.get(
-      `${BASE_URL}/challengeProgress/${challenge_id}`
+      `${BASE_URL}/challengeProgress/${challengeProgress_id}`
     );
     return challengeInfo.data;
   } catch (error) {
@@ -43,47 +43,44 @@ export const retrieveChallengeInfo = async (challenge_id) => {
 };
 
 // Retrieve all challenge information for a specific user
-export const retrieveChallengeProgresses = async (user_id) => {
+export const retrieveChallengeProgresses = async (user_id, eventType) => {
   const userInfo = await retrieveUserInfo(user_id);
 
-  const eventChallengeIds = userInfo.event_challenge_progress;
-  const groupChallengeIds = userInfo.group_challenge_progress;
+  let challengeProgressIds = [];
+  let challengeProgressArray = [];
 
-  const eventChallengeArray = [];
-  const groupChallengeArray = [];
+  if (eventType === "event") {
+    challengeProgressIds = userInfo.event_challenge_progress;
+  } else {
+    challengeProgressIds = userInfo.group_challenge_progress;
+  }
 
-  // Retrieve Event Challenge object
-  for (const challenge_id of eventChallengeIds) {
-    const challenge = await retrieveChallengeInfo(challenge_id);
-    if (challenge) {
-      eventChallengeArray.push(challenge);
+  // Retrieve Challenge Progress object
+  for (const challengeProgress_id of challengeProgressIds) {
+    const challengeProgress = await retrieveChallengeProgressInfo(
+      challengeProgress_id
+    );
+    if (challengeProgress) {
+      challengeProgressArray.push(challengeProgress);
     }
   }
 
-  // Retrieve Group Challenge object
-  for (const challenge_id of groupChallengeIds) {
-    const challenge = await retrieveChallengeInfo(challenge_id);
-    if (challenge) {
-      groupChallengeArray.push(challenge);
-    }
-  }
-
-  return {
-    eventChallenges: eventChallengeArray,
-    coopChallenges: groupChallengeArray,
-  };
+  return challengeProgressArray;
 };
 
-// Update challenge
-export const updateChallenge = async (challenge_id, newChallengeData) => {
+// Update challenge progress
+export const updateChallengeProgress = async (
+  challengeProgress_id,
+  newChallengeProgressData
+) => {
   try {
     const challenge = await axios.put(
-      `${BASE_URL}/challenge/${challenge_id}`,
-      newChallengeData
+      `${BASE_URL}/challengeProgress/${challengeProgress_id}`,
+      newChallengeProgressData
     );
     return challenge.data;
   } catch (error) {
-    console.log("Error in updateChallenge");
+    console.log("Error in updateChallengeProgress");
     throw error;
   }
 };
