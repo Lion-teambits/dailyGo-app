@@ -34,7 +34,7 @@ export const createChallengeProgress = async (challenge, isGroupChallenge) => {
 export const retrieveChallengeInfo = async (challenge_id) => {
   try {
     const challengeInfo = await axios.get(
-      `${BASE_URL}/challenge/${challenge_id}`
+      `${BASE_URL}/challengeProgress/${challenge_id}`
     );
     return challengeInfo.data;
   } catch (error) {

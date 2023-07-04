@@ -19,12 +19,10 @@ const ChallengeDetailContainer = (props) => {
   const joinEvent = async () => {
     try {
       // 1. Make challengeProgress event
-      console.log("challenge: ", challenge);
       const challengProgressData = await createChallengeProgress(
         challenge,
         isGroupChallenge
       );
-      console.log("[Dev]challengProgressData: ", challengProgressData);
 
       // 2. Add challengeProgress id to event_challenge_id attribute of user document
       const uid = await AsyncStorage.getItem("@uid");
