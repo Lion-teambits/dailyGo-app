@@ -9,7 +9,10 @@ import {
   calculateStreakDaysAndReward,
   resetStreakOrUseHeart,
 } from "./checkChallengeProgress";
-import { retrieveChallengeProgresses } from "../api/challengeProgressService";
+import {
+  retrieveChallengeProgressInfo,
+  updateChallengeProgress,
+} from "../api/challengeProgressService";
 
 // Fetch activity data & update database
 async function saveActivityData(user_id) {
@@ -23,11 +26,11 @@ async function saveActivityData(user_id) {
 
     // Check if there is daily record which has the same date
     const isExistingRecord = todayRecord.date === activityData.date;
-    console.log("isExistingRecord: ",isExistingRecord);
+    console.log("isExistingRecord: ", isExistingRecord);
     // if today_record contains the same day daily_record id, update the data in DB, else create new record & update today_record and past_records in user info
     if (isExistingRecord) {
       // Calculated the difference of steps here
-      // and apply it to event & coop challenge
+      // and apply it to event & team challenge
       const differenceOfSteps = activityData.steps - todayRecord.steps;
       const differenceOfDistance = activityData.distance - todayRecord.distance;
       const differenceOfCalories = activityData.calories - todayRecord.calories;
@@ -40,7 +43,6 @@ async function saveActivityData(user_id) {
           differenceOfDistance,
           differenceOfCalories
         );
-
       // Update daily record
       await updateDailyRecord(todayRecord._id, activityData);
     } else {
@@ -54,7 +56,7 @@ async function saveActivityData(user_id) {
           streak_days: userInfo.streak_days + 1,
         });
       } else if (userInfo.daily_goal_status === "ongoing") {
-        // Previous day, daily challenge was not achieved, update streak/heart, finish_daily_goal
+        // Previous day, daily challenge was not achieved, update streak/heart, daily_goal_status
         await resetStreakOrUseHeart(user_id, todayRecord);
       }
 
@@ -121,49 +123,45 @@ const updateEventAndGroupChallengeProgresses = async (
   differenceOfDistance,
   differenceOfCalories
 ) => {
-  // Retrieve ongoing event and coop challenges
+  try {
+    // Retrieve user info and event / team challenge progress ids array
+    const userInfo = await retrieveUserInfo(user_id);
+    const eventChallengeProgressIDs = userInfo.event_challenge_progress;
+    const groupChallengeProgressIDs = userInfo.group_challenge_progress;
 
-  const ChallengeProgresses = await retrieveChallengeProgresses(user_id);
+    const updateChallengeProgressArray = async (progressIDs) => {
+      await Promise.all(
+        progressIDs.map(async (challengeProgress_id) => {
+          const challengeProgressData = await retrieveChallengeProgressInfo(
+            challengeProgress_id
+          );
 
-  // Add activity data
-  const asyncAddActivityData = async (
-    challenge,
-    differenceOfSteps,
-    differenceOfDistance,
-    differenceOfCalories
-  ) => {
-    let challengeObj = {
-      current_steps: challenge.current_steps + differenceOfSteps,
-      current_calories: challenge.current_calories + differenceOfCalories,
-      current_distance: challenge.current_distance + differenceOfDistance,
+          // Add activity data
+          const newChallengeProgressData = {
+            current_steps:
+              challengeProgressData.current_steps + differenceOfSteps,
+            current_calories:
+              challengeProgressData.current_calories + differenceOfCalories,
+            current_distance:
+              challengeProgressData.current_distance + differenceOfDistance,
+          };
+
+          await updateChallengeProgress(
+            challengeProgress_id,
+            newChallengeProgressData
+          );
+        })
+      );
     };
 
-    return challengeObj;
-  };
+    await Promise.all([
+      updateChallengeProgressArray(eventChallengeProgressIDs),
+      updateChallengeProgressArray(groupChallengeProgressIDs),
+    ]);
 
-  // Add steps to Event Challenge progress
-  const updateChallengeProgress = async (challengeArray) => {
-    const updatedChallengeProgress = await Promise.all(
-      challengeArray.map(async (challenge) => {
-        return await asyncAddActivityData(
-          challenge,
-          differenceOfSteps,
-          differenceOfDistance,
-          differenceOfCalories
-        );
-      })
-    );
-    return updatedChallengeProgress;
-  };
-  const updatedEventChallengeProgress = await updateChallengeProgress(
-    ChallengeProgresses.eventChallenges
-  );
-  const updatedCoopChallengeProgress = await updateChallengeProgress(
-    ChallengeProgresses.coopChallenges
-  );
-
-  return {
-    eventChallenges: updatedEventChallengeProgress,
-    coopChallenges: updatedCoopChallengeProgress,
-  };
+    console.log("Challenge progress values updated successfully");
+  } catch (error) {
+    console.log("Error in updateChallengeProgressValues:", error);
+    throw error;
+  }
 };

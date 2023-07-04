@@ -1,14 +1,14 @@
 import {
-  retrieveChallengeInfo,
   retrieveChallengeProgresses,
-  retrieveChallenges,
-  updateChallenge,
+  updateChallengeProgress,
 } from "../api/challengeProgressService";
 import {
   retrieveDailyRecord,
   updateDailyRecord,
 } from "../api/dailyRecordService";
+import { retrieveGroupChallengeInfo } from "../api/groupChallengeService";
 import { retrieveUserInfo, updateUserInfo } from "../api/userService";
+import { challenges } from "../data/challengeData";
 import { calculateTimeLeft } from "./calculateLeftTime";
 
 export const checkDailyChallengeProgress = async (user_id) => {
@@ -56,18 +56,71 @@ export const checkDailyChallengeProgress = async (user_id) => {
   }
 };
 
-export const checkEventAndCoopChallengeProgress = async (user_id) => {
-  const challengeProgressObj = await retrieveChallengeProgresses(user_id);
+export const checkEventChallengeProgress = async (user_id) => {
+  // Retrieve challenge progress objects
+  const eventChallengeProgressObjArr = await retrieveChallengeProgresses(
+    user_id,
+    "event"
+  );
+  // Remove achieved challenge progress
+  const filteredEventChallengeProgress = eventChallengeProgressObjArr.filter(
+    (challengeProgress) => {
+      return challengeProgress.finish_challenge === false;
+    }
+  );
 
-  // challengeObj contains {
-  //   eventChallenges: eventChallengeArray,
-  //   coopChallenges: groupChallengeArray,
-  // };
+  // Compare target_steps and current_steps, and add challenge info to each challengeObj
+  const updatedProgressArray = await Promise.all(
+    filteredEventChallengeProgress.map(async (challengeProgress) => {
+      const challengeInfo = challenges.find(
+        (challenge) => challenge._id == challengeProgress.event_challenge_info
+      );
+      // Achieved challenge, change finish_challenge to true
+      if (challengeInfo.target_steps < challengeProgress.current_steps) {
+        await updateChallengeProgress(challengeProgress._id, {
+          finish_challenge: true,
+        });
+      }
+      return { ...challengeProgress, challengeInfo: challengeInfo };
+    })
+  );
 
-  // [TODO: Retrieve Challenge info (for target_steps)]
+  return updatedProgressArray;
+};
 
-  // check challenge status
-  // [TODO: Compare target_steps and current_steps
+export const checkGroupChallengeProgress = async (user_id) => {
+  const groupChallengeProgressObjArr = await retrieveChallengeProgresses(
+    user_id,
+    "group"
+  );
+
+  // Remove achieved challenge progress
+  const filteredEventChallengeProgress = groupChallengeProgressObjArr.filter(
+    (challengeProgress) => {
+      return challengeProgress.finish_challenge === false;
+    }
+  );
+
+  // Compare target_steps and current_steps, and add challenge info to each challengeObj
+  Promise.all(
+    filteredEventChallengeProgress.map(async (challengeProgress) => {
+      const groupChallengeInfo = await retrieveGroupChallengeInfo(
+        challengeProgress.group_challenge_info
+      );
+
+      // Achieved challenge, change finish_challenge to true
+      if (
+        groupChallengeInfo.target_steps < groupChallengeInfo.group_current_steps
+      ) {
+        await updateChallengeProgress(challengeProgress._id, {
+          finish_challenge: true,
+        });
+      }
+      return { ...challengeProgress, challengeInfo: groupChallengeInfo };
+    })
+  ).then((updatedProgressArray) => {
+    return updatedProgressArray;
+  });
 };
 
 // Not achieved daily challenge
@@ -92,8 +145,8 @@ export const resetStreakOrUseHeart = async (user_id, todayRecord) => {
     ...userInfo,
     streak_days: totalStreakDays,
     hearts: totalHearts,
-    finish_daily_goal: 1,
-    // finish_daily_goal: "ongoing", // need to check with Jay
+    daily_goal_status: 1,
+    // daily_goal_status: "ongoing", // need to check with Jay
   };
 
   try {
