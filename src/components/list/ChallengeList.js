@@ -11,8 +11,9 @@ const ChallengeList = ({ userData }) => {
   const [joinedChallengeList, setJoinedChallengeList] = useState([]);
 
   const navigateToDetail = (challenge) => {
-    if (getUserJoinStatus(challenge._id)) {
-      navigation.navigate("Home", { challenge });
+    const progressId = getProgressIdByChallengeId(challenge._id);
+    if (progressId) {
+      navigation.navigate("Home", { progressId });
     } else {
       navigation.navigate("ChallengeDetail", { challenge });
     }
@@ -24,20 +25,30 @@ const ChallengeList = ({ userData }) => {
         const challengeProgressIds = userData?.event_challenge_progress || [];
         const challengeProgressList = await Promise.all(
           challengeProgressIds.map(async (progressId) => {
-            return await retrieveChallengeInfo(progressId);
+            const progress = await retrieveChallengeInfo(progressId);
+            return {
+              event_challenge_info: progress?.event_challenge_info,
+              _id: progress?._id,
+            };
           })
         );
-        const challengeProgressInfoList = challengeProgressList.map(
-          (progress) => progress?.event_challenge_info
-        );
-        setJoinedChallengeList(challengeProgressInfoList);
+        setJoinedChallengeList(challengeProgressList);
       }
     };
     fetchChallengeProgressInfoList();
   }, [userData]);
 
   const getUserJoinStatus = (challengeId) => {
-    return joinedChallengeList.includes(String(challengeId));
+    return joinedChallengeList.some(
+      (progress) => progress.event_challenge_info === String(challengeId)
+    );
+  };
+
+  const getProgressIdByChallengeId = (challengeId) => {
+    const foundProgress = joinedChallengeList.find(
+      (progress) => progress.event_challenge_info === String(challengeId)
+    );
+    return foundProgress ? foundProgress._id : null;
   };
 
   return (
