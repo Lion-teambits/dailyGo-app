@@ -1,11 +1,11 @@
 import { Box, HStack, Heading, Image, Text, VStack } from "native-base";
 import { eventDateStatus } from "../../utils/dateUtils";
 
-const ChallengeListItem = ({ challenge }) => {
+const ChallengeListItem = ({ challenge, userJoin }) => {
   const { status, timeDifference } = eventDateStatus(
     challenge.start_date,
     challenge.expired_date,
-    false
+    userJoin
   );
 
   return (
