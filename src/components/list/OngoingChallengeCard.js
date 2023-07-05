@@ -72,12 +72,14 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
           {showRewardButton && (
             <Button onPress={handleShowRewardModal}>Receive Reward</Button>
           )}
-          <RewardModal
-            showModal={showRewardModal}
-            setShowModal={setShowRewardModal}
-            size="xl"
-            reward={challenge.reward}
-          />
+          {challenge.reward && (
+            <RewardModal
+              showModal={showRewardModal}
+              setShowModal={setShowRewardModal}
+              size="xl"
+              reward={challenge.reward}
+            />
+          )}
         </Box>
         <Text>Current Progress</Text>
         <HStack
