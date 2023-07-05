@@ -1,4 +1,4 @@
-import AppleHealthKit from 'react-native-health';
+import AppleHealthKit from "react-native-health";
 
 /* Permission options */
 const params = AppleHealthKit.Constants.Permissions;
@@ -37,7 +37,7 @@ export const getStepCount = (callback) => {
 
   AppleHealthKit.getStepCount(options, function (err, result) {
     if (err) {
-      console.error('Error in getStepCount:', err);
+      console.error("Error in getStepCount:", err);
       callback(err, null);
       return;
     }
@@ -54,7 +54,7 @@ export const getDistance = (callback) => {
 
   AppleHealthKit.getDistanceWalkingRunning(options, function (err, result) {
     if (err) {
-      console.error('Error in getStepCount:', err);
+      console.error("Error in getStepCount:", err);
       callback(err, null);
       return;
     }
@@ -71,7 +71,7 @@ export const getCalories = (callback) => {
 
   AppleHealthKit.getActiveEnergyBurned(options, function (err, results) {
     if (err) {
-      console.error('Error in getDailyActiveEnergyBurnedSamples: ', err);
+      console.error("Error in getDailyActiveEnergyBurnedSamples: ", err);
       callback(err, null);
       return;
     }
@@ -80,7 +80,7 @@ export const getCalories = (callback) => {
 
     // calculate distance on each day
     data.forEach((entry) => {
-      const startDate = entry.startDate.split('T')[0];
+      const startDate = entry.startDate.split("T")[0];
       const value = entry.value;
 
       if (dailyEnergyBarned[startDate]) {
@@ -105,7 +105,7 @@ export const fetchActivityData = async () => {
     await new Promise((resolve, reject) => {
       requestAuthorization((error) => {
         if (error) {
-          console.log('[ERROR] Cannot grant permissions!');
+          console.log("[ERROR] Cannot grant permissions!");
           reject(error);
           return;
         }
@@ -123,7 +123,7 @@ export const fetchActivityData = async () => {
         resolve(result);
       });
     });
-    activityObj.steps = stepsResult
+    activityObj.steps = stepsResult;
 
     const distancesResult = await new Promise((resolve, reject) => {
       getDistance((err, result) => {
@@ -135,7 +135,8 @@ export const fetchActivityData = async () => {
         resolve(result);
       });
     });
-    activityObj.distance = distancesResult.toFixed(2);
+
+    activityObj.distance = Math.floor(distancesResult * 0.001 * 100) / 100;
 
     const caloriesResult = await new Promise((resolve, reject) => {
       getCalories((err, result) => {
@@ -150,11 +151,13 @@ export const fetchActivityData = async () => {
 
     const keys = Object.keys(caloriesResult);
     if (caloriesResult[keys[0]]) {
-      activityObj.calories = caloriesResult[keys[0]].toFixed(2);
+      // Rounded down to the third decimal place
+      activityObj.calories =
+        Math.floor(caloriesResult[keys[0]]  * 100) / 100;
     }
 
-    console.log('Apple Healthkit data: ', activityObj);
-    return activityObj
+    console.log("Apple Healthkit data: ", activityObj);
+    return activityObj;
   } catch (error) {
     console.error(error);
   }
