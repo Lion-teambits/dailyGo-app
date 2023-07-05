@@ -33,6 +33,26 @@ const LoginScreen = ({ navigation }) => {
     }
   }, [response]);
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          await AsyncStorage.setItem("@uid", user.uid);
+          const userInfo = await retrieveUserInfo(value);
+          if (userInfo == null) {
+            navigation.navigate("Onboarding", { user });
+          } else {
+            navigation.navigate("HomeScreen");
+          }
+        } catch (error) {
+          console.log("Google Login Fail.");
+        }
+      } else {
+        console.log("Google Login Fail.");
+      }
+    });
+  }, []);
+
   const handleLoginGmail = () => {
     // Logic for signing in with Gmail
     promptAsync();
