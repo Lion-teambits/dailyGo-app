@@ -1,6 +1,7 @@
 import { Box, Button, HStack, Heading, Image, Text, VStack } from "native-base";
 import { IMAGE_GROUP_EVENT_LIST } from "../../constants/imagePaths";
 import { useNavigation } from "@react-navigation/native";
+import { PRIMARY_MEDIUM, SECONDARY_MEDIUM } from "../../constants/colorCodes";
 
 const GroupEventCard = () => {
   const navigation = useNavigation();
@@ -25,23 +26,28 @@ const GroupEventCard = () => {
           Join to your friends to beat monsters in personalized event.
         </Text>
         <HStack>
-          <Box justifyContent="center" alignItems="center">
+          <Box width={"60%"} justifyContent="center" alignItems="center">
             <Image
               alt="Group event icon"
               source={IMAGE_GROUP_EVENT_LIST}
               style={{ width: 184, height: 80 }}
             />
           </Box>
-          <Box>
+          <Box width={"40%"}>
             <VStack>
               <Button
                 borderRadius={50}
                 margin={1}
                 onPress={navigateToGroupSearch}
+                backgroundColor={SECONDARY_MEDIUM}
               >
                 Join Event
               </Button>
-              <Button borderRadius={50} margin={1}>
+              <Button
+                borderRadius={50}
+                margin={1}
+                backgroundColor={PRIMARY_MEDIUM}
+              >
                 Create Event
               </Button>
             </VStack>

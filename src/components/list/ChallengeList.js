@@ -10,10 +10,9 @@ const ChallengeList = ({ userData }) => {
   const navigation = useNavigation();
   const [joinedChallengeList, setJoinedChallengeList] = useState([]);
 
-  const navigateToDetail = (challenge) => {
-    const progressId = getProgressIdByChallengeId(challenge._id);
-    if (progressId) {
-      navigation.navigate("Home", { progressId });
+  const navigateToDetail = (challenge, joinedUserProgress) => {
+    if (joinedUserProgress) {
+      navigation.navigate("Home", joinedUserProgress._id);
     } else {
       navigation.navigate("ChallengeDetail", { challenge });
     }
@@ -29,6 +28,7 @@ const ChallengeList = ({ userData }) => {
             return {
               event_challenge_info: progress?.event_challenge_info,
               _id: progress?._id,
+              current_steps: progress?.current_steps,
             };
           })
         );
@@ -38,17 +38,11 @@ const ChallengeList = ({ userData }) => {
     fetchChallengeProgressInfoList();
   }, [userData]);
 
-  const getUserJoinStatus = (challengeId) => {
-    return joinedChallengeList.some(
-      (progress) => progress.event_challenge_info === String(challengeId)
-    );
-  };
-
-  const getProgressIdByChallengeId = (challengeId) => {
+  const getJoinedUserProgress = (challengeId) => {
     const foundProgress = joinedChallengeList.find(
       (progress) => progress.event_challenge_info === String(challengeId)
     );
-    return foundProgress ? foundProgress._id : null;
+    return foundProgress;
   };
 
   return (
@@ -56,9 +50,11 @@ const ChallengeList = ({ userData }) => {
       data={challenges}
       keyExtractor={(challenge) => challenge._id.toString()}
       renderItem={({ item }) => {
-        const userJoin = getUserJoinStatus(item._id);
+        const joinedUserProgress = getJoinedUserProgress(item._id);
         return (
-          <TouchableOpacity onPress={() => navigateToDetail(item)}>
+          <TouchableOpacity
+            onPress={() => navigateToDetail(item, joinedUserProgress)}
+          >
             <Box
               borderRadius={10}
               margin={3}
@@ -66,7 +62,10 @@ const ChallengeList = ({ userData }) => {
               shadow={2}
               overflow="hidden"
             >
-              <ChallengeListItem challenge={item} userJoin={userJoin} />
+              <ChallengeListItem
+                challenge={item}
+                joinedUserProgress={joinedUserProgress}
+              />
             </Box>
           </TouchableOpacity>
         );

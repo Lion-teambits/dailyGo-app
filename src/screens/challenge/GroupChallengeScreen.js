@@ -1,4 +1,4 @@
-import { ScrollView, Text } from "native-base";
+import { ScrollView } from "native-base";
 import GroupChallengeContainer from "../../components/containers/GroupChallengeContainer";
 
 const GroupChallengeScreen = () => {
