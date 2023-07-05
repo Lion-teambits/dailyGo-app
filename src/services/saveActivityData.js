@@ -13,6 +13,7 @@ import {
   retrieveChallengeProgressInfo,
   updateChallengeProgress,
 } from "../api/challengeProgressService";
+import receiveReward from "./receiveReward";
 
 // Fetch activity data & update database
 async function saveActivityData(user_id) {
@@ -48,14 +49,11 @@ async function saveActivityData(user_id) {
     } else {
       // Check to see if user have received the previous day's rewards
       // if they didn't received them, add them to DB
-      if (userInfo.daily_goal_status === "ready") {
-        const rewardObj = await calculateStreakDaysAndReward(user_id);
-        await updateUserInfo(userInfo.uid, {
-          fireflies: userInfo.fireflies + rewardObj.firefliesToday,
-          hearts: userInfo.hearts + rewardObj.heartToday,
-          streak_days: userInfo.streak_days + 1,
-        });
-      } else if (userInfo.daily_goal_status === "ongoing") {
+      // if (userInfo.daily_goal_status === "ready") { // checking data type
+      if (userInfo.daily_goal_status === 2) {
+        await receiveReward(user_id);
+        // } else if (userInfo.daily_goal_status === "ongoing") { // checking data type
+      } else if (userInfo.daily_goal_status === 1) {
         // Previous day, daily challenge was not achieved, update streak/heart, daily_goal_status
         await resetStreakOrUseHeart(user_id, todayRecord);
       }
@@ -145,6 +143,7 @@ const updateEventAndGroupChallengeProgresses = async (
             current_distance:
               challengeProgressData.current_distance + differenceOfDistance,
           };
+          // Math.floor(challengeProgressInfo.data.current_calories * 100) / 100;
 
           await updateChallengeProgress(
             challengeProgress_id,
