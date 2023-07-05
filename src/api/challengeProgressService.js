@@ -36,6 +36,8 @@ export const retrieveChallengeProgressInfo = async (challengeProgress_id) => {
     const challengeInfo = await axios.get(
       `${BASE_URL}/challengeProgress/${challengeProgress_id}`
     );
+    challengeInfo.data.current_distance = challengeInfo.data.current_distance.toFixed(2);
+    challengeInfo.data.current_calories = challengeInfo.data.current_calories.toFixed(2);
     return challengeInfo.data;
   } catch (error) {
     throw error;
