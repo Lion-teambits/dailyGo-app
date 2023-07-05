@@ -9,7 +9,6 @@ const receiveReward = async (user_id) => {
     hearts: userInfo.hearts + rewardObj.heartToday,
     streak_days: userInfo.streak_days + 1,
     daily_goal_status: 3
-    // daily_goal_status: "competed" // check data type
   });
   console.log("Reward received into user collection");
 };

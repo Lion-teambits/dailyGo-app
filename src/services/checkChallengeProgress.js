@@ -44,7 +44,6 @@ export const checkDailyChallengeProgress = async (user_id) => {
   returnObj.remainingTime = remainingTime;
 
   // check challenge status
-  // if (userInfo.daily_goal_status === "completed") { // checking data type
   if (userInfo.daily_goal_status === 3) {
     // Set monster info
     const dailyMoster = getDailyMonsterInfo(true);
@@ -55,7 +54,6 @@ export const checkDailyChallengeProgress = async (user_id) => {
     returnObj.getReward = true;
 
     return returnObj;
-    // } else if (userInfo.daily_goal_status === "ready") { // checking data type
   } else if (userInfo.daily_goal_status === 2) {
     // Set monster info
     const dailyMoster = getDailyMonsterInfo(true);
@@ -71,7 +69,6 @@ export const checkDailyChallengeProgress = async (user_id) => {
     let challengeStatus = dailyRecord.steps > userInfo.preferred_daily_mode;
     if (challengeStatus) {
       const updatedUserInfo = await updateUserInfo(user_id, {
-        // daily_goal_status: "ready", // checking data type
         daily_goal_status: 2,
       });
       const updatedDailyRecord = await updateDailyRecord(dailyRecord._id, {
@@ -254,7 +251,6 @@ export const resetStreakOrUseHeart = async (user_id, todayRecord) => {
     ...userInfo,
     streak_days: totalStreakDays,
     hearts: totalHearts,
-    // daily_goal_status: "ongoing", // checking data type
     daily_goal_status: 1,
   };
 

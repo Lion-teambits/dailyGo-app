@@ -49,10 +49,8 @@ async function saveActivityData(user_id) {
     } else {
       // Check to see if user have received the previous day's rewards
       // if they didn't received them, add them to DB
-      // if (userInfo.daily_goal_status === "ready") { // checking data type
       if (userInfo.daily_goal_status === 2) {
         await receiveReward(user_id);
-        // } else if (userInfo.daily_goal_status === "ongoing") { // checking data type
       } else if (userInfo.daily_goal_status === 1) {
         // Previous day, daily challenge was not achieved, update streak/heart, daily_goal_status
         await resetStreakOrUseHeart(user_id, todayRecord);
