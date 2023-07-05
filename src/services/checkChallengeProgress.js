@@ -9,50 +9,92 @@ import {
 import { retrieveGroupChallengeInfo } from "../api/groupChallengeService";
 import { retrieveUserInfo, updateUserInfo } from "../api/userService";
 import { challenges } from "../data/challengeData";
-import { calculateTimeLeft } from "./calculateLeftTime";
+import { calculateRemainingTime } from "./calculateRemainingTime";
+import { getDailyMonsterInfo } from "./getDailyMonsterInfo";
 
 export const checkDailyChallengeProgress = async (user_id) => {
+  let returnObj = {
+    type: "daily",
+    remainingTime: "",
+    monsterName: "",
+    monsterImg: null,
+    targetSteps: 0,
+    currentDistance: 0,
+    currentSteps: 0,
+    currentCalories: 0,
+    finishChallenge: false,
+    reward: null,
+    getReward: false,
+    _id: 0,
+  };
+
   const userInfo = await retrieveUserInfo(user_id);
+  returnObj.targetSteps = userInfo.preferred_daily_mode;
+
   const dailyRecord = await retrieveDailyRecord(userInfo.today_record);
+  // Update currentProgress
+  returnObj.currentDistance = dailyRecord.distance;
+  returnObj.currentSteps = dailyRecord.steps;
+  returnObj.currentCalories = dailyRecord.calories;
 
   // Calculate time left
   const endTime = new Date();
   endTime.setHours(23, 59, 0, 0);
-  const timeLeft = calculateTimeLeft(endTime);
+  const remainingTime = calculateRemainingTime(endTime);
+  returnObj.remainingTime = remainingTime;
 
   // check challenge status
-  // if (userInfo.daily_goal_status === "ongoing") {
+  // if (userInfo.daily_goal_status === "completed") { // checking data type
   if (userInfo.daily_goal_status === 3) {
-    return { activityData: dailyRecord, reward: null, timeLeft: timeLeft };
-  } else if (userInfo.daily_goal_status === 2) {
-    const rewardObj = await calculateStreakDaysAndReward(user_id);
+    // Set monster info
+    const dailyMoster = getDailyMonsterInfo(true);
+    returnObj.monsterName = dailyMoster.monsterName;
+    returnObj.monsterImg = dailyMoster.monsterImage;
 
-    return {
-      activityData: dailyRecord,
-      reward: rewardObj,
-      timeLeft: timeLeft,
-    };
+    returnObj.finishChallenge = true;
+    returnObj.getReward = true;
+
+    return returnObj;
+    // } else if (userInfo.daily_goal_status === "ready") { // checking data type
+  } else if (userInfo.daily_goal_status === 2) {
+    // Set monster info
+    const dailyMoster = getDailyMonsterInfo(true);
+    returnObj.monsterName = dailyMoster.monsterName;
+    returnObj.monsterImg = dailyMoster.monsterImage;
+    // Calculate reward
+    const rewardObj = await calculateStreakDaysAndReward(user_id);
+    returnObj.reward = rewardObj;
+
+    returnObj.finishChallenge = true;
+    return returnObj;
   } else {
     let challengeStatus = dailyRecord.steps > userInfo.preferred_daily_mode;
     if (challengeStatus) {
-      const rewardObj = await calculateStreakDaysAndReward(user_id);
       const updatedUserInfo = await updateUserInfo(user_id, {
+        // daily_goal_status: "ready", // checking data type
         daily_goal_status: 2,
       });
       const updatedDailyRecord = await updateDailyRecord(dailyRecord._id, {
         streak_status: "continue",
       });
-      return {
-        activityData: updatedDailyRecord,
-        reward: rewardObj,
-        timeLeft: timeLeft,
-      };
+
+      // Set monster info
+      const dailyMoster = getDailyMonsterInfo(true);
+      returnObj.monsterName = dailyMoster.monsterName;
+      returnObj.monsterImg = dailyMoster.monsterImage;
+      // Calculate reward
+      const rewardObj = await calculateStreakDaysAndReward(user_id);
+      returnObj.reward = rewardObj;
+      returnObj.finishChallenge = true;
+
+      return returnObj;
     }
-    return {
-      activityData: dailyRecord,
-      reward: null,
-      timeLeft: timeLeft,
-    };
+
+    // Set monster info
+    const dailyMoster = getDailyMonsterInfo(false);
+    returnObj.monsterName = dailyMoster.monsterName;
+    returnObj.monsterImg = dailyMoster.monsterImage;
+    return returnObj;
   }
 };
 
@@ -72,6 +114,22 @@ export const checkEventChallengeProgress = async (user_id) => {
   // Compare target_steps and current_steps, and add challenge info to each challengeObj
   const updatedProgressArray = await Promise.all(
     filteredEventChallengeProgress.map(async (challengeProgress) => {
+      let returnObj = {
+        type: "event",
+        remainingTime: "",
+        monsterName: "",
+        monsterImg: null,
+        targetSteps: 0,
+        currentDistance: 0,
+        currentSteps: 0,
+        currentCalories: 0,
+        finishChallenge: false,
+        reward: null,
+        getReward: "",
+        badgeInfo: null,
+        _id: 0,
+      };
+
       const challengeInfo = challenges.find(
         (challenge) => challenge._id == challengeProgress.event_challenge_info
       );
@@ -81,7 +139,23 @@ export const checkEventChallengeProgress = async (user_id) => {
           finish_challenge: true,
         });
       }
-      return { ...challengeProgress, challengeInfo: challengeInfo };
+
+      // Update returnObj
+      returnObj.remainingTime = calculateRemainingTime(
+        challengeInfo.expired_date
+      );
+      returnObj.monsterName = challengeInfo.monster_name;
+      returnObj.monsterImg = challengeInfo.monster_image;
+      returnObj.targetSteps = challengeInfo.target_steps;
+      returnObj.currentDistance = challengeProgress.current_distance;
+      returnObj.currentSteps = challengeProgress.current_steps;
+      returnObj.currentCalories = challengeProgress.current_calories;
+      returnObj.finishChallenge = challengeProgress.finish_challenge;
+      returnObj.reward = challengeInfo.badge_info;
+      returnObj.getReward = challengeProgress.get_reward;
+      returnObj.badgeInfo = challengeInfo.badge_info;
+      returnObj._id = challengeInfo._id;
+      return returnObj;
     })
   );
 
@@ -104,6 +178,24 @@ export const checkGroupChallengeProgress = async (user_id) => {
   // Compare target_steps and current_steps, and add challenge info to each challengeObj
   Promise.all(
     filteredEventChallengeProgress.map(async (challengeProgress) => {
+      let returnObj = {
+        type: "group",
+        remainingTime: "",
+        monsterName: "",
+        monsterImg: null,
+        targetSteps: 0,
+        currentDistance: 0,
+        currentSteps: 0,
+        currentCalories: 0,
+        finishChallenge: false,
+        reward: null,
+        getReward: "",
+        badgeInfo: null,
+        _id: 0,
+        friendsInfo: [],
+        challengeCode: null,
+      };
+
       const groupChallengeInfo = await retrieveGroupChallengeInfo(
         challengeProgress.group_challenge_info
       );
@@ -116,6 +208,23 @@ export const checkGroupChallengeProgress = async (user_id) => {
           finish_challenge: true,
         });
       }
+
+      returnObj.remainingTime = calculateRemainingTime(
+        challengeProgress.expired_date
+      );
+      returnObj.monsterName = challengeProgress.monster_name;
+      returnObj.monsterImg = challengeProgress.monster_image;
+      returnObj.targetSteps = groupChallengeInfo.target_steps;
+      returnObj.currentDistance = challengeProgress.current_distance;
+      returnObj.currentSteps = groupChallengeInfo.group_current_steps;
+      returnObj.currentCalories = challengeProgress.current_calories;
+      returnObj.finishChallenge = challengeProgress.finish_challenge;
+      returnObj.reward = challengeProgress.badge_info;
+      returnObj.getReward = challengeProgress.get_reward;
+      returnObj.badgeInfo = challengeProgress.badge_info;
+      returnObj._id = groupChallengeInfo._id;
+      returnObj.friendsInfo = groupChallengeInfo.member_list;
+
       return { ...challengeProgress, challengeInfo: groupChallengeInfo };
     })
   ).then((updatedProgressArray) => {
@@ -145,8 +254,8 @@ export const resetStreakOrUseHeart = async (user_id, todayRecord) => {
     ...userInfo,
     streak_days: totalStreakDays,
     hearts: totalHearts,
+    // daily_goal_status: "ongoing", // checking data type
     daily_goal_status: 1,
-    // daily_goal_status: "ongoing", // need to check with Jay
   };
 
   try {

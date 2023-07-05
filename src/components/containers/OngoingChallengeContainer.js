@@ -1,26 +1,32 @@
 import { View, ScrollView, Dimensions, Text } from "react-native";
 import OngoingChallengeCard from "../list/OngoingChallengeCard";
+import { useRef } from "react";
 
 const OngoingChallengeContainer = ({ ongoingChallenges }) => {
   const windowWidth = Dimensions.get("window").width;
-  //   console.log("Container: ", challengeArr);
+  const scrollViewRef = useRef(null);
+  let pageCount = ongoingChallenges.length;
+  
   return (
     <View style={{ flex: 1 }}>
       <ScrollView
+        ref={scrollViewRef}
         horizontal
         pagingEnabled
+        showsHorizontalScrollIndicator={false}
       >
-        <OngoingChallengeCard
-          type="daily"
-          ongoingChallenge={ongoingChallenges[0].daily}
-          width={windowWidth}
-        />
-        <View style={{width: windowWidth}}>
-          <Text>Event</Text>
-        </View>
-        <View style={{width: windowWidth}}>
-          <Text>Team</Text>
-        </View>
+        {ongoingChallenges.map((challenge, index) => (
+          <View
+            style={{ width: windowWidth }}
+            key={index}
+          >
+            <OngoingChallengeCard
+              challenge={challenge}
+              totalPageCount={pageCount}
+              currentPage={index + 1}
+            />
+          </View>
+        ))}
       </ScrollView>
     </View>
   );
