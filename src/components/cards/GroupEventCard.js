@@ -10,6 +10,10 @@ const GroupEventCard = () => {
     navigation.navigate("GroupChallenge");
   };
 
+  const navigateToCreateGroupChallenge = () => {
+    navigation.navigate("CreateGroupChallenge");
+  };
+
   return (
     <Box
       paddingY={2}
@@ -21,7 +25,7 @@ const GroupEventCard = () => {
       overflow="hidden"
     >
       <VStack>
-        <Heading size={"sm"}>Group event</Heading>
+        <Heading size={"sm"}>Team event</Heading>
         <Text>
           Join to your friends to beat monsters in personalized event.
         </Text>
@@ -46,6 +50,7 @@ const GroupEventCard = () => {
               <Button
                 borderRadius={50}
                 margin={1}
+                onPress={navigateToCreateGroupChallenge}
                 backgroundColor={PRIMARY_MEDIUM}
               >
                 Create Event

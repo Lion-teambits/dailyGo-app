@@ -12,7 +12,7 @@ const ChallengeListItem = ({ challenge, joinedUserProgress }) => {
   const targetSteps = challenge.target_steps;
   const currentSteps = joinedUserProgress?.current_steps;
   const progressRatio = currentSteps / targetSteps;
-  const progressBarWidth = `${progressRatio * 100}%`;
+  const progressBarWidth = `${Math.max(progressRatio * 100, 5)}%`;
 
   return (
     <Box paddingY={2} paddingX={4}>

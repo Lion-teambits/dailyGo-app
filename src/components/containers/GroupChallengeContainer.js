@@ -7,6 +7,7 @@ import ChallengeDetailContainer from "./ChallengeDetailContainer";
 
 const GroupChallengeContainer = () => {
   const [groupInfo, setGroupInfo] = useState("");
+
   const handleGroupChallengeSearch = async (value) => {
     if (value === "") {
       setGroupInfo("");

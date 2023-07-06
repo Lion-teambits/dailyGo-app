@@ -1,3 +1,10 @@
+import {
+  IMAGE_MONSTER_FROGGY,
+  IMAGE_MONSTER_MARATHON,
+  IMAGE_MONSTER_PINATA,
+  IMAGE_MONSTER_TAKOYAKI,
+} from "../constants/imagePaths";
+
 export const challenges = [
   {
     _id: 1,
@@ -33,4 +40,27 @@ export const challenges = [
     badge_info: "",
   },
   // Add more challenges...
+];
+
+export const groupChallengeMosters = [
+  {
+    title: "Froggy",
+    source: IMAGE_MONSTER_FROGGY,
+    steps: 5000,
+  },
+  {
+    title: "Takoyaki",
+    source: IMAGE_MONSTER_TAKOYAKI,
+    steps: 15000,
+  },
+  {
+    title: "Piñata",
+    source: IMAGE_MONSTER_PINATA,
+    steps: 25000,
+  },
+  {
+    title: "Marathon",
+    source: IMAGE_MONSTER_MARATHON,
+    steps: 35000,
+  },
 ];
