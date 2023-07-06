@@ -2,29 +2,17 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { createUserInfo } from "../../api/userService";
-import { useNavigation } from "@react-navigation/native";
 
 const name = "Mufasa";
 const photo =
   "https://cdn.pixabay.com/photo/2021/05/15/10/59/lion-6255523_1280.jpg";
 
-const PreferencesScreen = ({ route }) => {
-  const navigation = useNavigation();
-  console.log("route.params:", route.params);
+const PreferencesScreen = ({ navigation }) => {
   const handleAnswer = async (steps) => {
     try {
       const uid = await AsyncStorage.getItem("@uid");
       if (!(uid === null)) {
-        if (route.params) {
-          await createUserInfo(
-            route.params.displayName,
-            route.params.photoURL,
-            steps,
-            uid
-          );
-        } else {
-          await createUserInfo(name, photo, steps, uid);
-        }
+        await createUserInfo(name, photo, steps, uid);
       }
       navigation.navigate("HomeScreen");
     } catch (error) {
