@@ -11,6 +11,7 @@ export const createChallengeProgress = async (challenge, isGroupChallenge) => {
       expired_date: challenge.expired_date,
       monster_name: challenge.monster_name,
       monster_image: challenge.monster_image,
+      current_steps: 0,
       badge_info: challenge.badge_info,
     };
 

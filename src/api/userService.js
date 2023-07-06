@@ -11,7 +11,6 @@ export const createUserInfo = async (name, photo, targetSteps, uid) => {
       preferred_daily_mode: targetSteps,
       uid: uid,
     };
-
     const userData = await axios.post(`${BASE_URL}/user`, userInitData);
     return userData.data;
   } catch (error) {

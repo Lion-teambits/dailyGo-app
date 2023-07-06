@@ -15,18 +15,18 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 const CreateChallengeForm = ({ createGroupEvent, goBackToChallenges }) => {
   const [title, setTitle] = useState("");
-  const [imageSource, setImageSource] = useState("");
+  const [selectImgInfo, setSelectImgInfo] = useState("");
 
   const handleTitleChange = (value) => {
     setTitle(value);
   };
 
   const handleImageSelect = (value) => {
-    setImageSource(value);
+    setSelectImgInfo(value);
   };
 
   const handleCreateGroupEvent = () => {
-    createGroupEvent(title, imageSource);
+    createGroupEvent(title, selectImgInfo);
   };
 
   return (
@@ -41,25 +41,31 @@ const CreateChallengeForm = ({ createGroupEvent, goBackToChallenges }) => {
       <Box marginY={2}>
         <Text>Monster Challenge</Text>
         <HStack space={1} justifyContent="space-around">
-          {groupChallengeMosters.map((image, index) => (
+          {groupChallengeMosters.map((imageData, index) => (
             <TouchableOpacity
               key={index}
-              onPress={() => handleImageSelect(image.source)}
+              onPress={() => handleImageSelect(imageData)}
             >
               <Center>
                 <Box
                   padding={1}
                   backgroundColor={"blue.100"}
-                  borderColor={imageSource === image.source ? "red" : undefined}
-                  borderWidth={imageSource === image.source ? 2 : 0}
+                  borderColor={
+                    selectImgInfo.source === imageData.source
+                      ? "red"
+                      : undefined
+                  }
+                  borderWidth={
+                    selectImgInfo.source === imageData.source ? 2 : 0
+                  }
                 >
                   <Image
-                    alt={image.title}
-                    source={image.source}
+                    alt={imageData.title}
+                    source={imageData.source}
                     style={{ width: 72, height: 70 }}
                   />
                 </Box>
-                <Text>{image.steps} steps</Text>
+                <Text>{imageData.steps} steps</Text>
               </Center>
             </TouchableOpacity>
           ))}
