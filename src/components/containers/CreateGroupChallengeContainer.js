@@ -1,17 +1,30 @@
 import { useNavigation } from "@react-navigation/native";
-import { Box, Text, VStack } from "native-base";
+import {
+  Box,
+  Button,
+  Center,
+  HStack,
+  Text,
+  VStack,
+  useClipboard,
+} from "native-base";
 import { useState } from "react";
 import CreateChallengeForm from "../forms/CreateChallengeForm";
 import { createGroupChallenge } from "../../api/groupChallengeService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import GroupChallengeListItem from "../listitems/GroupChallengeListItem";
+import { SECONDARY_MEDIUM } from "../../constants/colorCodes";
+import { Share } from "react-native";
+import { retrieveUserInfo, updateUserInfo } from "../../api/userService";
+import { createChallengeProgress } from "../../api/challengeProgressService";
 
 const CreateGroupChallengeContainer = () => {
   const navigation = useNavigation();
   const [groupInfo, setGroupInfo] = useState("");
+  const { value, onCopy } = useClipboard();
+  const isGroupChallenge = true;
 
   const createGroupEvent = async (title, selectImgInfo) => {
-    console.log("title:" + title + " | selectImgInfo: " + selectImgInfo.title);
     if (title === "" || selectImgInfo === "") {
       setGroupInfo("");
       alert("Input title or select monster!");
@@ -19,15 +32,24 @@ const CreateGroupChallengeContainer = () => {
     }
 
     try {
+      const uid = await AsyncStorage.getItem("@uid");
+      const userData = await retrieveUserInfo(uid);
+
       // 1. Make team challenge event
-      const uId = await AsyncStorage.getItem("@uid");
-      const groupChallengeInfo = await createGroupChallenge(
-        title,
-        selectImgInfo,
-        uId
+      const challenge = await createGroupChallenge(title, selectImgInfo, uid);
+      setGroupInfo(challenge);
+
+      // 2. Make team challenge progress event
+      const groupChallengeProgress = await createChallengeProgress(
+        challenge,
+        isGroupChallenge
       );
-      setGroupInfo(groupChallengeInfo);
-      // 2. Add  team challenge event id to the user documnet.
+
+      // 3. Add team challenge event id to the user documnet.
+      userData.group_challenge_progress.push(groupChallengeProgress._id);
+      await updateUserInfo(uid, {
+        group_challenge_progress: userData.group_challenge_progress,
+      });
     } catch (error) {
       console.log("[dev]Error: ", error);
       setGroupInfo("");
@@ -39,14 +61,56 @@ const CreateGroupChallengeContainer = () => {
     navigation.goBack();
   };
 
+  const shareCode = async () => {
+    try {
+      await Share.share({
+        message: `${groupInfo._id}`,
+      });
+    } catch (error) {
+      console.log("Error sharing code:", error);
+    }
+  };
+
   return (
     <VStack marginX={4}>
       {groupInfo ? (
-        <VStack>
-          <Text>Event Created</Text>
-          <Text>: {groupInfo.member_list}</Text>
-          <GroupChallengeListItem challenge={groupInfo} />
-        </VStack>
+        <Box>
+          <Box
+            borderRadius={10}
+            margin={3}
+            bg="white"
+            shadow={2}
+            overflow="hidden"
+          >
+            <GroupChallengeListItem challenge={groupInfo} />
+          </Box>
+          <Center>
+            <HStack>
+              <Text>Code: {groupInfo._id}</Text>
+              <Button bordered onPress={() => onCopy(groupInfo._id)}>
+                Copy
+              </Button>
+            </HStack>
+            <Button
+              margin={1}
+              width={"100%"}
+              borderRadius={50}
+              onPress={shareCode}
+              backgroundColor={SECONDARY_MEDIUM}
+            >
+              Share Invitation Code
+            </Button>
+            <Button
+              margin={1}
+              width={"100%"}
+              borderRadius={50}
+              onPress={goBackToChallenges}
+              variant="unstyled"
+            >
+              Go back to Challenges
+            </Button>
+          </Center>
+        </Box>
       ) : (
         <CreateChallengeForm
           createGroupEvent={createGroupEvent}

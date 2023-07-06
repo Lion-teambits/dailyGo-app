@@ -22,7 +22,6 @@ const GroupChallengeList = ({ userData }) => {
     const fetchGroupChallengeProgressList = async () => {
       if (userData !== "") {
         const groupChallengeIds = userData?.group_challenge_progress || [];
-        console.log("groupChallengeIds: ", groupChallengeIds);
         const groupChallengeList = await Promise.all(
           groupChallengeIds.map(async (progressId) => {
             const groupChallengeProgress = await retrieveChallengeProgressInfo(
