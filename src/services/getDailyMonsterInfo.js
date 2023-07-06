@@ -7,10 +7,8 @@ export const getDailyMonsterInfo = (finishChallenge) => {
     monsterStatus = "happy";
   }
 
-  switch (lastDigit) {
-    case 1:
-    case 4:
-    case 7:
+  switch (lastDigit%3) {
+    case 0:
       if (finishChallenge) {
         return {
           monsterName: "Lag",
@@ -21,9 +19,7 @@ export const getDailyMonsterInfo = (finishChallenge) => {
         monsterName: "Lag",
         monsterImage: require("../../assets/images/dailyMonsters/Lag-sad.png"),
       };
-    case 2:
-    case 5:
-    case 8:
+    case 1:
       if (finishChallenge) {
         return {
           monsterName: "Lava",
@@ -35,10 +31,7 @@ export const getDailyMonsterInfo = (finishChallenge) => {
         monsterImage: require("../../assets/images/dailyMonsters/Lava-sad.png"),
       };
 
-    case 3:
-    case 6:
-    case 9:
-    case 0:
+    case 2:
       if (finishChallenge) {
         return {
           monsterName: "Lazzzy",
