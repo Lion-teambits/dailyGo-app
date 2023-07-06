@@ -1,4 +1,4 @@
-export const calculateTimeLeft = (target_time) => {
+export const calculateRemainingTime = (target_time) => {
   const currentTime = new Date().toISOString();
   const targetTime = new Date(target_time);
 

@@ -1,43 +1,69 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, SafeAreaView } from "react-native";
+import { useEffect, useState } from "react";
+import { View, Text } from "react-native";
 import saveActivityData from "../../services/saveActivityData";
 import { TEST_UID } from "../../api/constants";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { retrieveUserInfo } from "../../api/userService";
 import OngoingChallengeContainer from "../../components/containers/OngoingChallengeContainer";
-import { checkDailyChallengeProgress } from "../../services/checkChallengeProgress";
+import {
+  checkDailyChallengeProgress,
+  checkEventChallengeProgress,
+  checkGroupChallengeProgress,
+} from "../../services/checkChallengeProgress";
+import { ScrollView } from "native-base";
+import UserContext from "../../state/context";
 
+// Done
 // Get activity data & update DB & store updated userInfo & challengeInfo
-
 // Check challenge achievement & update DB
 
+// Todo
 // setTimer to get data in foregraound
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [userInfo, setUserInfo] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [ongoingChallenges, setOngoingChallenges] = useState([]);
 
   useEffect(() => {
     async function initActivityDataInDB(user_id) {
+      setOngoingChallenges([]);
+      // user real uid
+      // const user_id = await AsyncStorage.getItem("@uid");
+
+      // Save activity data to Database
       await saveActivityData(user_id);
+
+      // Check daily, event, group challenge progress
       const dailyChallengeStatus = await checkDailyChallengeProgress(user_id);
+      const eventChallengeObj = await checkEventChallengeProgress(user_id);
+      const groupChallengeObj = await checkGroupChallengeProgress(user_id);
+      const newOngoingChallenges = [];
+
+      newOngoingChallenges.push(dailyChallengeStatus);
+      if (eventChallengeObj) {
+        newOngoingChallenges.push(...eventChallengeObj);
+      }
+      if (groupChallengeObj) {
+        newOngoingChallenges.push(...groupChallengeObj);
+      }
+
       setOngoingChallenges((prevChallenges) => [
         ...prevChallenges,
-        { daily: dailyChallengeStatus },
+        ...newOngoingChallenges,
       ]);
 
-      // [TODO: Check Event and Coop challenge progress]
-      // const EventAndCoopChallengeStatus = await function(user_id);
-      
       const responseUserInfo = await retrieveUserInfo(user_id);
       setUserInfo(responseUserInfo);
+
       setIsLoading(false);
     }
 
-    // Please uncomment to test database sync
-    // Need to get all data what I need it here (challenge data, modal trigger)
-    initActivityDataInDB(TEST_UID);
+    // Rerendering when Home screen focused
+    const unsubscribe = navigation.addListener("focus", () => {
+      initActivityDataInDB(TEST_UID);
+    });
+
+    return unsubscribe;
   }, []);
 
   if (isLoading) {
@@ -49,14 +75,16 @@ const HomeScreen = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View>
-        <Text>streak_days: {userInfo.streak_days}</Text>
-        <Text>hearts: {userInfo.hearts}</Text>
-        <Text>fireflies: {userInfo.fireflies}</Text>
-      </View>
-      <OngoingChallengeContainer ongoingChallenges={ongoingChallenges} />
-    </SafeAreaView>
+    <ScrollView style={{ flex: 1 }}>
+      <UserContext.Provider value={{ userInfo, setUserInfo }}>
+        <View>
+          <Text>streak_days: {userInfo.streak_days}</Text>
+          <Text>hearts: {userInfo.hearts}</Text>
+          <Text>fireflies: {userInfo.fireflies}</Text>
+        </View>
+        <OngoingChallengeContainer ongoingChallenges={ongoingChallenges} />
+      </UserContext.Provider>
+    </ScrollView>
   );
 };
 

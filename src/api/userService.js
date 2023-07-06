@@ -29,28 +29,16 @@ export const retrieveUserInfo = async (user_id) => {
 };
 
 // Update user info
-export const updateUserInfo = async (user_id, updatedFields) => {
+export const updateUserInfo = async (user_id, updatedUserInfo) => {
   try {
     const updatedUserInfoRes = await axios.put(
       `${BASE_URL}/user/${user_id}`,
-      updatedFields
+      updatedUserInfo
     );
 
     return updatedUserInfoRes.data;
   } catch (error) {
     console.log("Error in updateUserInfo");
-    throw error;
-  }
-};
-
-// Update daily challenge status
-export const updateDailyChallengeStatus = async (user_id, challengeStatus) => {
-  try {
-    const userInfo = await axios.put(`${BASE_URL}/user/${user_id}`, {
-      finish_daily_goal: challengeStatus,
-    });
-    return userInfo.data;
-  } catch (error) {
     throw error;
   }
 };

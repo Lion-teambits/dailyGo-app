@@ -30,60 +30,79 @@ export const createChallengeProgress = async (challenge, isGroupChallenge) => {
   }
 };
 
-// Retrieve single challenge information
-export const retrieveChallengeInfo = async (challenge_id) => {
+// Retrieve single challenge progress
+export const retrieveChallengeProgressInfo = async (challengeProgress_id) => {
   try {
-    const challengeInfo = await axios.get(
-      `${BASE_URL}/challengeProgress/${challenge_id}`
+    const challengeProgressInfo = await axios.get(
+      `${BASE_URL}/challengeProgress/${challengeProgress_id}`
     );
-    return challengeInfo.data;
+    if (isInvalidNumber(challengeProgressInfo.data.current_distance)) {
+      challengeProgressInfo.data.current_distance =
+        Math.floor(challengeProgressInfo.data.current_distance * 100) / 100;
+    }
+
+    if (isInvalidNumber(challengeProgressInfo.data.current_calories)) {
+      challengeProgressInfo.data.current_calories =
+        Math.floor(challengeProgressInfo.data.current_calories * 100) / 100;
+    }
+    return challengeProgressInfo.data;
   } catch (error) {
+    console.log("Error in retrieveChallengeProgressInfo");
     throw error;
   }
 };
 
-// Retrieve all challenge information for a specific user
-export const retrieveChallengeProgresses = async (user_id) => {
-  const userInfo = await retrieveUserInfo(user_id);
-
-  const eventChallengeIds = userInfo.event_challenge_progress;
-  const groupChallengeIds = userInfo.group_challenge_progress;
-
-  const eventChallengeArray = [];
-  const groupChallengeArray = [];
-
-  // Retrieve Event Challenge object
-  for (const challenge_id of eventChallengeIds) {
-    const challenge = await retrieveChallengeInfo(challenge_id);
-    if (challenge) {
-      eventChallengeArray.push(challenge);
-    }
-  }
-
-  // Retrieve Group Challenge object
-  for (const challenge_id of groupChallengeIds) {
-    const challenge = await retrieveChallengeInfo(challenge_id);
-    if (challenge) {
-      groupChallengeArray.push(challenge);
-    }
-  }
-
-  return {
-    eventChallenges: eventChallengeArray,
-    coopChallenges: groupChallengeArray,
-  };
+// Helper function: Check if a number has an incorrect decimal point
+const isInvalidNumber = (number) => {
+  const decimalPlaces = getDecimalPlaces(number);
+  return decimalPlaces > 2;
 };
 
-// Update challenge
-export const updateChallenge = async (challenge_id, newChallengeData) => {
+// Helper function: Get the number of decimal places
+const getDecimalPlaces = (number) => {
+  const decimalPart = String(number).split(".")[1];
+  return decimalPart ? decimalPart.length : 0;
+};
+
+// Retrieve all challenge information for a specific user
+export const retrieveChallengeProgresses = async (user_id, eventType) => {
+  const userInfo = await retrieveUserInfo(user_id);
+
+  let challengeProgressIds = [];
+  let challengeProgressArray = [];
+
+  if (eventType === "event") {
+    challengeProgressIds = userInfo.event_challenge_progress;
+  } else {
+    challengeProgressIds = userInfo.group_challenge_progress;
+  }
+
+  // Retrieve Challenge Progress object
+  for (const challengeProgress_id of challengeProgressIds) {
+    const challengeProgress = await retrieveChallengeProgressInfo(
+      challengeProgress_id
+    );
+    if (challengeProgress) {
+      challengeProgressArray.push(challengeProgress);
+    }
+  }
+
+  return challengeProgressArray;
+};
+
+// Update challenge progress
+export const updateChallengeProgress = async (
+  challengeProgress_id,
+  newChallengeProgressData
+) => {
   try {
     const challenge = await axios.put(
-      `${BASE_URL}/challenge/${challenge_id}`,
-      newChallengeData
+      `${BASE_URL}/challengeProgress/${challengeProgress_id}`,
+      newChallengeProgressData
     );
     return challenge.data;
   } catch (error) {
-    console.log("Error in updateChallenge");
+    console.log("Error in updateChallengeProgress");
     throw error;
   }
 };
