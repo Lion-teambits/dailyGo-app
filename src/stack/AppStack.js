@@ -11,6 +11,7 @@ import ChallengeDetailScreen from "../screens/challenge/ChallengeDetailScreen";
 import BadgeList from "../components/list/BadgeList";
 import BadgeItem from "../components/listitems/BadgeItem";
 import GroupChallengeScreen from "../screens/challenge/GroupChallengeScreen";
+import CreateGroupChallengeScreen from "../screens/challenge/CreateGroupChallengeScreen";
 
 const Stack = createStackNavigator();
 
@@ -35,6 +36,10 @@ const AppStack = () => {
         <Stack.Screen
           name="ChallengeDetail"
           component={ChallengeDetailScreen}
+        />
+        <Stack.Screen
+          name="CreateGroupChallenge"
+          component={CreateGroupChallengeScreen}
         />
         <Stack.Screen name="GroupChallenge" component={GroupChallengeScreen} />
         <Stack.Screen name="Badges" component={BadgeList} />

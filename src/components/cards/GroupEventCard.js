@@ -10,6 +10,10 @@ const GroupEventCard = () => {
     navigation.navigate("GroupChallenge");
   };
 
+  const navigateToCreateGroupChallenge = () => {
+    navigation.navigate("CreateGroupChallenge");
+  };
+
   return (
     <Box
       paddingY={2}
@@ -46,6 +50,7 @@ const GroupEventCard = () => {
               <Button
                 borderRadius={50}
                 margin={1}
+                onPress={navigateToCreateGroupChallenge}
                 backgroundColor={PRIMARY_MEDIUM}
               >
                 Create Event
