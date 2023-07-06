@@ -73,6 +73,10 @@ const HomeScreen = ({ navigation }) => {
     return unsubscribe;
   }, []);
 
+  // const updateUserInfo = (newUserInfo) => {
+  //   setUserInfo(newUserInfo);
+  // };
+
   if (isLoading) {
     return (
       <View>
