@@ -25,7 +25,7 @@ const GroupEventCard = () => {
       overflow="hidden"
     >
       <VStack>
-        <Heading size={"sm"}>Group event</Heading>
+        <Heading size={"sm"}>Team event</Heading>
         <Text>
           Join to your friends to beat monsters in personalized event.
         </Text>
