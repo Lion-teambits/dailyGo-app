@@ -4,7 +4,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Box, FlatList, View } from "native-base";
 import GroupChallengeListItem from "../listitems/GroupChallengeListItem";
 import { retrieveGroupChallengeInfo } from "../../api/groupChallengeService";
-import { retrieveChallengeInfo } from "../../api/challengeProgressService";
+import { retrieveChallengeProgressInfo } from "../../api/challengeProgressService";
 
 const GroupChallengeList = ({ userData }) => {
   const navigation = useNavigation();
@@ -25,7 +25,7 @@ const GroupChallengeList = ({ userData }) => {
         console.log("groupChallengeIds: ", groupChallengeIds);
         const groupChallengeList = await Promise.all(
           groupChallengeIds.map(async (progressId) => {
-            const groupChallengeProgress = await retrieveChallengeInfo(
+            const groupChallengeProgress = await retrieveChallengeProgressInfo(
               progressId
             );
             return await retrieveGroupChallengeInfo(
