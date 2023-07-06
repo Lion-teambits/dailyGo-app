@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Text } from "react-native";
 import saveActivityData from "../../services/saveActivityData";
 import { TEST_UID } from "../../api/constants";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { retrieveUserInfo } from "../../api/userService";
 import OngoingChallengeContainer from "../../components/containers/OngoingChallengeContainer";
 import {
@@ -53,29 +52,19 @@ const HomeScreen = ({ navigation }) => {
         ...newOngoingChallenges,
       ]);
 
-      // Store synced user info in local storage
       const responseUserInfo = await retrieveUserInfo(user_id);
-      const jsonValue = JSON.stringify(responseUserInfo);
-      await AsyncStorage.setItem("@userInfo", jsonValue);
-
       setUserInfo(responseUserInfo);
 
       setIsLoading(false);
     }
 
-    // Please uncomment to test database sync
-    // Need to get all data what I need it here (challenge data, modal trigger)
+    // Rerendering when Home screen focused
     const unsubscribe = navigation.addListener("focus", () => {
-      // The screen is focused
       initActivityDataInDB(TEST_UID);
     });
 
     return unsubscribe;
   }, []);
-
-  // const updateUserInfo = (newUserInfo) => {
-  //   setUserInfo(newUserInfo);
-  // };
 
   if (isLoading) {
     return (
