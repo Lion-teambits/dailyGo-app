@@ -10,14 +10,16 @@ import {
   Text,
   View,
 } from "native-base";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import RewardModal from "../modals/RewardModal";
 import ConfirmationModal from "../modals/ConfirmationModal";
 import receiveReward from "../../services/receiveReward";
 import { TEST_UID } from "../../api/constants";
+import UserContext from "../../state/context";
 
 const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
+  const { setUserInfo } = useContext(UserContext);
   const [progressRate, setProgressRate] = useState(0);
   const [showRewardButton, setShowRewardButton] = useState(false);
 
@@ -33,11 +35,11 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
   }
 
   async function handleShowRewardModal(value) {
-    console.log("Pressed Reward", value);
     setShowRewardModal(true);
 
     // use TEST_UID for testing
-    await receiveReward(TEST_UID);
+    const updatedUserInfo = await receiveReward(TEST_UID);
+    setUserInfo(updatedUserInfo);
   }
 
   function handleCopyCode() {
@@ -173,11 +175,15 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
         />
         <Text>badge info: empty now{challenge.badgeInfo}</Text>
         <Button onPress={handleCancel}>Cancel</Button>
-        <CancelModal
-          showModal={showModal}
-          setShowModal={setShowModal}
-          handleCancel={handleCancel}
-        />
+        <ConfirmationModal
+          showModal={showCancelModal}
+          setShowModal={setShowCancelModal}
+          size="xl"
+          onSubmit={handleLeaveChallenge}
+          submitBtnLabel="Leave event"
+        >
+          Are you sure you want to leave?
+        </ConfirmationModal>
       </View>
     );
   };

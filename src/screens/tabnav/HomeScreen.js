@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, SafeAreaView } from "react-native";
+import { View, Text } from "react-native";
 import saveActivityData from "../../services/saveActivityData";
 import { TEST_UID } from "../../api/constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -10,7 +10,8 @@ import {
   checkEventChallengeProgress,
   checkGroupChallengeProgress,
 } from "../../services/checkChallengeProgress";
-import { Image, ScrollView } from "native-base";
+import { ScrollView } from "native-base";
+import UserContext from "../../state/context";
 
 // Done
 // Get activity data & update DB & store updated userInfo & challengeInfo
@@ -19,7 +20,7 @@ import { Image, ScrollView } from "native-base";
 // Todo
 // setTimer to get data in foregraound
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [userInfo, setUserInfo] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [ongoingChallenges, setOngoingChallenges] = useState([]);
@@ -64,9 +65,17 @@ const HomeScreen = () => {
 
     // Please uncomment to test database sync
     // Need to get all data what I need it here (challenge data, modal trigger)
+    const unsubscribe = navigation.addListener("focus", () => {
+      // The screen is focused
+      initActivityDataInDB(TEST_UID);
+    });
 
-    initActivityDataInDB(TEST_UID);
+    return unsubscribe;
   }, []);
+
+  // const updateUserInfo = (newUserInfo) => {
+  //   setUserInfo(newUserInfo);
+  // };
 
   if (isLoading) {
     return (
@@ -78,12 +87,14 @@ const HomeScreen = () => {
 
   return (
     <ScrollView style={{ flex: 1 }}>
-      <View>
-        <Text>streak_days: {userInfo.streak_days}</Text>
-        <Text>hearts: {userInfo.hearts}</Text>
-        <Text>fireflies: {userInfo.fireflies}</Text>
-      </View>
-      <OngoingChallengeContainer ongoingChallenges={ongoingChallenges} />
+      <UserContext.Provider value={{ userInfo, setUserInfo }}>
+        <View>
+          <Text>streak_days: {userInfo.streak_days}</Text>
+          <Text>hearts: {userInfo.hearts}</Text>
+          <Text>fireflies: {userInfo.fireflies}</Text>
+        </View>
+        <OngoingChallengeContainer ongoingChallenges={ongoingChallenges} />
+      </UserContext.Provider>
     </ScrollView>
   );
 };

@@ -11,6 +11,9 @@ const receiveReward = async (user_id) => {
     daily_goal_status: 3
   });
   console.log("Reward received into user collection");
+
+  const updatedUserInfo = await retrieveUserInfo(user_id);
+  return updatedUserInfo;
 };
 
 export default receiveReward;
