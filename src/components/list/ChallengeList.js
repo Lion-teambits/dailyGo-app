@@ -4,7 +4,7 @@ import { challenges } from "../../data/challengeData";
 import { TouchableOpacity } from "react-native";
 import ChallengeListItem from "../listitems/ChallengeListItem";
 import { useEffect, useState } from "react";
-import { retrieveChallengeInfo } from "../../api/challengeProgressService";
+import { retrieveChallengeProgressInfo } from "../../api/challengeProgressService";
 
 const ChallengeList = ({ userData }) => {
   const navigation = useNavigation();
@@ -24,7 +24,7 @@ const ChallengeList = ({ userData }) => {
         const challengeProgressIds = userData?.event_challenge_progress || [];
         const challengeProgressList = await Promise.all(
           challengeProgressIds.map(async (progressId) => {
-            const progress = await retrieveChallengeInfo(progressId);
+            const progress = await retrieveChallengeProgressInfo(progressId);
             return {
               event_challenge_info: progress?.event_challenge_info,
               _id: progress?._id,
