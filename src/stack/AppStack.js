@@ -37,8 +37,8 @@ const AppStack = () => {
           component={ChallengeDetailScreen}
         />
         <Stack.Screen name="GroupChallenge" component={GroupChallengeScreen} />
-        <Stack.Screen name="Badges" component={BadgeList} />
-        <Stack.Screen name="BadgeDetail" component={BadgeItem} />
+        <Stack.Screen name="BadgeList" component={BadgeList} />
+        <Stack.Screen name="BadgeItem" component={BadgeItem} />
       </Stack.Navigator>
     </NavigationContainer>
   );

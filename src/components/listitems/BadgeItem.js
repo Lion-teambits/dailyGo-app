@@ -7,14 +7,16 @@ import {
   TouchableOpacity,
   Share,
 } from "react-native";
+import { badges } from "../../data/badgeData";
 
 const BadgeItem = ({ navigation, route }) => {
-  const { badge } = route.params;
+  const { badgeTitle } = route.params;
+  const badge = badges.find((badge) => badge.badgeTitle === badgeTitle);
 
   const handleShareBadge = async () => {
     try {
       await Share.share({
-        message: `Check out this awesome badge: ${badge.name}!`,
+        message: `Check out this awesome badge: ${badge.badgeTitle}!`,
       });
     } catch (error) {
       console.log("Error sharing badge:", error);
@@ -27,10 +29,9 @@ const BadgeItem = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.badgeImage} source={badge.image} />
-      <Text style={styles.badgeName}>{badge.name}</Text>
-      <Text style={styles.badgeDetail}>{badge.detail}</Text>
-
+      <Image style={styles.badgeImage} source={badge.badgeImage} />
+      <Text style={styles.badgeName}>{badge.badgeTitle}</Text>
+      <Text style={styles.badgeDetail}>{badge.description}</Text>
       <TouchableOpacity style={styles.shareButton} onPress={handleShareBadge}>
         <Text style={styles.buttonText}>Share Badge</Text>
       </TouchableOpacity>

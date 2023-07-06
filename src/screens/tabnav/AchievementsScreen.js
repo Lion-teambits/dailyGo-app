@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import BarChart from "../../components/containers/BarChart";
 import FilterButton from "../../components/buttons/FilterButton";
+import BadgeDetailContainer from "../../components/containers/BadgeDetailContainer";
 
 const AchievementsScreen = ({ navigation }) => {
   const [filteredData, setFilteredData] = useState([]);
@@ -282,44 +283,7 @@ const AchievementsScreen = ({ navigation }) => {
         </View>
       </View>
 
-      <View style={styles.badgesContainer}>
-        <Text style={styles.badgesMainHeader}>Badges</Text>
-        <View style={styles.badgesHeaderContainer}>
-          <Text style={styles.badgesHeader}>Daily Monsters</Text>
-          <TouchableOpacity onPress={() => handleSeeMorePress("daily")}>
-            <Text style={styles.seeMore}>See more</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.badgesItem}>
-          <Image
-            style={styles.badgeImage}
-            source={require("../../../assets/images/image1.jpeg")}
-          />
-          <Image
-            style={styles.badgeImage}
-            source={require("../../../assets/images/image2.jpeg")}
-          />
-        </View>
-      </View>
-
-      <View style={styles.badgesContainer}>
-        <View style={styles.badgesHeaderContainer}>
-          <Text style={styles.badgesHeader}>Event Monsters</Text>
-          <TouchableOpacity onPress={() => handleSeeMorePress("event")}>
-            <Text style={styles.seeMore}>See more</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.badgesItem}>
-          <Image
-            style={styles.badgeImage}
-            source={require("../../../assets/images/image3.jpeg")}
-          />
-          <Image
-            style={styles.badgeImage}
-            source={require("../../../assets/images/image4.jpeg")}
-          />
-        </View>
-      </View>
+      <BadgeDetailContainer />
     </ScrollView>
   );
 };
@@ -424,39 +388,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 10,
     textAlign: "left",
-  },
-  badgesContainer: {
-    marginBottom: 20,
-  },
-  badgesMainHeader: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  badgesHeaderContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 10,
-  },
-  badgesHeader: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  badgesItem: {
-    flexDirection: "row",
-  },
-  badgeImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginRight: 10,
-  },
-  seeMore: {
-    color: "blue",
-    fontSize: 18,
-    fontWeight: "bold",
-    alignSelf: "flex-end",
   },
 });
 
