@@ -1,5 +1,5 @@
 import { View, ScrollView, Dimensions, Text } from "react-native";
-import OngoingChallengeCard from "../list/OngoingChallengeCard";
+import OngoingChallengeCard from "../cards/OngoingChallengeCard";
 import { useRef } from "react";
 
 const OngoingChallengeContainer = ({ ongoingChallenges }) => {
