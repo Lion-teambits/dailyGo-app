@@ -1,12 +1,31 @@
-import { View, ScrollView, Dimensions, Text } from "react-native";
+import { View, ScrollView, Dimensions } from "react-native";
 import OngoingChallengeCard from "../cards/OngoingChallengeCard";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-const OngoingChallengeContainer = ({ ongoingChallenges }) => {
+const OngoingChallengeContainer = ({ ongoingChallenges, focusChallengeID }) => {
   const windowWidth = Dimensions.get("window").width;
   const scrollViewRef = useRef(null);
-  let pageCount = ongoingChallenges.length;
-  
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  useEffect(() => {
+    if (focusChallengeID) {
+      // Reset scroll position
+      scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: false });
+
+      // Adjust scroll position
+      const targetIndex = ongoingChallenges.findIndex(
+        (challenge) => challenge._id === focusChallengeID
+      );
+      const offsetX = targetIndex * windowWidth;
+      scrollViewRef.current.scrollTo({ x: offsetX, animated: true });
+    }
+  }, [focusChallengeID, ongoingChallenges]);
+
+  const handleScroll = (event) => {
+    const offsetX = event.nativeEvent.contentOffset.x;
+    setScrollPosition(offsetX);
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollView
@@ -14,6 +33,8 @@ const OngoingChallengeContainer = ({ ongoingChallenges }) => {
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
+        onScroll={handleScroll}
+        scrollEventThrottle={50}
       >
         {ongoingChallenges.map((challenge, index) => (
           <View
@@ -22,8 +43,9 @@ const OngoingChallengeContainer = ({ ongoingChallenges }) => {
           >
             <OngoingChallengeCard
               challenge={challenge}
-              totalPageCount={pageCount}
-              currentPage={index + 1}
+              totalPageCount={ongoingChallenges.length}
+              currentPage={Math.floor(scrollPosition / windowWidth) + 1}
+              isFocused={challenge._id === focusChallengeID}
             />
           </View>
         ))}
