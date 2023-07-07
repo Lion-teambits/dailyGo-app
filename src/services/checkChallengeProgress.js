@@ -151,7 +151,7 @@ export const checkEventChallengeProgress = async (user_id) => {
       returnObj.reward = challengeInfo.badge_info;
       returnObj.getReward = challengeProgress.get_reward;
       returnObj.badgeInfo = challengeInfo.badge_info;
-      returnObj._id = challengeInfo._id;
+      returnObj._id = challengeProgress._id;
       return returnObj;
     })
   );
@@ -219,7 +219,7 @@ export const checkGroupChallengeProgress = async (user_id) => {
       returnObj.reward = challengeProgress.badge_info;
       returnObj.getReward = challengeProgress.get_reward;
       returnObj.badgeInfo = challengeProgress.badge_info;
-      returnObj._id = groupChallengeInfo._id;
+      returnObj._id = challengeProgress._id;
       returnObj.friendsInfo = groupChallengeInfo.member_list;
 
       return { ...challengeProgress, challengeInfo: groupChallengeInfo };
