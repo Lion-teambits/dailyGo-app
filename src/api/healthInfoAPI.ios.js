@@ -136,7 +136,7 @@ export const fetchActivityData = async () => {
       });
     });
 
-    activityObj.distance = Math.floor(distancesResult * 0.001 * 100) / 100;
+    activityObj.distance = Math.floor(distancesResult / 1000);
 
     const caloriesResult = await new Promise((resolve, reject) => {
       getCalories((err, result) => {
@@ -152,8 +152,7 @@ export const fetchActivityData = async () => {
     const keys = Object.keys(caloriesResult);
     if (caloriesResult[keys[0]]) {
       // Rounded down to the third decimal place
-      activityObj.calories =
-        Math.floor(caloriesResult[keys[0]]  * 100) / 100;
+      activityObj.calories = Math.floor(caloriesResult[keys[0]]);
     }
 
     console.log("Apple Healthkit data: ", activityObj);
