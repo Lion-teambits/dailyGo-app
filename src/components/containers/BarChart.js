@@ -22,11 +22,14 @@ const BarChart = ({ data, averageValue }) => {
           x="label"
           y="value"
           labelComponent={<ValueLabel />}
+          style={{
+            data: { fill: "blue", width: 25, borderRadius: 50 },
+          }}
         />
         <VictoryLine
           y={() => averageValue}
           style={{
-            data: { stroke: "black", strokeDasharray: "2, 2" },
+            data: { stroke: "darkblue", strokeDasharray: "2, 2" },
           }}
         />
       </VictoryChart>

@@ -1,8 +1,16 @@
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
-const FilterButton = ({ label, onPress, isActive }) => {
-  const buttonStyle = isActive ? styles.activeButton : styles.button;
+const FilterButton = ({
+  label,
+  onPress,
+  isActive,
+  activeColor,
+  inactiveColor,
+}) => {
+  const buttonStyle = isActive
+    ? [styles.activeButton, { backgroundColor: activeColor }]
+    : [styles.button, { backgroundColor: inactiveColor }];
   const labelStyle = isActive ? styles.activeLabel : styles.label;
 
   return (
@@ -16,17 +24,15 @@ const styles = StyleSheet.create({
   button: {
     paddingHorizontal: 10,
     paddingVertical: 5,
-    borderRadius: 8,
+    borderRadius: 16,
     marginHorizontal: 5,
     backgroundColor: "lightgray",
   },
   activeButton: {
     paddingHorizontal: 10,
     paddingVertical: 5,
-    borderRadius: 8,
+    borderRadius: 16,
     marginHorizontal: 5,
-
-    backgroundColor: "gray",
   },
   label: {
     fontWeight: "bold",
