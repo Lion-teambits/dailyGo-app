@@ -150,7 +150,6 @@ const updateEventAndGroupChallengeProgresses = async (
             current_distance:
               challengeProgressData.current_distance + differenceOfDistance,
           };
-          // Math.floor(challengeProgressInfo.data.current_calories * 100) / 100;
 
           await updateChallengeProgress(
             challengeProgress_id,
