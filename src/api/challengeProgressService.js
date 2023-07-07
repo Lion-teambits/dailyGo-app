@@ -86,3 +86,16 @@ export const updateChallengeProgress = async (
     throw error;
   }
 };
+
+// Delete challenge progress
+export const deleteChallengeProgress = async (challengeProgress_id) => {
+  try {
+    const challenge = await axios.delete(
+      `${BASE_URL}/challengeProgress/${challengeProgress_id}`
+    );
+    return challenge.data;
+  } catch (error) {
+    console.log("Error in deleteChallengeProgress");
+    throw error;
+  }
+};
