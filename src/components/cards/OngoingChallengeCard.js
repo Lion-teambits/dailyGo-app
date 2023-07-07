@@ -15,30 +15,57 @@ import { StyleSheet } from "react-native";
 import RewardModal from "../modals/RewardModal";
 import ConfirmationModal from "../modals/ConfirmationModal";
 import receiveReward from "../../services/receiveReward";
-import { TEST_UID } from "../../api/constants";
+import { deleteChallengeProgress } from "../../api/challengeProgressService";
+import { retrieveUserInfo, updateUserInfo } from "../../api/userService";
 import UserContext from "../../state/context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
-  const { setUserInfo } = useContext(UserContext);
+const OngoingChallengeCard = ({
+  challenge,
+  totalPageCount,
+  currentPage,
+  isFocused,
+}) => {
   const [progressRate, setProgressRate] = useState(0);
   const [showRewardButton, setShowRewardButton] = useState(false);
 
   const [showRewardModal, setShowRewardModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
+  const { setUserInfo } = useContext(UserContext);
+
+  useEffect(() => {
+    setProgressRate(
+      Math.floor((challenge.currentSteps / challenge.targetSteps) * 100)
+    );
+    if (challenge.finishChallenge && !challenge.getReward) {
+      setShowRewardButton(true);
+    }
+  }, [challenge.currentSteps, challenge.targetSteps]);
 
   function handleCancel() {
     setShowCancelModal(true);
   }
-  function handleLeaveChallenge() {
-    // [TODO] Remove challenge progress from Database
-    console.log("handleLeaveChallenge pressed!!!!!!!!");
+
+  async function handleLeaveChallenge() {
+    const uid = await AsyncStorage.getItem("@uid");
+
+    // Demove challenge progress
+    await deleteChallengeProgress(challenge._id);
+    // Remove single challenge progress from array in user info
+    const updatedUserInfo = await removeChallengeProgress(
+      uid,
+      challenge.type,
+      challenge._id
+    );
+
+    setUserInfo(updatedUserInfo);
   }
 
-  async function handleShowRewardModal(value) {
+  async function handleShowRewardModal() {
     setShowRewardModal(true);
 
-    // use TEST_UID for testing
-    const updatedUserInfo = await receiveReward(TEST_UID);
+    const uid = await AsyncStorage.getItem("@uid");
+    const updatedUserInfo = await receiveReward(uid);
     setUserInfo(updatedUserInfo);
   }
 
@@ -46,161 +73,101 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
     console.log("Pressed copy code");
   }
 
-  const renderCommonContent = () => {
-    return (
-      <>
-        <Text>{challenge.type} Goal</Text>
-        <Text>Time left: {challenge.remainingTime}</Text>
-        <Image
-          source={challenge.monsterImg}
-          alt="testImage"
-          size="lg"
-        />
-        <PagenationIndicator
-          totalPageCount={totalPageCount}
-          currentPage={currentPage}
-          monsterName={challenge.monsterName}
-        />
-        <Center w="100%">
-          <Box w="90%">
-            <Progress
-              colorScheme="primary"
-              value={progressRate}
-            />
-          </Box>
-        </Center>
-        {/* Switch button visibility depends on challenge status */}
-        <Box p={4}>
-          {showRewardButton && (
-            <Button onPress={handleShowRewardModal}>Receive Reward</Button>
-          )}
-          {challenge.reward && (
-            <RewardModal
-              showModal={showRewardModal}
-              setShowModal={setShowRewardModal}
-              size="xl"
-              reward={challenge.reward}
-            />
-          )}
+  return (
+    <View style={[styles.card, showCancelModal ? styles.blur : null]}>
+      <Text>{challenge.type} Goal</Text>
+      <Text>Time left: {challenge.remainingTime}</Text>
+      <Image
+        source={challenge.monsterImg}
+        alt="testImage"
+        size="lg"
+      />
+      <PagenationIndicator
+        totalPageCount={totalPageCount}
+        currentPage={currentPage}
+        monsterName={challenge.monsterName}
+      />
+      <Center w="100%">
+        <Box w="90%">
+          <Progress
+            colorScheme="primary"
+            value={progressRate}
+          />
         </Box>
-        <Text>Current Progress</Text>
-        <HStack
-          space="1"
-          backgroundColor="amber.100"
-          padding="3"
-        >
-          <VStack>
-            <Text>{challenge.currentDistance}</Text>
-            <Text>KM</Text>
-          </VStack>
-          <Divider
-            orientation="vertical"
-            mx="3"
-            _light={{
-              bg: "muted.800",
-            }}
-            _dark={{
-              bg: "muted.50",
-            }}
+      </Center>
+      {/* Switch button visibility depends on challenge status */}
+      <Box p={4}>
+        {showRewardButton && (
+          <Button onPress={handleShowRewardModal}>Receive Reward</Button>
+        )}
+        {challenge.reward && (
+          <RewardModal
+            showModal={showRewardModal}
+            setShowModal={setShowRewardModal}
+            size="xl"
+            reward={challenge.reward}
           />
-          <VStack>
-            <Text>{challenge.currentSteps}</Text>
-            <Text>Steps</Text>
-          </VStack>
-          <Divider
-            orientation="vertical"
-            mx="3"
-            _light={{
-              bg: "muted.800",
-            }}
-            _dark={{
-              bg: "muted.50",
-            }}
-          />
-          <VStack>
-            <Text>{challenge.currentCalories}</Text>
-            <Text>Kcal</Text>
-          </VStack>
-        </HStack>
-      </>
-    );
-  };
-
-  const renderDailyChallenge = () => {
-    useEffect(() => {
-      setProgressRate(
-        Math.floor((challenge.currentSteps / challenge.targetSteps) * 100)
-      );
-      if (challenge.finishChallenge && !challenge.getReward) {
-        setShowRewardButton(true);
-      }
-    }, [challenge.currentSteps, challenge.targetSteps]);
-    return (
-      <View style={[styles.card, showCancelModal ? styles.blur : null]}>
-        {renderCommonContent()}
-      </View>
-    );
-  };
-
-  const renderEventChallenge = () => {
-    useEffect(() => {}, []);
-
-    return (
-      <View style={[styles.card, showCancelModal ? styles.blur : null]}>
-        {renderCommonContent()}
-        <Text>badge info: empty now{challenge.badgeInfo}</Text>
-        <Button onPress={handleCancel}>Cancel</Button>
-        <ConfirmationModal
-          showModal={showCancelModal}
-          setShowModal={setShowCancelModal}
-          size="xl"
-          onSubmit={handleLeaveChallenge}
-          submitBtnLabel="Leave event"
-        >
-          Are you sure you want to leave?
-        </ConfirmationModal>
-      </View>
-    );
-  };
-
-  const renderGroupChallenge = () => {
-    return (
-      <View style={[styles.card, showCancelModal ? styles.blur : null]}>
-        {renderCommonContent()}
-        <Text>Avator icons: test, test, test</Text>
-        <Text>code: testtest</Text>
-        <Button
-          title="Copy"
-          onPress={handleCopyCode}
+        )}
+      </Box>
+      <Text>Current Progress</Text>
+      <HStack
+        space="1"
+        backgroundColor="amber.100"
+        padding="3"
+      >
+        <VStack>
+          <Text>{challenge.currentDistance}</Text>
+          <Text>KM</Text>
+        </VStack>
+        <Divider
+          orientation="vertical"
+          mx="3"
+          _light={{
+            bg: "muted.800",
+          }}
+          _dark={{
+            bg: "muted.50",
+          }}
         />
-        <Text>badge info: empty now{challenge.badgeInfo}</Text>
-        <Button onPress={handleCancel}>Cancel</Button>
-        <ConfirmationModal
-          showModal={showCancelModal}
-          setShowModal={setShowCancelModal}
-          size="xl"
-          onSubmit={handleLeaveChallenge}
-          submitBtnLabel="Leave event"
-        >
-          Are you sure you want to leave?
-        </ConfirmationModal>
-      </View>
-    );
-  };
-
-  switch (challenge.type) {
-    case "daily":
-      return renderDailyChallenge();
-
-    case "event":
-      return renderEventChallenge();
-
-    case "group":
-      return renderGroupChallenge();
-
-    default:
-      return <Text>Error... something's going on TT</Text>;
-  }
+        <VStack>
+          <Text>{challenge.currentSteps}</Text>
+          <Text>Steps</Text>
+        </VStack>
+        <Divider
+          orientation="vertical"
+          mx="3"
+          _light={{
+            bg: "muted.800",
+          }}
+          _dark={{
+            bg: "muted.50",
+          }}
+        />
+        <VStack>
+          <Text>{challenge.currentCalories}</Text>
+          <Text>Kcal</Text>
+        </VStack>
+      </HStack>
+      {challenge.type !== "daily" && (
+        <>
+          <Text>badge info: empty now{challenge.badgeInfo}</Text>
+          <Button onPress={handleCancel}>Cancel</Button>
+          <ConfirmationModal
+            showModal={showCancelModal}
+            setShowModal={setShowCancelModal}
+            size="xl"
+            onSubmit={handleLeaveChallenge}
+            submitBtnLabel="Leave event"
+          >
+            Are you sure you want to leave?
+          </ConfirmationModal>
+        </>
+      )}
+      {challenge.type === "group" && (
+        <Text>Group challenge component is under construction... :D</Text>
+      )}
+    </View>
+  );
 };
 
 export default OngoingChallengeCard;
@@ -227,6 +194,35 @@ function PagenationIndicator({ totalPageCount, currentPage, monsterName }) {
     </View>
   );
 }
+
+const removeChallengeProgress = async (user_id, challengeType, removeID) => {
+  try {
+    const userInfo = await retrieveUserInfo(user_id);
+    console.log(
+      "removeChallengeProgress userInfo array",
+      userInfo.event_challenge_progress
+    );
+
+    if (challengeType === "event") {
+      userInfo.event_challenge_progress =
+        userInfo.event_challenge_progress.filter(
+          (challengeProgressID) => challengeProgressID !== removeID
+        );
+    } else {
+      userInfo.group_challenge_progress =
+        userInfo.group_challenge_progress.filter(
+          (challengeProgressID) => challengeProgressID !== removeID
+        );
+    }
+
+    const updatedUserInfo = await updateUserInfo(user_id, userInfo);
+
+    return updatedUserInfo;
+  } catch (error) {
+    console.log("Error in removeChallengeProgress");
+    throw error;
+  }
+};
 
 const styles = StyleSheet.create({
   card: {
