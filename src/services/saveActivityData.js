@@ -32,9 +32,18 @@ async function saveActivityData(user_id) {
     if (isExistingRecord) {
       // Calculated the difference of steps here
       // and apply it to event & team challenge
-      const differenceOfSteps = activityData.steps - todayRecord.steps;
-      const differenceOfDistance = activityData.distance - todayRecord.distance;
-      const differenceOfCalories = activityData.calories - todayRecord.calories;
+      const differenceOfSteps =
+        activityData.steps - todayRecord.steps > 0
+          ? activityData.steps - todayRecord.steps
+          : 0;
+      const differenceOfDistance =
+        activityData.distance - todayRecord.distance > 0
+          ? activityData.distance - todayRecord.distance
+          : 0;
+      const differenceOfCalories =
+        activityData.calories - todayRecord.calories > 0
+          ? activityData.calories - todayRecord.calories
+          : 0;
 
       // Update Event and Group Challenge
       const responseUpdatedChallengeProgresses =

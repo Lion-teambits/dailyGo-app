@@ -37,32 +37,11 @@ export const retrieveChallengeProgressInfo = async (challengeProgress_id) => {
     const challengeProgressInfo = await axios.get(
       `${BASE_URL}/challengeProgress/${challengeProgress_id}`
     );
-    if (isInvalidNumber(challengeProgressInfo.data.current_distance)) {
-      challengeProgressInfo.data.current_distance =
-        Math.floor(challengeProgressInfo.data.current_distance * 100) / 100;
-    }
-
-    if (isInvalidNumber(challengeProgressInfo.data.current_calories)) {
-      challengeProgressInfo.data.current_calories =
-        Math.floor(challengeProgressInfo.data.current_calories * 100) / 100;
-    }
     return challengeProgressInfo.data;
   } catch (error) {
     console.log("Error in retrieveChallengeProgressInfo");
     throw error;
   }
-};
-
-// Helper function: Check if a number has an incorrect decimal point
-const isInvalidNumber = (number) => {
-  const decimalPlaces = getDecimalPlaces(number);
-  return decimalPlaces > 2;
-};
-
-// Helper function: Get the number of decimal places
-const getDecimalPlaces = (number) => {
-  const decimalPart = String(number).split(".")[1];
-  return decimalPart ? decimalPart.length : 0;
 };
 
 // Retrieve all challenge information for a specific user
@@ -104,6 +83,19 @@ export const updateChallengeProgress = async (
     return challenge.data;
   } catch (error) {
     console.log("Error in updateChallengeProgress");
+    throw error;
+  }
+};
+
+// Delete challenge progress
+export const deleteChallengeProgress = async (challengeProgress_id) => {
+  try {
+    const challenge = await axios.delete(
+      `${BASE_URL}/challengeProgress/${challengeProgress_id}`
+    );
+    return challenge.data;
+  } catch (error) {
+    console.log("Error in deleteChallengeProgress");
     throw error;
   }
 };
