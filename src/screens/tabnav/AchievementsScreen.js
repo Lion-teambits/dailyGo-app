@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { Text, StyleSheet, ScrollView } from "react-native";
 import BadgeDetailContainer from "../../components/containers/BadgeDetailContainer";
 import StatisticsContainer from "../../components/containers/StatisticsContainer";
 import StatsContainer from "../../components/containers/StatsContainer";

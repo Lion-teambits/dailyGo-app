@@ -19,11 +19,10 @@ const StreakContainer = () => {
   }, []);
 
   const renderStreakIcons = () => {
-    const lastSevenDaysData = streakData.slice(-7); // Retrieve last 7 days' data
+    const lastSevenDaysData = streakData.slice(-7);
     const streakIcons = [];
     let stopIndex = -1;
 
-    // Find the index of the latest occurrence of "stop" streak status
     for (let i = lastSevenDaysData.length - 1; i >= 0; i--) {
       if (lastSevenDaysData[i].streak_status === "stop") {
         stopIndex = i;
@@ -32,7 +31,7 @@ const StreakContainer = () => {
     }
 
     if (stopIndex !== -1) {
-      lastSevenDaysData.splice(0, stopIndex + 1); // Remove arrays prior to the latest "stop"
+      lastSevenDaysData.splice(0, stopIndex + 1);
     }
 
     let missingIconCount = 7 - lastSevenDaysData.length;
