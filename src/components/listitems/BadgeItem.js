@@ -33,11 +33,11 @@ const BadgeItem = ({ navigation, route }) => {
       <Text style={styles.badgeName}>{badge.badgeTitle}</Text>
       <Text style={styles.badgeDetail}>{badge.description}</Text>
       <TouchableOpacity style={styles.shareButton} onPress={handleShareBadge}>
-        <Text style={styles.buttonText}>Share Badge</Text>
+        <Text style={styles.shareButtonText}>Share Badge</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.goBackButton} onPress={handleGoBack}>
-        <Text style={styles.buttonText}>Go back to Achievements</Text>
+        <Text style={styles.backButtonText}>Go back to Achievements</Text>
       </TouchableOpacity>
     </View>
   );
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
   badgeName: {
     fontSize: 24,
     fontWeight: "bold",
+    color: "darkblue",
     marginBottom: 10,
     textAlign: "center",
   },
@@ -68,18 +69,24 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: "center",
   },
-  buttonText: {
+  shareButtonText: {
     textAlign: "center",
+    fontWeight: "bold",
+    color: "white",
+  },
+  backButtonText: {
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "darkblue",
   },
   shareButton: {
-    backgroundColor: "lightblue",
+    backgroundColor: "darkorange",
     padding: 10,
     marginBottom: 10,
     borderRadius: 8,
     width: "100%",
   },
   goBackButton: {
-    backgroundColor: "lightgray",
     padding: 10,
     borderRadius: 8,
     width: "100%",
