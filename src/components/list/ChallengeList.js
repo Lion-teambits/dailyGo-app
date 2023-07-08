@@ -46,7 +46,7 @@ const ChallengeList = ({ userData }) => {
   };
 
   return (
-    <>
+    <Box>
       {challenges.map((item) => {
         const joinedUserProgress = getJoinedUserProgress(item._id);
         return (
@@ -69,7 +69,7 @@ const ChallengeList = ({ userData }) => {
           </TouchableOpacity>
         );
       })}
-    </>
+    </Box>
   );
 };
 

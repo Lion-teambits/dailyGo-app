@@ -41,7 +41,7 @@ const GroupChallengeList = ({ userData }) => {
   return (
     <View>
       {groupChallengeList ? (
-        <>
+        <Box>
           {groupChallengeList.map((item) => (
             <TouchableOpacity
               key={item._id}
@@ -58,7 +58,7 @@ const GroupChallengeList = ({ userData }) => {
               </Box>
             </TouchableOpacity>
           ))}
-        </>
+        </Box>
       ) : null}
     </View>
   );
