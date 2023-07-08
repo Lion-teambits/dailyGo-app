@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Box, FlatList, View } from "native-base";
+import { Box, View } from "native-base";
 import GroupChallengeListItem from "../listitems/GroupChallengeListItem";
 import { retrieveGroupChallengeInfo } from "../../api/groupChallengeService";
 import { retrieveChallengeProgressInfo } from "../../api/challengeProgressService";
@@ -41,25 +41,24 @@ const GroupChallengeList = ({ userData }) => {
   return (
     <View>
       {groupChallengeList ? (
-        <FlatList
-          data={groupChallengeList}
-          keyExtractor={(challenge) => challenge._id.toString()}
-          renderItem={({ item }) => {
-            return (
-              <TouchableOpacity onPress={() => navigateToHome(item)}>
-                <Box
-                  borderRadius={10}
-                  margin={3}
-                  bg="white"
-                  shadow={2}
-                  overflow="hidden"
-                >
-                  <GroupChallengeListItem challenge={item} />
-                </Box>
-              </TouchableOpacity>
-            );
-          }}
-        />
+        <>
+          {groupChallengeList.map((item) => (
+            <TouchableOpacity
+              key={item._id}
+              onPress={() => navigateToHome(item)}
+            >
+              <Box
+                borderRadius={10}
+                margin={3}
+                bg="white"
+                shadow={2}
+                overflow="hidden"
+              >
+                <GroupChallengeListItem challenge={item} />
+              </Box>
+            </TouchableOpacity>
+          ))}
+        </>
       ) : null}
     </View>
   );

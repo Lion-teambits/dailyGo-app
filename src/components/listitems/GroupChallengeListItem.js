@@ -27,7 +27,7 @@ const GroupChallengeListItem = ({ challenge }) => {
           <Box width={"35%"} justifyContent="center" alignItems="center">
             <Image
               alt={challenge.title}
-              source={challenge.monster_image}
+              source={parseInt(challenge.monster_image)}
               size="xl"
             />
           </Box>
