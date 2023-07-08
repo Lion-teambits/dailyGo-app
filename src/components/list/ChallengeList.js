@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { Box, FlatList } from "native-base";
+import { Box } from "native-base";
 import { challenges } from "../../data/challengeData";
 import { TouchableOpacity } from "react-native";
 import ChallengeListItem from "../listitems/ChallengeListItem";
@@ -46,13 +46,12 @@ const ChallengeList = ({ userData }) => {
   };
 
   return (
-    <FlatList
-      data={challenges}
-      keyExtractor={(challenge) => challenge._id.toString()}
-      renderItem={({ item }) => {
+    <Box>
+      {challenges.map((item) => {
         const joinedUserProgress = getJoinedUserProgress(item._id);
         return (
           <TouchableOpacity
+            key={item._id}
             onPress={() => navigateToDetail(item, joinedUserProgress)}
           >
             <Box
@@ -69,8 +68,8 @@ const ChallengeList = ({ userData }) => {
             </Box>
           </TouchableOpacity>
         );
-      }}
-    />
+      })}
+    </Box>
   );
 };
 
