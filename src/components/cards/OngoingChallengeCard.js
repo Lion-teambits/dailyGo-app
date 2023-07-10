@@ -20,18 +20,13 @@ import { retrieveUserInfo, updateUserInfo } from "../../api/userService";
 import UserContext from "../../state/context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const OngoingChallengeCard = ({
-  challenge,
-  totalPageCount,
-  currentPage,
-  isFocused,
-}) => {
+const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
   const [progressRate, setProgressRate] = useState(0);
   const [showRewardButton, setShowRewardButton] = useState(false);
 
   const [showRewardModal, setShowRewardModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
-  const { setUserInfo } = useContext(UserContext);
+  const { setUserInfo, setIsLoading } = useContext(UserContext);
 
   useEffect(() => {
     setProgressRate(
@@ -58,15 +53,19 @@ const OngoingChallengeCard = ({
       challenge._id
     );
 
-    setUserInfo(updatedUserInfo);
+    // setUserInfo(updatedUserInfo);
+    setIsLoading(true);
   }
 
-  async function handleShowRewardModal() {
+  async function handleRewardModal() {
     setShowRewardModal(true);
+  }
 
+  async function handleReceiveReward() {
     const uid = await AsyncStorage.getItem("@uid");
     const updatedUserInfo = await receiveReward(uid);
-    setUserInfo(updatedUserInfo);
+    // setUserInfo(updatedUserInfo);
+    setIsLoading(true);
   }
 
   function handleCopyCode() {
@@ -98,7 +97,7 @@ const OngoingChallengeCard = ({
       {/* Switch button visibility depends on challenge status */}
       <Box p={4}>
         {showRewardButton && (
-          <Button onPress={handleShowRewardModal}>Receive Reward</Button>
+          <Button onPress={handleRewardModal}>Receive Reward</Button>
         )}
         {challenge.reward && (
           <RewardModal
@@ -106,6 +105,7 @@ const OngoingChallengeCard = ({
             setShowModal={setShowRewardModal}
             size="xl"
             reward={challenge.reward}
+            onSubmit={handleReceiveReward}
           />
         )}
       </Box>

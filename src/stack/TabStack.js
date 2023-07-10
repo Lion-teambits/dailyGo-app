@@ -26,15 +26,32 @@ const TabStack = () => {
           }
 
           return (
-            <MaterialCommunityIcons name={iconName} size={size} color={color} />
+            <MaterialCommunityIcons
+              name={iconName}
+              size={size}
+              color={color}
+            />
           );
         },
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Challenges" component={ChallengesScreen} />
-      <Tab.Screen name="Achievements" component={AchievementsScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        initialParams={{ challengeProgressID: null }}
+      />
+      <Tab.Screen
+        name="Challenges"
+        component={ChallengesScreen}
+      />
+      <Tab.Screen
+        name="Achievements"
+        component={AchievementsScreen}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+      />
     </Tab.Navigator>
   );
 };
