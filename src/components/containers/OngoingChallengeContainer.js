@@ -45,7 +45,6 @@ const OngoingChallengeContainer = ({ ongoingChallenges, focusChallengeID }) => {
               challenge={challenge}
               totalPageCount={ongoingChallenges.length}
               currentPage={Math.floor(scrollPosition / windowWidth) + 1}
-              isFocused={challenge._id === focusChallengeID}
             />
           </View>
         ))}
