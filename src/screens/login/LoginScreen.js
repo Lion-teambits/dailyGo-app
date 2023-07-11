@@ -9,6 +9,7 @@ import {
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithCredential,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../../config/firebaseConfig";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -33,23 +34,29 @@ const LoginScreen = ({ navigation }) => {
     }
   }, [response]);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        try {
-          await AsyncStorage.setItem("@uid", user.uid);
-          const userInfo = await retrieveUserInfo(value);
-          if (userInfo == null) {
-            navigation.navigate("Onboarding", { user });
-          } else {
-            navigation.navigate("HomeScreen");
-          }
-        } catch (error) {
-          console.log("Google Login Fail.");
+  const moveToNextPage = async (user) => {
+    if (user) {
+      try {
+        await AsyncStorage.setItem("@uid", user.uid);
+        const userInfo = await retrieveUserInfo(user.uid);
+        if (userInfo == null) {
+          navigation.navigate("Onboarding", { user });
+        } else {
+          navigation.navigate("HomeScreen");
         }
-      } else {
-        console.log("Google Login Fail.");
+      } catch (error) {
+        if (user) {
+          navigation.navigate("Onboarding", { user });
+        } else {
+          console.log("Login Fail. ", error);
+        }
       }
+    }
+  };
+
+  useEffect(() => {
+    onAuthStateChanged(auth, async (user) => {
+      moveToNextPage(user);
     });
   }, []);
 
@@ -58,20 +65,12 @@ const LoginScreen = ({ navigation }) => {
     promptAsync();
   };
 
-  const handleLoginEmail = async (value) => {
-    // Pass Dummy user data bacause google login fail issue (Android device)
+  const handleLoginEmail = async (email, password) => {
     try {
-      const currentDate = new Date();
-      console.log("currentDate: ", currentDate);
-      await AsyncStorage.setItem("@uid", value);
-      const userInfo = await retrieveUserInfo(value);
-      if (userInfo == null) {
-        navigation.navigate("Onboarding");
-      } else {
-        navigation.navigate("HomeScreen");
-      }
-    } catch {
-      navigation.navigate("Onboarding");
+      const { user } = await signInWithEmailAndPassword(auth, email, password);
+      moveToNextPage(user);
+    } catch (error) {
+      console.log("Login Fail. ", error);
     }
   };
 

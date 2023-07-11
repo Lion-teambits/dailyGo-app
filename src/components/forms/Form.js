@@ -16,14 +16,28 @@ const Form = ({
   linkText,
   showNameField,
 }) => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleNameChange = (value) => {
+    setName(value);
+  };
 
   const handleEmailChange = (value) => {
     setEmail(value);
   };
 
+  const handlePasswordChange = (value) => {
+    setPassword(value);
+  };
+
   const handleFormSubmit = () => {
-    handleSubmit(email);
+    if (showNameField) {
+      handleSubmit(name, email, password);
+    } else {
+      handleSubmit(email, password);
+    }
   };
 
   return (
@@ -31,7 +45,11 @@ const Form = ({
       {showNameField && (
         <FormControl>
           <FormControl.Label>Name</FormControl.Label>
-          <Input placeholder="Name" />
+          <Input
+            placeholder="Name"
+            value={name}
+            onChangeText={handleNameChange}
+          />
         </FormControl>
       )}
       <FormControl>
@@ -45,7 +63,12 @@ const Form = ({
       </FormControl>
       <FormControl>
         <FormControl.Label>Password</FormControl.Label>
-        <Input type="password" placeholder="Password" secureTextEntry />
+        <Input
+          type="password"
+          placeholder="Password"
+          secureTextEntry
+          onChangeText={handlePasswordChange}
+        />
       </FormControl>
       <Button mt="2" colorScheme="indigo" onPress={handleFormSubmit}>
         {buttonText}

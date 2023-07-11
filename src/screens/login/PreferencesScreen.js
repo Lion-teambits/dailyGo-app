@@ -10,15 +10,15 @@ const photo =
 
 const PreferencesScreen = ({ route }) => {
   const navigation = useNavigation();
-  console.log("route.params:", route.params);
+  const userInfo = route.params.userInfo.user;
   const handleAnswer = async (steps) => {
     try {
       const uid = await AsyncStorage.getItem("@uid");
       if (!(uid === null)) {
-        if (route.params) {
+        if (userInfo) {
           await createUserInfo(
-            route.params.displayName,
-            route.params.photoURL,
+            userInfo.displayName,
+            userInfo.photoURL,
             steps,
             uid
           );

@@ -1,16 +1,31 @@
 import React from "react";
 import { Center, Box, Heading, Button } from "native-base";
-import { View, Text } from 'react-native';
+import { View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Form from "../../components/forms/Form";
+import { createUserWithEmailAndPassword, updateProfile } from "@firebase/auth";
+import { auth } from "../../config/firebaseConfig";
 
 const SignupScreen = ({ navigation }) => {
   const handleSignupGmail = () => {
     // Logic for signing up with Gmail
   };
 
-  const handleSignupEmail = () => {
+  const handleSignupEmail = async (name, email, password) => {
     // Logic for signing up with email and password
+    try {
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      await updateProfile(user, {
+        displayName: name,
+      });
+      navigation.navigate("Login");
+    } catch (error) {
+      console.log("There was a problem creating account: ", error);
+    }
   };
 
   const handleLogin = () => {
