@@ -19,6 +19,8 @@ const image4 =
   "https://www.nicepng.com/png/detail/316-3164745_beautiful-images-of-wolf-cubs-the-lion-king.png";
 import { useNavigation } from "@react-navigation/native";
 import { BACKEND_SERVER_URL } from "@env";
+import { signOut } from "firebase/auth";
+import { auth } from "../../config/firebaseConfig";
 
 const ProfileScreen = () => {
   const [editMode, setEditMode] = useState(false);
@@ -92,7 +94,12 @@ const ProfileScreen = () => {
     setPushNotificationEnabled((prevValue) => !prevValue);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.log("Logout error: ", error);
+    }
     navigation.navigate("Login");
   };
 
