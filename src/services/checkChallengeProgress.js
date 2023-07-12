@@ -180,10 +180,7 @@ export const checkGroupChallengeProgress = async (user_id) => {
   // Remove achieved challenge progress
   const filteredEventChallengeProgress = groupChallengeProgressObjArr.filter(
     (challengeProgress) => {
-      return (
-        challengeProgress.finish_challenge === false ||
-        challengeProgress.get_reward !== "completed"
-      );
+      return challengeProgress.finish_challenge === false;
     }
   );
 
