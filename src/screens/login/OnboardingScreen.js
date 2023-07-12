@@ -1,8 +1,8 @@
 import React from "react";
 import CarouselList from "../../components/list/CarouselList";
 
-const OnboardingScreen = ({ navigation }) => {
-  return <CarouselList navigation={navigation} />;
+const OnboardingScreen = ({ route }) => {
+  return <CarouselList userInfo={route.params} />;
 };
 
 export default OnboardingScreen;
