@@ -26,7 +26,7 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
 
   const [showRewardModal, setShowRewardModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
-  const { setUserInfo, setIsLoading } = useContext(UserContext);
+  const { setIsLoading } = useContext(UserContext);
 
   useEffect(() => {
     setProgressRate(
@@ -53,7 +53,6 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
       challenge._id
     );
 
-    // setUserInfo(updatedUserInfo);
     setIsLoading(true);
   }
 
@@ -61,11 +60,15 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
     setShowRewardModal(true);
   }
 
-  async function handleReceiveReward() {
-    const uid = await AsyncStorage.getItem("@uid");
-    const updatedUserInfo = await receiveReward(uid);
-    // setUserInfo(updatedUserInfo);
-    setIsLoading(true);
+  async function handleReceiveReward(eventType) {
+    if (eventType === "daily") {
+      const uid = await AsyncStorage.getItem("@uid");
+      const updatedUserInfo = await receiveReward(uid);
+      setIsLoading(true);
+    } else {
+      console.log("Conglatulation! Receive reward later :D");
+      // update get_reward in challenge progress
+    }
   }
 
   function handleCopyCode() {
@@ -99,8 +102,9 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
         {showRewardButton && (
           <Button onPress={handleRewardModal}>Receive Reward</Button>
         )}
-        {challenge.reward && (
+        {showRewardModal && (
           <RewardModal
+            eventType={challenge.type}
             showModal={showRewardModal}
             setShowModal={setShowRewardModal}
             size="xl"
@@ -108,6 +112,7 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
             onSubmit={handleReceiveReward}
           />
         )}
+        {challenge.getReward && <Text>Firefly collected!</Text>}
       </Box>
       <Text>Current Progress</Text>
       <HStack

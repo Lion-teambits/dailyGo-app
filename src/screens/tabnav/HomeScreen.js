@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { View, Text } from "react-native";
 import saveActivityData from "../../services/saveActivityData";
-import { TEST_UID } from "../../api/constants";
 import { retrieveUserInfo } from "../../api/userService";
 import OngoingChallengeContainer from "../../components/containers/OngoingChallengeContainer";
 import {
@@ -13,10 +12,6 @@ import { ScrollView } from "native-base";
 import UserContext from "../../state/context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-
-// Done
-// Get activity data & update DB & store updated userInfo & challengeInfo
-// Check challenge achievement & update DB
 
 // Todo
 // setTimer to get data in foregraound
@@ -35,7 +30,7 @@ const HomeScreen = ({ route }) => {
       setOngoingChallenges([]);
       // user real uid
       const user_id = await AsyncStorage.getItem("@uid");
-      // use default uid for testing
+      console.log("user_id", user_id);
 
       // Save activity data to Database
       await saveActivityData(user_id);
@@ -89,6 +84,7 @@ const HomeScreen = ({ route }) => {
       </View>
     );
   }
+
   return (
     <ScrollView style={{ flex: 1 }}>
       <UserContext.Provider
