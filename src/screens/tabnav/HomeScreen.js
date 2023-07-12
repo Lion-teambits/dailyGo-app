@@ -52,7 +52,6 @@ const HomeScreen = ({ route }) => {
       setOngoingChallenges(newOngoingChallenges);
       const responseUserInfo = await retrieveUserInfo(user_id);
       setUserInfo(responseUserInfo);
-      console.log("HOME", responseUserInfo);
 
       setIsLoading(false);
     }
