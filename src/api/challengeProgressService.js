@@ -12,6 +12,10 @@ export const createChallengeProgress = async (challenge, isGroupChallenge) => {
       monster_name: challenge.monster_name,
       monster_image: challenge.monster_image,
       current_steps: 0,
+      current_calories: 0,
+      current_distance: 0,
+      finish_challenge: false,
+      get_reward: "ongoing",
       badge_info: challenge.badge_info,
     };
 

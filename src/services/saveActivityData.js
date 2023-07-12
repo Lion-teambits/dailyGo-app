@@ -95,7 +95,7 @@ export const createDailyRecordAndUpdateFields = async (
 ) => {
   try {
     // Create a new daily_record
-    const newDailyRecord = await createDailyRecord(activityData, user_id);
+    const newDailyRecord = await createDailyRecord(user_id, activityData);
     // Dummy to stop creating new daily_record (for testing)
     // const newDailyRecord = {
     //   _id: "649e5581d0f20a8448e3095a",
@@ -114,6 +114,7 @@ export const createDailyRecordAndUpdateFields = async (
     const updatedUserInfo = {
       ...userInfo,
       today_record: updatedTodayRecordId,
+      daily_goal_status: 1,
     };
     const result = await updateUserInfo(userInfo.uid, updatedUserInfo);
     return result;
