@@ -104,7 +104,10 @@ export const checkEventChallengeProgress = async (user_id) => {
   // Remove achieved challenge progress
   const filteredEventChallengeProgress = eventChallengeProgressObjArr.filter(
     (challengeProgress) => {
-      return challengeProgress.finish_challenge === false;
+      return (
+        challengeProgress.finish_challenge === false ||
+        challengeProgress.get_reward !== "completed"
+      );
     }
   );
 
@@ -134,6 +137,7 @@ export const checkEventChallengeProgress = async (user_id) => {
       if (challengeInfo.target_steps < challengeProgress.current_steps) {
         await updateChallengeProgress(challengeProgress._id, {
           finish_challenge: true,
+          get_reward: "ready",
         });
       }
 
@@ -149,7 +153,8 @@ export const checkEventChallengeProgress = async (user_id) => {
       returnObj.currentCalories = challengeProgress.current_calories;
       returnObj.finishChallenge = challengeProgress.finish_challenge;
       returnObj.reward = challengeInfo.badge_info;
-      returnObj.getReward = challengeProgress.get_reward;
+      returnObj.getReward =
+        challengeProgress.get_reward === "completed" ? true : false;
       returnObj.badgeInfo = challengeInfo.badge_info;
       returnObj._id = challengeProgress._id;
       return returnObj;
@@ -203,6 +208,7 @@ export const checkGroupChallengeProgress = async (user_id) => {
       ) {
         await updateChallengeProgress(challengeProgress._id, {
           finish_challenge: true,
+          get_reward: "ready",
         });
       }
 
@@ -291,7 +297,6 @@ export const calculateStreakDaysAndReward = async (user_id) => {
   if (totalStreakDays <= 3) {
     totalFireFlies++;
     returnObj.firefliesToday = 1;
-    returnObj.firefliesTmr = 1;
   } else if (totalStreakDays <= 6) {
     totalFireFlies = totalFireFlies + 2;
     returnObj.firefliesToday = 2;
@@ -300,13 +305,21 @@ export const calculateStreakDaysAndReward = async (user_id) => {
     returnObj.firefliesToday = 3;
   }
 
+  if (totalStreakDays <= 2) {
+    returnObj.firefliesTmr = 1;
+  } else if (totalStreakDays <= 4) {
+    returnObj.firefliesTmr = 2;
+  } else {
+    returnObj.firefliesTmr = 3;
+  }
+
   // Increase Hearts if necessary
   let totalHearts = userInfo.hearts;
   if (totalHearts < 3 && totalStreakDays > 7) {
     totalHearts++;
     returnObj.heartToday = 1;
     returnObj.heartTmr = 1;
-    if (totalHearts == 3) {
+    if (totalHearts === 3) {
       returnObj.heartTmr = 0;
     }
   }

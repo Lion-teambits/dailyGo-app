@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { View, Text } from "react-native";
 import saveActivityData from "../../services/saveActivityData";
-import { TEST_UID } from "../../api/constants";
 import { retrieveUserInfo } from "../../api/userService";
 import OngoingChallengeContainer from "../../components/containers/OngoingChallengeContainer";
 import {
@@ -14,14 +13,12 @@ import UserContext from "../../state/context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 
-// Done
-// Get activity data & update DB & store updated userInfo & challengeInfo
-// Check challenge achievement & update DB
-
 // Todo
 // setTimer to get data in foregraound
 
 const HomeScreen = ({ route }) => {
+  const { challengeProgressID } = route.params;
+
   const [userInfo, setUserInfo] = useState();
   const [joinedUserProgressId, setJoinedUserProgressId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -32,9 +29,8 @@ const HomeScreen = ({ route }) => {
     async function initActivityDataInDB() {
       setOngoingChallenges([]);
       // user real uid
-      // const user_id = await AsyncStorage.getItem("@uid");
-      // use default uid for testing
-      const user_id = 111;
+      const user_id = await AsyncStorage.getItem("@uid");
+      console.log("user_id", user_id);
 
       // Save activity data to Database
       await saveActivityData(user_id);
@@ -56,19 +52,21 @@ const HomeScreen = ({ route }) => {
       setOngoingChallenges(newOngoingChallenges);
       const responseUserInfo = await retrieveUserInfo(user_id);
       setUserInfo(responseUserInfo);
+      console.log("HOME", responseUserInfo);
 
       setIsLoading(false);
     }
 
     // Rerendering when Home screen focused
     const unsubscribe = navigation.addListener("focus", () => {
-      const params = route?.params?.challengeProgressID || null;
-      if (params === null) {
-        setIsLoading(true);
-        setJoinedUserProgressId(null);
+      if (challengeProgressID) {
+        setJoinedUserProgressId(challengeProgressID);
+        navigation.setParams({
+          challengeProgressID: null,
+        });
+        setIsLoading(false);
       } else {
-        setJoinedUserProgressId(params);
-        navigation.setParams({ challengeProgressID: undefined });
+        setIsLoading(true);
       }
     });
 
@@ -77,7 +75,7 @@ const HomeScreen = ({ route }) => {
     }
 
     return unsubscribe;
-  }, [isLoading, route]);
+  }, [isLoading, challengeProgressID]);
 
   if (isLoading) {
     return (
@@ -86,9 +84,12 @@ const HomeScreen = ({ route }) => {
       </View>
     );
   }
+
   return (
     <ScrollView style={{ flex: 1 }}>
-      <UserContext.Provider value={{ userInfo, setUserInfo }}>
+      <UserContext.Provider
+        value={{ userInfo, setUserInfo, isLoading, setIsLoading }}
+      >
         <View>
           <Text>streak_days: {userInfo.streak_days}</Text>
           <Text>hearts: {userInfo.hearts}</Text>

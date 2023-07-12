@@ -34,7 +34,7 @@ export const updateDailyRecord = async (record_id, newActivityData) => {
 };
 
 // Create new daily record
-export const createDailyRecord = async (activityData, user_id) => {
+export const createDailyRecord = async (user_id, activityData) => {
   try {
     const newDailyRecord = await axios.post(`${BASE_URL}/dailyRecord`, {
       ...activityData,

@@ -54,12 +54,12 @@ export const fetchActivityData = async () => {
 
     // Add distance
     if (resDistance.length > 0) {
-      activityObj.distance = resDistance[0].distance.toFixed(2);
+      activityObj.distance = Math.floor(resDistance[0].distance * 0.001);
     }
 
     // Add calories (need to be fixed)
     if (resCalories.length > 0) {
-      activityObj.calories = Math.abs(resCalories[0].calorie).toFixed(2);
+      activityObj.calories = Math.floor(resCalories[0].calorie);
     }
 
     console.log("googleFit data: ", activityObj);

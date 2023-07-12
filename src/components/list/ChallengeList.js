@@ -12,7 +12,10 @@ const ChallengeList = ({ userData }) => {
 
   const navigateToDetail = (challenge, joinedUserProgress) => {
     if (joinedUserProgress) {
-      navigation.navigate("Home", joinedUserProgress._id);
+      navigation.navigate("HomeScreen", {
+        screen: "Home",
+        params: { challengeProgressID: joinedUserProgress._id },
+      });
     } else {
       navigation.navigate("ChallengeDetail", { challenge });
     }
