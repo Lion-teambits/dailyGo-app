@@ -21,6 +21,7 @@ import { useNavigation } from "@react-navigation/native";
 import { BACKEND_SERVER_URL } from "@env";
 import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebaseConfig";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ProfileScreen = () => {
   const [editMode, setEditMode] = useState(false);
@@ -97,6 +98,7 @@ const ProfileScreen = () => {
   const handleLogout = async () => {
     try {
       await signOut(auth);
+      await AsyncStorage.removeItem("@uid");
     } catch (error) {
       console.log("Logout error: ", error);
     }
