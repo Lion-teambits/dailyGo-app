@@ -173,12 +173,15 @@ export const checkGroupChallengeProgress = async (user_id) => {
   // Remove achieved challenge progress
   const filteredEventChallengeProgress = groupChallengeProgressObjArr.filter(
     (challengeProgress) => {
-      return challengeProgress.finish_challenge === false;
+      return (
+        challengeProgress.finish_challenge === false ||
+        challengeProgress.get_reward !== "completed"
+      );
     }
   );
 
   // Compare target_steps and current_steps, and add challenge info to each challengeObj
-  Promise.all(
+  const updatedProgressArray = await Promise.all(
     filteredEventChallengeProgress.map(async (challengeProgress) => {
       let returnObj = {
         type: "group",
@@ -223,16 +226,15 @@ export const checkGroupChallengeProgress = async (user_id) => {
       returnObj.currentCalories = challengeProgress.current_calories;
       returnObj.finishChallenge = challengeProgress.finish_challenge;
       returnObj.reward = challengeProgress.badge_info;
-      returnObj.getReward = challengeProgress.get_reward;
+      returnObj.getReward =
+        challengeProgress.get_reward === "completed" ? true : false;
       returnObj.badgeInfo = challengeProgress.badge_info;
       returnObj._id = challengeProgress._id;
       returnObj.friendsInfo = groupChallengeInfo.member_list;
-
-      return { ...challengeProgress, challengeInfo: groupChallengeInfo };
+      return returnObj;
     })
-  ).then((updatedProgressArray) => {
-    return updatedProgressArray;
-  });
+  );
+  return updatedProgressArray;
 };
 
 // Not achieved daily challenge
