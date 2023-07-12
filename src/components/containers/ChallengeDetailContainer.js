@@ -5,6 +5,7 @@ import { DISABLED, SECONDARY_MEDIUM } from "../../constants/colorCodes";
 import { createChallengeProgress } from "../../api/challengeProgressService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { retrieveUserInfo, updateUserInfo } from "../../api/userService";
+import BadgeToAchieve from "../cards/BadgeToAchieve";
 
 const ChallengeDetailContainer = (props) => {
   const { challenge, isGroupChallenge } = props;
@@ -64,13 +65,16 @@ const ChallengeDetailContainer = (props) => {
         <Text>{timeDifference}</Text>
       </HStack>
       <Box space={1} alignItems="center">
-        <Heading size={"lg"}>{challenge.title}</Heading>
         <Image
           alt={challenge.title}
           source={challenge.monster_image}
           size="2xl"
         />
         <Heading size={"md"}>{challenge.monster_name}</Heading>
+        <BadgeToAchieve
+          badgeId={challenge.badge_info}
+          steps={challenge.target_steps}
+        />
         <Button
           margin={1}
           width={"100%"}

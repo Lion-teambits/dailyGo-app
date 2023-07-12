@@ -15,7 +15,7 @@ export const challenges = [
     monster_desc: "Warm, sun and monsters.",
     monster_image: require("../../assets/images/monsters/SummerJam.png"),
     target_steps: 30000,
-    badge_info: "",
+    badge_info: "7",
   },
   {
     _id: 2,
@@ -26,7 +26,7 @@ export const challenges = [
     monster_desc: "That's right - high!",
     monster_image: require("../../assets/images/monsters/WaterMelone.png"),
     target_steps: 30000,
-    badge_info: "",
+    badge_info: "7",
   },
   {
     _id: 3,
@@ -37,7 +37,7 @@ export const challenges = [
     monster_desc: "You're wizard, monster!",
     monster_image: require("../../assets/images/monsters/Trickster.png"),
     target_steps: 30000,
-    badge_info: "",
+    badge_info: "7",
   },
   // Add more challenges...
 ];
@@ -64,3 +64,5 @@ export const groupChallengeMosters = [
     steps: 35000,
   },
 ];
+
+export const GROUP_CHALLENGE_BADGE_INFO = "6";

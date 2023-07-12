@@ -1,12 +1,12 @@
-import { Box, Text } from "native-base";
+import { Box, Heading } from "native-base";
 import { ACCENT_MEDIUM, BG_MEDIUM } from "../../constants/colorCodes";
 
 const StepsBarGraph = ({ currentSteps, targetSteps, progressBarWidth }) => {
   return (
     <Box>
-      <Text>
+      <Heading size={"sm"}>
         {currentSteps}/{targetSteps} steps
-      </Text>
+      </Heading>
       <Box bg={BG_MEDIUM} height={6} borderRadius="full" overflow="hidden">
         <Box
           bg={ACCENT_MEDIUM}
