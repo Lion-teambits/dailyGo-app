@@ -7,13 +7,6 @@ export const IMAGE_MONSTER_TAKOYAKI = require("../../assets/images/monsters/Tako
 export const IMAGE_MONSTER_PINATA = require("../../assets/images/monsters/Piñata.png");
 export const IMAGE_MONSTER_MARATHON = require("../../assets/images/monsters/Marathon.png");
 
-export const AVATAR_LIST = [
-  IMAGE_MONSTER_FROGGY,
-  IMAGE_MONSTER_TAKOYAKI,
-  IMAGE_MONSTER_PINATA,
-  IMAGE_MONSTER_MARATHON,
-];
-
 // Profile Avatars
 export const AVATAR_1 = require("../../assets/images/avatar/avatar1.png");
 export const AVATAR_2 = require("../../assets/images/avatar/avatar2.png");
