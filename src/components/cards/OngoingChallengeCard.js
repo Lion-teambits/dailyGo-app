@@ -20,6 +20,8 @@ import { deleteChallengeProgress } from "../../api/challengeProgressService";
 import { retrieveUserInfo, updateUserInfo } from "../../api/userService";
 import UserContext from "../../state/context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import BadgeToAchieve from "./BadgeToAchieve";
+import FriendsCard from "./FriendsCard";
 
 const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
   const [progressRate, setProgressRate] = useState(0);
@@ -159,15 +161,7 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
         <>
           <Text>Friends</Text>
           <HStack>
-            {challenge.memberList.map((user_id) => (
-              <Image
-                key={user_id}
-                // [TODO] Replace image source
-                source={challenge.monsterImg}
-                alt="member avator"
-                size="xs"
-              />
-            ))}
+            <FriendsCard member={challenge.memberList} />
           </HStack>
           <HStack>
             <Text>Code: {challenge._id.slice(0, 6)}...</Text>
@@ -182,7 +176,10 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
       )}
       {challenge.type !== "daily" && (
         <>
-          <Text>badge info: empty now{challenge.badgeInfo}</Text>
+          <BadgeToAchieve
+            badgeId={challenge.badgeInfo}
+            steps={challenge.targetSteps}
+          />
           <Button onPress={handleCancel}>Cancel</Button>
           <ConfirmationModal
             showModal={showCancelModal}
