@@ -8,10 +8,8 @@ import {
   TextInput,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { BACKEND_SERVER_URL } from "@env";
 import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebaseConfig";
 import { PROFILE_AVATAR_LIST } from "../../constants/imagePaths";
@@ -22,11 +20,12 @@ import {
   SECONDARY_MEDIUM,
   TXT_DARK_BG,
 } from "../../constants/colorCodes";
+import { retrieveUserInfo, updateUserInfo } from "../../api/userService";
 
 const ProfileScreen = () => {
   const [editMode, setEditMode] = useState(false);
   const [name, setName] = useState("");
-  const [selectedImage, setSelectedImage] = useState(PROFILE_AVATAR_LIST[0]);
+  const [selectedImage, setSelectedImage] = useState();
   const [applyChanges, setApplyChanges] = useState(false);
   const [dailyModeValue, setDailyModeValue] = useState(0);
   const [pushNotificationEnabled, setPushNotificationEnabled] = useState(true);
@@ -35,17 +34,22 @@ const ProfileScreen = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    axios
-      .get(`${BACKEND_SERVER_URL}/api/v1/user/111`)
-      .then((response) => {
-        const userData = response.data;
-        setUserData(userData);
-        setName(userData.name);
-        setDailyModeValue(userData.preferred_daily_mode);
-      })
-      .catch((error) => {
+    const fetchUserData = async () => {
+      try {
+        const uid = await AsyncStorage.getItem("@uid");
+
+        if (uid) {
+          const userData = await retrieveUserInfo(uid);
+          setUserData(userData);
+          setName(userData.name);
+          setDailyModeValue(userData.preferred_daily_mode);
+        }
+      } catch (error) {
         console.log(error);
-      });
+      }
+    };
+
+    fetchUserData();
   }, []);
 
   const handleEditProfile = () => {
@@ -56,22 +60,24 @@ const ProfileScreen = () => {
     nameInputRef.current.focus();
   };
 
-  const handleApplyChanges = () => {
-    axios
-      .put(`${BACKEND_SERVER_URL}/api/v1/user/111`, {
-        avatar: selectedImage,
-      })
-      .then((response) => {
+  const handleApplyChanges = async () => {
+    try {
+      const uid = await AsyncStorage.getItem("@uid");
+
+      if (uid) {
+        const updatedUserInfo = { avatar: selectedImage };
+        await updateUserInfo(uid, updatedUserInfo);
+
         setEditMode(false);
         setApplyChanges(true);
         setUserData((prevUserData) => ({
           ...prevUserData,
           avatar: selectedImage,
         }));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleCancelChanges = () => {
@@ -123,19 +129,24 @@ const ProfileScreen = () => {
   };
 
   useEffect(() => {
-    if (name && dailyModeValue) {
-      axios
-        .put(`${BACKEND_SERVER_URL}/api/v1/user/111`, {
-          name,
-          preferred_daily_mode: dailyModeValue,
-        })
-        .then((response) => {
+    const updateUser = async () => {
+      const uid = await AsyncStorage.getItem("@uid");
+      if (name && dailyModeValue && uid) {
+        try {
+          const updatedUserInfo = {
+            name,
+            preferred_daily_mode: dailyModeValue,
+          };
+
+          await updateUserInfo(uid, updatedUserInfo);
           setApplyChanges(true);
-        })
-        .catch((error) => {
+        } catch (error) {
           console.log(error);
-        });
-    }
+        }
+      }
+    };
+
+    updateUser();
   }, [name, dailyModeValue]);
 
   return (
