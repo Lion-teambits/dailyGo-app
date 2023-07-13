@@ -4,6 +4,13 @@ import BarChart from "./BarChart";
 import FilterButton from "../buttons/FilterButton";
 import axios from "axios";
 import { BACKEND_SERVER_URL } from "@env";
+import {
+  BG_DARK,
+  PRIMARY_MEDIUM,
+  BG_LIGHT,
+  PRIMARY_DARK,
+  SECONDARY_MEDIUM,
+} from "../../constants/colorCodes";
 
 const StatisticsContainer = () => {
   const [filteredData, setFilteredData] = useState([]);
@@ -86,14 +93,14 @@ const StatisticsContainer = () => {
         break;
       case "yearly":
         newData = [];
-        for (let i = 0; i < data.length; i += 12) {
-          const yearData = data.slice(i, i + 12);
+        for (let i = 0; i < data.length; i += 365) {
+          const yearData = data.slice(i, i + 365);
           const yearSum = yearData.reduce(
             (sum, record) => sum + record[selectedDataType],
             0
           );
           newData.push({
-            label: `Year ${Math.ceil((i + 1) / 12)}`,
+            label: `Year ${Math.ceil((i + 1) / 365)}`,
             value: yearSum,
           });
         }
@@ -201,29 +208,29 @@ const StatisticsContainer = () => {
           label="Daily"
           isActive={selectedFilter === "daily"}
           onPress={() => handleFilterChange("daily")}
-          activeColor="darkorange"
-          inactiveColor="lightgray"
+          activeColor={SECONDARY_MEDIUM}
+          inactiveColor={BG_LIGHT}
         />
         <FilterButton
           label="Weekly"
           isActive={selectedFilter === "weekly"}
           onPress={() => handleFilterChange("weekly")}
-          activeColor="darkorange"
-          inactiveColor="lightgray"
+          activeColor={SECONDARY_MEDIUM}
+          inactiveColor={BG_LIGHT}
         />
         <FilterButton
           label="6 Months"
           isActive={selectedFilter === "6 months"}
           onPress={() => handleFilterChange("6 months")}
-          activeColor="darkorange"
-          inactiveColor="lightgray"
+          activeColor={SECONDARY_MEDIUM}
+          inactiveColor={BG_LIGHT}
         />
         <FilterButton
           label="Yearly"
           isActive={selectedFilter === "yearly"}
           onPress={() => handleFilterChange("yearly")}
-          activeColor="darkorange"
-          inactiveColor="lightgray"
+          activeColor={SECONDARY_MEDIUM}
+          inactiveColor={BG_LIGHT}
         />
       </View>
       {averageValue && (
@@ -241,28 +248,30 @@ const StatisticsContainer = () => {
           {getDateRangeText(selectedFilter)}
         </Text>
       )}
-      <BarChart data={filteredData} averageValue={averageValue} />
+      <View style={styles.chartContainer}>
+        <BarChart data={filteredData} averageValue={averageValue} />
+      </View>
       <View style={styles.buttonContainer}>
         <FilterButton
           label="Steps"
           isActive={selectedDataType === "steps"}
           onPress={() => handleDataTypeChange("steps")}
-          activeColor="darkblue"
-          inactiveColor="lightgray"
+          activeColor={PRIMARY_DARK}
+          inactiveColor={BG_LIGHT}
         />
         <FilterButton
           label="Distance"
           isActive={selectedDataType === "distance"}
           onPress={() => handleDataTypeChange("distance")}
-          activeColor="darkblue"
-          inactiveColor="lightgray"
+          activeColor={PRIMARY_DARK}
+          inactiveColor={BG_LIGHT}
         />
         <FilterButton
           label="Calories"
           isActive={selectedDataType === "calories"}
           onPress={() => handleDataTypeChange("calories")}
-          activeColor="darkblue"
-          inactiveColor="lightgray"
+          activeColor={PRIMARY_DARK}
+          inactiveColor={BG_LIGHT}
         />
       </View>
     </View>
@@ -271,25 +280,30 @@ const StatisticsContainer = () => {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 24,
+    fontSize: 18,
+    color: BG_DARK,
     fontWeight: "bold",
     textAlign: "left",
-    marginVertical: 10,
+    marginVertical: 25,
   },
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "flex-start",
-    marginBottom: 10,
+    marginBottom: 20,
   },
   averageText: {
-    fontSize: 16,
+    color: BG_DARK,
+    fontSize: 14,
     fontWeight: "bold",
     marginVertical: 10,
   },
   dateRangeText: {
-    color: "blue",
-    fontSize: 14,
+    color: PRIMARY_MEDIUM,
+    fontSize: 12,
     fontWeight: "bold",
+  },
+  chartContainer: {
+    marginTop: -20,
   },
 });
 

@@ -8,6 +8,13 @@ import {
   Share,
 } from "react-native";
 import { badges } from "../../data/badgeData";
+import {
+  PRIMARY_DARK,
+  SECONDARY_MEDIUM,
+  TXT_DARK_BG,
+  TXT_LIGHT_BG,
+} from "../../constants/colorCodes";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const BadgeItem = ({ navigation, route }) => {
   const { badgeTitle } = route.params;
@@ -29,6 +36,15 @@ const BadgeItem = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.headerContainer}>
+        <MaterialCommunityIcons
+          name="keyboard-backspace"
+          size={24}
+          color={PRIMARY_DARK}
+          onPress={() => navigation.goBack()}
+        />
+        <Text style={styles.header}>Badge Details</Text>
+      </View>
       <Image style={styles.badgeImage} source={badge.badgeImage} />
       <Text style={styles.badgeName}>{badge.badgeTitle}</Text>
       <Text style={styles.badgeDetail}>{badge.description}</Text>
@@ -46,27 +62,44 @@ const BadgeItem = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 50,
-    justifyContent: "center",
+    paddingHorizontal: 8,
+    paddingTop: 60,
+    backgroundColor: "white",
     alignItems: "center",
   },
+  headerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    marginBottom: 42,
+    marginHorizontal: 8,
+  },
+  header: {
+    flex: 1,
+    color: PRIMARY_DARK,
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginRight: 20,
+  },
   badgeImage: {
-    width: 200,
-    height: 200,
+    width: 204,
+    height: 204,
     borderRadius: 100,
-    marginBottom: 20,
+    marginBottom: 32,
+    alignContent: "center",
   },
   badgeName: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: "bold",
-    color: "darkblue",
-    marginBottom: 10,
+    color: PRIMARY_DARK,
+    marginBottom: 25,
     textAlign: "center",
   },
   badgeDetail: {
-    fontSize: 18,
-    marginBottom: 20,
+    fontSize: 14,
+    color: TXT_LIGHT_BG,
+    marginBottom: 32,
     textAlign: "center",
   },
   shareButtonText: {
@@ -77,19 +110,19 @@ const styles = StyleSheet.create({
   backButtonText: {
     textAlign: "center",
     fontWeight: "bold",
-    color: "darkblue",
+    color: PRIMARY_DARK,
   },
   shareButton: {
-    backgroundColor: "darkorange",
+    backgroundColor: SECONDARY_MEDIUM,
+    color: TXT_DARK_BG,
+    width: 358,
+    height: 40,
     padding: 10,
-    marginBottom: 10,
-    borderRadius: 8,
-    width: "100%",
+    marginBottom: 8,
+    borderRadius: 24,
   },
   goBackButton: {
-    padding: 10,
-    borderRadius: 8,
-    width: "100%",
+    padding: 16,
   },
 });
 

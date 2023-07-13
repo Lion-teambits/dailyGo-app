@@ -1,5 +1,6 @@
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
+import { TXT_DARK_BG, TXT_LIGHT_BG } from "../../constants/colorCodes";
 
 const FilterButton = ({
   label,
@@ -22,25 +23,25 @@ const FilterButton = ({
 
 const styles = StyleSheet.create({
   button: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
     borderRadius: 16,
-    marginHorizontal: 5,
-    backgroundColor: "lightgray",
+    marginHorizontal: 4,
+    backgroundColor: TXT_LIGHT_BG,
   },
   activeButton: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
     borderRadius: 16,
-    marginHorizontal: 5,
+    marginHorizontal: 4,
   },
   label: {
     fontWeight: "bold",
-    color: "#000",
+    color: TXT_LIGHT_BG,
   },
   activeLabel: {
     fontWeight: "bold",
-    color: "#FFF",
+    color: TXT_DARK_BG,
   },
 });
 

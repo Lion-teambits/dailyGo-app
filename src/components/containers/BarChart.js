@@ -4,32 +4,60 @@ import {
   VictoryBar,
   VictoryChart,
   VictoryTheme,
-  VictoryLabel,
   VictoryLine,
+  VictoryAxis,
 } from "victory-native";
+import {
+  PRIMARY_MEDIUM,
+  PRIMARY_DARK,
+  TXT_MEDIUM_BG,
+} from "../../constants/colorCodes";
 
 const BarChart = ({ data, averageValue }) => {
-  const ValueLabel = (props) => {
-    const { datum } = props;
-    return <VictoryLabel {...props} text={datum.value} />;
+  const ValueLabel = () => null;
+
+  const formatYAxisLabel = (tick) => {
+    return tick.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "");
   };
 
   return (
     <View>
       <VictoryChart theme={VictoryTheme.material} domainPadding={20}>
+        <VictoryAxis
+          style={{
+            axis: { stroke: PRIMARY_DARK, strokeWidth: 2 },
+            ticks: { size: 0 },
+            tickLabels: { fill: TXT_MEDIUM_BG, fontSize: 12 },
+            grid: { stroke: "none" },
+          }}
+        />
+        <VictoryAxis
+          dependentAxis
+          style={{
+            axis: { stroke: PRIMARY_DARK, strokeWidth: 2 },
+            ticks: { size: 0 },
+            tickLabels: { fill: TXT_MEDIUM_BG, fontSize: 12 },
+            grid: { stroke: "none" },
+          }}
+          tickFormat={formatYAxisLabel}
+        />
         <VictoryBar
           data={data}
           x="label"
           y="value"
           labelComponent={<ValueLabel />}
           style={{
-            data: { fill: "blue", width: 25, borderRadius: 50 },
+            data: {
+              fill: PRIMARY_MEDIUM,
+              width: 25,
+              cornerRadius: { top: ({ datum }) => datum.x * 4 },
+            },
           }}
         />
         <VictoryLine
           y={() => averageValue}
           style={{
-            data: { stroke: "darkblue", strokeDasharray: "2, 2" },
+            data: { stroke: PRIMARY_DARK, strokeDasharray: "6, 6" },
           }}
         />
       </VictoryChart>
