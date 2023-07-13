@@ -10,8 +10,12 @@ import {
 } from "native-base";
 import { useState } from "react";
 import { SECONDARY_MEDIUM } from "../../constants/colorCodes";
-import { groupChallengeMosters } from "../../data/challengeData";
+import {
+  GROUP_CHALLENGE_BADGE_INFO,
+  groupChallengeMosters,
+} from "../../data/challengeData";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import BadgeToAchieve from "../cards/BadgeToAchieve";
 
 const CreateChallengeForm = ({ createGroupEvent, goBackToChallenges }) => {
   const [title, setTitle] = useState("");
@@ -75,6 +79,10 @@ const CreateChallengeForm = ({ createGroupEvent, goBackToChallenges }) => {
       <Box marginY={2}>
         <Text>Rewards</Text>
         <Text>TODO: Badge Info</Text>
+        <BadgeToAchieve
+          badgeId={GROUP_CHALLENGE_BADGE_INFO}
+          steps={selectImgInfo ? selectImgInfo.steps : 0}
+        />
       </Box>
 
       <Button

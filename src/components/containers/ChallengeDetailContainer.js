@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { retrieveUserInfo, updateUserInfo } from "../../api/userService";
 import BadgeToAchieve from "../cards/BadgeToAchieve";
 import FriendsCard from "../cards/FriendsCard";
+import { updateGroupChallenge } from "../../api/groupChallengeService";
 
 const ChallengeDetailContainer = (props) => {
   const { challenge, isGroupChallenge } = props;
@@ -51,7 +52,9 @@ const ChallengeDetailContainer = (props) => {
       // 3. Add uid to groupchallenge document
       if (isGroupChallenge) {
         challenge.member_list.push(uid);
-        // TODO: After Rena merged update groupChallenge code.
+        await updateGroupChallenge(challenge._id, {
+          member_list: challenge.member_list,
+        });
       }
 
       navigation.goBack();
