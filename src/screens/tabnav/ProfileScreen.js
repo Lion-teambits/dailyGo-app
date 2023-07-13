@@ -6,27 +6,27 @@ import {
   TouchableOpacity,
   Switch,
   TextInput,
+  ScrollView,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import axios from "axios";
-const image1 =
-  "https://www.nicepng.com/png/detail/131-1317123_panini-caps-lion-king-02-mufasa-mufasa-lion.png";
-const image2 =
-  "https://www.nicepng.com/png/detail/789-7893464_lion-cartoon-clip-art-cartoon-lion-png.png";
-const image3 =
-  "https://www.nicepng.com/png/detail/1-17925_render-kon-bleach-mod-soul-ame-artificielle-peluche.png";
-const image4 =
-  "https://www.nicepng.com/png/detail/316-3164745_beautiful-images-of-wolf-cubs-the-lion-king.png";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BACKEND_SERVER_URL } from "@env";
 import { signOut } from "firebase/auth";
-import { auth } from "../../config/firebaseConfig";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { PROFILE_AVATAR_LIST } from "../../constants/imagePaths";
+import {
+  PRIMARY_MEDIUM,
+  BG_LIGHT,
+  PRIMARY_DARK,
+  SECONDARY_MEDIUM,
+  TXT_DARK_BG,
+} from "../../constants/colorCodes";
 
 const ProfileScreen = () => {
   const [editMode, setEditMode] = useState(false);
   const [name, setName] = useState("");
-  const [selectedImage, setSelectedImage] = useState(image1);
+  const [selectedImage, setSelectedImage] = useState(PROFILE_AVATAR_LIST[0]);
   const [applyChanges, setApplyChanges] = useState(false);
   const [dailyModeValue, setDailyModeValue] = useState(0);
   const [pushNotificationEnabled, setPushNotificationEnabled] = useState(true);
@@ -84,11 +84,28 @@ const ProfileScreen = () => {
   };
 
   const handleDecreaseDailyMode = () => {
-    setDailyModeValue((prevValue) => prevValue - 500);
+    setDailyModeValue((prevValue) => {
+      const newValue = prevValue - 500;
+      return newValue < 3000 ? 3000 : newValue;
+    });
   };
 
   const handleIncreaseDailyMode = () => {
-    setDailyModeValue((prevValue) => prevValue + 500);
+    setDailyModeValue((prevValue) => {
+      const newValue = prevValue + 500;
+      return newValue > 15000 ? 15000 : newValue;
+    });
+  };
+
+  const getDailyModeText = () => {
+    if (dailyModeValue >= 3000 && dailyModeValue <= 4999) {
+      return "Easy";
+    } else if (dailyModeValue >= 5000 && dailyModeValue <= 7999) {
+      return "Normal";
+    } else if (dailyModeValue >= 8000) {
+      return "Hard";
+    }
+    return "";
   };
 
   const handleTogglePushNotification = () => {
@@ -124,91 +141,60 @@ const ProfileScreen = () => {
   return (
     <View style={styles.container}>
       {editMode ? (
-        <View style={styles.subpageContainer}>
-          <TouchableOpacity onPress={() => handleImageSelection(image1)}>
-            <View
-              style={[
-                styles.avatarImage,
-                selectedImage === image1 && styles.selectedImage,
-              ]}
-            >
-              {selectedImage === image1 ? (
-                <Image
-                  source={{ uri: selectedImage }}
-                  style={styles.avatarImage}
-                />
-              ) : (
-                <Image source={{ uri: image1 }} style={styles.avatarImage} />
-              )}
+        <ScrollView>
+          <View style={styles.subpageContainer}>
+            <Text style={styles.subpageHeader}>Avatar</Text>
+            <Text style={styles.subpageText}>Select your avatar</Text>
+            <View style={styles.avatarContainer}>
+              {PROFILE_AVATAR_LIST.map((avatar, index) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => handleImageSelection(avatar)}
+                >
+                  <View
+                    style={[
+                      styles.avatarImage,
+                      selectedImage === avatar && styles.selectedImage,
+                    ]}
+                  >
+                    {selectedImage === avatar ? (
+                      <Image
+                        source={selectedImage}
+                        style={styles.avatarImage}
+                      />
+                    ) : (
+                      <Image source={avatar} style={styles.avatarImage} />
+                    )}
+                  </View>
+                </TouchableOpacity>
+              ))}
             </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleImageSelection(image2)}>
-            <View
-              style={[
-                styles.avatarImage,
-                selectedImage === image2 && styles.selectedImage,
-              ]}
-            >
-              {selectedImage === image2 ? (
-                <Image
-                  source={{ uri: selectedImage }}
-                  style={styles.avatarImage}
-                />
-              ) : (
-                <Image source={{ uri: image2 }} style={styles.avatarImage} />
-              )}
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleImageSelection(image3)}>
-            <View
-              style={[
-                styles.avatarImage,
-                selectedImage === image3 && styles.selectedImage,
-              ]}
-            >
-              {selectedImage === image3 ? (
-                <Image
-                  source={{ uri: selectedImage }}
-                  style={styles.avatarImage}
-                />
-              ) : (
-                <Image source={{ uri: image3 }} style={styles.avatarImage} />
-              )}
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleImageSelection(image4)}>
-            <View
-              style={[
-                styles.avatarImage,
-                selectedImage === image4 && styles.selectedImage,
-              ]}
-            >
-              {selectedImage === image4 ? (
-                <Image
-                  source={{ uri: selectedImage }}
-                  style={styles.avatarImage}
-                />
-              ) : (
-                <Image source={{ uri: image4 }} style={styles.avatarImage} />
-              )}
-            </View>
-          </TouchableOpacity>
 
-          <TouchableOpacity onPress={handleApplyChanges}>
-            <Text style={styles.applyButton}>Apply</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleCancelChanges}>
-            <Text style={styles.cancelButton}>Cancel</Text>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              style={styles.applyButton}
+              onPress={handleApplyChanges}
+            >
+              <Text style={styles.applyButtonText}>Apply Changes</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={handleCancelChanges}
+            >
+              <Text style={styles.cancelButtonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       ) : userData ? (
         <View style={styles.profileInfoContainer}>
+          <Text style={styles.profileInfoHeader}>Profile</Text>
           <TouchableOpacity onPress={handleEditProfile}>
             <Image
               source={{ uri: userData.avatar }}
               style={styles.profileImage}
             />
-            <Text style={styles.editButton}>Edit</Text>
+            <View style={styles.editButton}>
+              <Text style={styles.editButtonText}>Edit</Text>
+            </View>
           </TouchableOpacity>
 
           <View style={styles.nameContainer}>
@@ -219,26 +205,39 @@ const ProfileScreen = () => {
               onChangeText={setName}
             />
             <TouchableOpacity onPress={handleEditName}>
-              <MaterialIcons name="edit" size={20} color="gray" />
+              <MaterialIcons name="edit" size={20} color={PRIMARY_DARK} />
             </TouchableOpacity>
           </View>
+          <Text style={styles.dailyModeText}>Preferred Daily Mode</Text>
           <View style={styles.dailyModeContainer}>
-            <TouchableOpacity onPress={handleDecreaseDailyMode}>
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={handleDecreaseDailyMode}
+            >
               <Text style={styles.buttonText}>-</Text>
             </TouchableOpacity>
             <Text style={styles.dailyModeValue}>{dailyModeValue}</Text>
-            <TouchableOpacity onPress={handleIncreaseDailyMode}>
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={handleIncreaseDailyMode}
+            >
               <Text style={styles.buttonText}>+</Text>
             </TouchableOpacity>
           </View>
+          <Text style={styles.dailyLevelText}>{getDailyModeText()}</Text>
+
           <View style={styles.notificationContainer}>
-            <Text>Push Notifications</Text>
+            <Text style={styles.notificationText}>Push Notifications</Text>
             <Switch
               value={pushNotificationEnabled}
               onValueChange={handleTogglePushNotification}
+              trackColor={{ false: BG_LIGHT, true: PRIMARY_MEDIUM }}
             />
           </View>
-          <TouchableOpacity onPress={handleLogout}>
+          <TouchableOpacity
+            style={styles.logoutContainer}
+            onPress={handleLogout}
+          >
             <Text style={styles.logoutButton}>Logout</Text>
           </TouchableOpacity>
         </View>
@@ -252,99 +251,220 @@ const ProfileScreen = () => {
 const styles = {
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "white",
   },
   profileInfoContainer: {
+    flex: 1,
     alignItems: "center",
+    paddingTop: 60,
+    marginBottom: 20,
+    backgroundColor: "white",
   },
+  profileInfoHeader: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: PRIMARY_DARK,
+    textAlign: "center",
+    marginBottom: 50,
+  },
+
   profileImage: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    borderWidth: 4,
-    borderColor: "gray",
+    width: 112,
+    height: 112,
+    borderRadius: 56,
     marginBottom: 10,
   },
   editButton: {
-    fontSize: 18,
+    width: 55,
+    height: 30,
+    backgroundColor: "white",
+    borderRadius: 16,
+    shadowColor: "#000F92",
+    shadowOffset: {
+      width: 4,
+      height: 4,
+    },
+    shadowOpacity: 0.17,
+    shadowRadius: 4,
+    marginTop: -30,
+    marginLeft: 27,
+  },
+  editButtonText: {
+    fontSize: 12,
     fontWeight: "bold",
-    color: "white",
-    backgroundColor: "gray",
-    borderRadius: 10,
+    color: PRIMARY_DARK,
     textAlign: "center",
-    marginTop: -20,
+    paddingVertical: 8,
   },
   subpageContainer: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    paddingTop: 60,
     marginBottom: 20,
+    backgroundColor: "white",
   },
   applyButton: {
-    fontSize: 18,
+    backgroundColor: SECONDARY_MEDIUM,
+    width: 358,
+    height: 40,
+    padding: 10,
+    marginBottom: 8,
+    borderRadius: 24,
+  },
+  applyButtonText: {
+    fontSize: 16,
     fontWeight: "bold",
-    color: "green",
     textAlign: "center",
-    marginTop: 10,
+    color: TXT_DARK_BG,
   },
   cancelButton: {
+    padding: 16,
+    marginBottom: 10,
+  },
+  cancelButtonText: {
+    fontSize: 16,
+    textAlign: "center",
+    fontWeight: "bold",
+    color: PRIMARY_DARK,
+  },
+  subpageHeader: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "red",
+    color: PRIMARY_DARK,
     textAlign: "center",
-    marginTop: 10,
+    marginBottom: 32,
+  },
+  subpageText: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: PRIMARY_DARK,
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  avatarContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    paddingHorizontal: 40,
+    marginBottom: 20,
   },
   avatarImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 96,
+    height: 96,
+    borderRadius: 48,
+    marginBottom: 20,
   },
-
   selectedImage: {
+    borderWidth: 4,
     width: 104,
     height: 104,
-    borderRadius: 50,
-    borderWidth: 2,
-    borderColor: "gray",
+    borderRadius: 52,
+    borderColor: PRIMARY_DARK,
   },
 
   nameContainer: {
     flexDirection: "row",
     alignItems: "center",
+    marginTop: 15,
+    marginBottom: 40,
   },
   nameInput: {
-    fontSize: 16,
+    fontSize: 18,
+    color: PRIMARY_DARK,
     fontWeight: "bold",
     paddingVertical: 8,
     paddingHorizontal: 10,
     marginLeft: 20,
     width: "auto",
   },
+  dailyModeText: {
+    fontSize: 14,
+    color: PRIMARY_DARK,
+    marginBottom: 8,
+  },
+  dailyLevelText: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: PRIMARY_DARK,
+    marginTop: 8,
+  },
   dailyModeContainer: {
     flexDirection: "row",
     alignItems: "center",
   },
+  buttonContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "white",
+    shadowColor: "#000F92",
+    shadowOffset: {
+      width: 4,
+      height: 4,
+    },
+    shadowOpacity: 0.17,
+    shadowRadius: 4,
+  },
+
   buttonText: {
-    fontSize: 24,
-    paddingHorizontal: 10,
+    fontSize: 30,
+    fontWeight: "bold",
+    paddingHorizontal: 12,
+    paddingVertical: 1,
   },
   dailyModeValue: {
-    fontSize: 24,
+    fontSize: 36,
     fontWeight: "bold",
-    width: 80,
+    color: PRIMARY_DARK,
+    width: 188,
+    height: 36,
     textAlign: "center",
   },
   notificationContainer: {
+    width: 358,
+    height: 64,
+    borderRadius: 24,
+    backgroundColor: "white",
+    shadowColor: "#000F92",
+    shadowOffset: {
+      width: 4,
+      height: 4,
+    },
+    shadowOpacity: 0.17,
+    shadowRadius: 4,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
     marginVertical: 10,
+    marginTop: 60,
+  },
+  notificationText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: PRIMARY_DARK,
+  },
+  logoutContainer: {
+    width: 358,
+    height: 64,
+    borderRadius: 24,
+    backgroundColor: "white",
+    shadowColor: "#000F92",
+    shadowOffset: {
+      width: 4,
+      height: 4,
+    },
+    shadowOpacity: 0.17,
+    shadowRadius: 4,
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 10,
   },
   logoutButton: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "red",
-    marginTop: 10,
+    color: PRIMARY_DARK,
+    paddingHorizontal: 20,
   },
 };
 
