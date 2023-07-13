@@ -14,6 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BACKEND_SERVER_URL } from "@env";
 import { signOut } from "firebase/auth";
+import { auth } from "../../config/firebaseConfig";
 import { PROFILE_AVATAR_LIST } from "../../constants/imagePaths";
 import {
   PRIMARY_MEDIUM,
