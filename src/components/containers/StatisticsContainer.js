@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import BarChart from "./BarChart";
 import FilterButton from "../buttons/FilterButton";
-import axios from "axios";
-import { BACKEND_SERVER_URL } from "@env";
+import { retrieveDailyRecord } from "../../api/dailyRecordService";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   BG_DARK,
   PRIMARY_MEDIUM,
@@ -19,22 +19,24 @@ const StatisticsContainer = () => {
   const [selectedFilter, setSelectedFilter] = useState("daily");
 
   useEffect(() => {
-    axios
-      .get(`${BACKEND_SERVER_URL}/api/v1/dailyRecord/uid/111`)
-      .then((response) => {
-        const userData = response.data;
+    const getDailyRecord = async () => {
+      try {
+        const uid = await AsyncStorage.getItem("@uid");
+        const dailyRecord = await retrieveDailyRecord(`uid/${uid}`);
         const filteredData = calculateFilteredData(
           selectedFilter,
           selectedDataType,
-          userData
+          dailyRecord
         );
         const average = calculateAverageValue(filteredData);
         setFilteredData(filteredData);
         setAverageValue(average);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.log(error);
-      });
+      }
+    };
+
+    getDailyRecord();
   }, [selectedFilter, selectedDataType]);
 
   const calculateFilteredData = (filter, selectedDataType, data) => {
@@ -49,7 +51,9 @@ const StatisticsContainer = () => {
           past7Days.push(date.toISOString().split("T")[0]);
         }
         newData = past7Days.map((date) => {
-          const record = data.find((item) => item.date.split("T")[0] === date);
+          const record = data.find(
+            (item) => item.date && item.date.split("T")[0] === date
+          );
           if (record) {
             return {
               label: getDayOfWeek(record.date),
@@ -233,7 +237,7 @@ const StatisticsContainer = () => {
           inactiveColor={BG_LIGHT}
         />
       </View>
-      {averageValue && (
+      {averageValue !== null && (
         <Text style={styles.averageText}>
           {`${averageValue.toFixed(0)} ${getDataTypeUnit()} - Average`}
         </Text>

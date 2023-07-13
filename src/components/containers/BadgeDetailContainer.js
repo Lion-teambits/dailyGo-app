@@ -8,9 +8,9 @@ import {
   ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { badges } from "../../data/badgeData";
-import { BACKEND_SERVER_URL } from "@env";
+import { retrieveUserInfo } from "../../api/userService";
 import { PRIMARY_MEDIUM, TXT_LIGHT_BG } from "../../constants/colorCodes";
 
 const BadgeDetailContainer = () => {
@@ -18,15 +18,17 @@ const BadgeDetailContainer = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    axios
-      .get(`${BACKEND_SERVER_URL}/api/v1/user/aoxfjhh0232`)
-      .then((response) => {
-        const userData = response.data;
+    const getUserInfo = async () => {
+      try {
+        const uid = await AsyncStorage.getItem("@uid");
+        const userData = await retrieveUserInfo(uid);
         setUserData(userData);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.log(error);
-      });
+      }
+    };
+
+    getUserInfo();
   }, []);
 
   const findBadgeImage = (badgeTitle) => {

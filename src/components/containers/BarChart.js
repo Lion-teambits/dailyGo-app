@@ -17,6 +17,9 @@ const BarChart = ({ data, averageValue }) => {
   const ValueLabel = () => null;
 
   const formatYAxisLabel = (tick) => {
+    if (tick < 1) {
+      return "";
+    }
     return tick.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "");
   };
 

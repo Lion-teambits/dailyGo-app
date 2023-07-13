@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-import axios from "axios";
-import { BACKEND_SERVER_URL } from "@env";
+import { retrieveUserInfo } from "../../api/userService";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TXT_LIGHT_BG } from "../../constants/colorCodes";
 
 const StatsContainer = () => {
@@ -9,16 +9,19 @@ const StatsContainer = () => {
   const [hearts, setHearts] = useState(0);
 
   useEffect(() => {
-    axios
-      .get(`${BACKEND_SERVER_URL}/api/v1/user/aoxfjhh0232`)
-      .then((response) => {
-        const { fireflies, hearts } = response.data;
+    const getUserInfo = async () => {
+      try {
+        const uid = await AsyncStorage.getItem("@uid");
+        const userData = await retrieveUserInfo(uid);
+        const { fireflies, hearts } = userData;
         setFireflies(fireflies);
         setHearts(hearts);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.log(error);
-      });
+      }
+    };
+
+    getUserInfo();
   }, []);
 
   return (
