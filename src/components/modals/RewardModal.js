@@ -43,7 +43,7 @@ const RewardModal = ({
             <Button.Group space={2}>
               <Button
                 onPress={() => {
-                  onSubmit();
+                  onSubmit("daily");
                   setShowModal(false);
                 }}
               >
@@ -75,7 +75,7 @@ const RewardModal = ({
             <Button.Group space={2}>
               <Button
                 onPress={() => {
-                  onSubmit();
+                  onSubmit("event");
                   setShowModal(false);
                 }}
               >
