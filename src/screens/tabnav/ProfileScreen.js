@@ -194,7 +194,10 @@ const ProfileScreen = () => {
         <View style={styles.profileInfoContainer}>
           <Text style={styles.profileInfoHeader}>Profile</Text>
           <TouchableOpacity onPress={handleEditProfile}>
-            <Image source={userData.avatar} style={styles.profileImage} />
+            <Image
+              source={parseInt(userData.avatar)}
+              style={styles.profileImage}
+            />
             <View style={styles.editButton}>
               <Text style={styles.editButtonText}>Edit</Text>
             </View>
