@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-import axios from "axios";
-import { BACKEND_SERVER_URL } from "@env";
+import { retrieveDailyRecord } from "../../api/dailyRecordService";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TXT_LIGHT_BG } from "../../constants/colorCodes";
 
 const StreakContainer = () => {
   const [streakData, setStreakData] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`${BACKEND_SERVER_URL}/api/v1/dailyRecord/uid/111`)
-      .then((response) => {
-        const userData = response.data;
-        setStreakData(userData);
-      })
-      .catch((error) => {
+    const getDailyRecord = async () => {
+      try {
+        const uid = await AsyncStorage.getItem("@uid");
+        const dailyRecord = await retrieveDailyRecord(`uid/${uid}`);
+        setStreakData(dailyRecord);
+      } catch (error) {
         console.log(error);
-      });
+      }
+    };
+
+    getDailyRecord();
   }, []);
 
   const renderStreakIcons = () => {
