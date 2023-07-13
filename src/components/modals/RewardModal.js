@@ -34,7 +34,7 @@ const RewardModal = ({
             <Button.Group space={2}>
               <Button
                 onPress={() => {
-                  onSubmit();
+                  onSubmit("daily");
                   setShowModal(false);
                 }}
               >
@@ -55,14 +55,16 @@ const RewardModal = ({
         <Modal.Content maxWidth="400px">
           <Modal.Body>
             <Text>Congratulations!</Text>
-            <Text>You’ve reached the targeted steps and collected the badge.</Text>
+            <Text>
+              You’ve reached the targeted steps and collected the badge.
+            </Text>
             <Text>Check achievement page :)</Text>
           </Modal.Body>
           <Modal.Footer>
             <Button.Group space={2}>
               <Button
                 onPress={() => {
-                  onSubmit();
+                  onSubmit("event");
                   setShowModal(false);
                 }}
               >

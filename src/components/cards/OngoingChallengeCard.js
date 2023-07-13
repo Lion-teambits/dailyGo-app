@@ -9,6 +9,7 @@ import {
   Button,
   Text,
   View,
+  useClipboard,
 } from "native-base";
 import { useContext, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
@@ -27,6 +28,7 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
   const [showRewardModal, setShowRewardModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const { setIsLoading } = useContext(UserContext);
+  const { value, onCopy } = useClipboard();
 
   useEffect(() => {
     setProgressRate(
@@ -153,6 +155,31 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
           <Text>Kcal</Text>
         </VStack>
       </HStack>
+      {challenge.type === "group" && (
+        <>
+          <Text>Friends</Text>
+          <HStack>
+            {challenge.memberList.map((user_id) => (
+              <Image
+                key={user_id}
+                // [TODO] Replace image source
+                source={challenge.monsterImg}
+                alt="member avator"
+                size="xs"
+              />
+            ))}
+          </HStack>
+          <HStack>
+            <Text>Code: {challenge._id.slice(0, 6)}...</Text>
+            <Button
+              bordered
+              onPress={() => onCopy(challenge._id)}
+            >
+              Copy
+            </Button>
+          </HStack>
+        </>
+      )}
       {challenge.type !== "daily" && (
         <>
           <Text>badge info: empty now{challenge.badgeInfo}</Text>
@@ -167,9 +194,6 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
             Are you sure you want to leave?
           </ConfirmationModal>
         </>
-      )}
-      {challenge.type === "group" && (
-        <Text>Group challenge component is under construction... :D</Text>
       )}
     </View>
   );
