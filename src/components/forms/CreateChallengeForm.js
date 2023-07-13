@@ -78,7 +78,6 @@ const CreateChallengeForm = ({ createGroupEvent, goBackToChallenges }) => {
 
       <Box marginY={2}>
         <Text>Rewards</Text>
-        <Text>TODO: Badge Info</Text>
         <BadgeToAchieve
           badgeId={GROUP_CHALLENGE_BADGE_INFO}
           steps={selectImgInfo ? selectImgInfo.steps : 0}

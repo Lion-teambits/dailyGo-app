@@ -48,6 +48,15 @@ const ChallengeDetailContainer = (props) => {
           });
         }
       }
+
+      // 3. Add uid to groupchallenge document
+      if (isGroupChallenge) {
+        challenge.member_list.push(uid);
+        await updateGroupChallenge(challenge._id, {
+          member_list: challenge.member_list,
+        });
+      }
+
       navigation.goBack();
     } catch (error) {
       console.log(error);
