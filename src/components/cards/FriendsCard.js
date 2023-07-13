@@ -1,8 +1,5 @@
 import { Box, HStack, Heading, Image, Text, VStack } from "native-base";
-import {
-  AVATAR_LIST,
-  IMAGE_MONSTER_TAKOYAKI,
-} from "../../constants/imagePaths";
+import { PROFILE_AVATAR_LIST } from "../../constants/imagePaths";
 
 const FriendsCard = ({ member, displayTitle }) => {
   return (
@@ -11,11 +8,14 @@ const FriendsCard = ({ member, displayTitle }) => {
       <HStack>
         {member.map((person) => {
           return (
-            <Box key={person}>
+            <Box margin={1} key={person} borderRadius="full" overflow="hidden">
               <Image
                 alt="member avatar"
-                // TODO: update image file after Data's code merged.
-                source={parseInt(AVATAR_LIST[Math.floor(Math.random() * 4)])}
+                source={parseInt(
+                  PROFILE_AVATAR_LIST[
+                    Math.floor(Math.random() * PROFILE_AVATAR_LIST.length)
+                  ]
+                )}
                 style={{ width: 32, height: 32 }}
               />
             </Box>
