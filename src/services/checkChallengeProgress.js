@@ -192,7 +192,7 @@ export const checkGroupChallengeProgress = async (user_id) => {
         getReward: "",
         badgeInfo: null,
         _id: 0,
-        friendsInfo: [],
+        memberList: [],
         challengeCode: null,
       };
 
@@ -224,7 +224,7 @@ export const checkGroupChallengeProgress = async (user_id) => {
         challengeProgress.get_reward === "completed" ? true : false;
       returnObj.badgeInfo = challengeProgress.badge_info;
       returnObj._id = challengeProgress._id;
-      returnObj.friendsInfo = groupChallengeInfo.member_list;
+      returnObj.memberList = groupChallengeInfo.member_list;
       return returnObj;
     })
   );

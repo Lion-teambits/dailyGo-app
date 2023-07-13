@@ -33,3 +33,20 @@ export const retrieveGroupChallengeInfo = async (id) => {
     throw error;
   }
 };
+
+// Update challenge progress
+export const updateGroupChallenge = async (
+  groupChallenge_id,
+  newGroupChallengeData
+) => {
+  try {
+    const challenge = await axios.put(
+      `${BASE_URL}/groupChallenge/${groupChallenge_id}`,
+      newGroupChallengeData
+    );
+    return challenge.data;
+  } catch (error) {
+    console.log("Error in updateGroupChallenge");
+    throw error;
+  }
+};
