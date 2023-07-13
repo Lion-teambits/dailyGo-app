@@ -3,10 +3,10 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { createUserInfo } from "../../api/userService";
 import { useNavigation } from "@react-navigation/native";
+import { AVATAR_6 } from "../../constants/imagePaths";
 
 const name = "Mufasa";
-const photo =
-  "https://cdn.pixabay.com/photo/2021/05/15/10/59/lion-6255523_1280.jpg";
+const photo = AVATAR_6;
 
 const PreferencesScreen = ({ route }) => {
   const navigation = useNavigation();
@@ -16,12 +16,7 @@ const PreferencesScreen = ({ route }) => {
       const uid = await AsyncStorage.getItem("@uid");
       if (!(uid === null)) {
         if (userInfo) {
-          await createUserInfo(
-            userInfo.displayName,
-            userInfo.photoURL,
-            steps,
-            uid
-          );
+          await createUserInfo(userInfo.displayName, photo, steps, uid);
         } else {
           await createUserInfo(name, photo, steps, uid);
         }
