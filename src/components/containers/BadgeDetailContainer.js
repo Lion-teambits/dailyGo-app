@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { badges } from "../../data/badgeData";
 import { BACKEND_SERVER_URL } from "@env";
+import { PRIMARY_MEDIUM, TXT_LIGHT_BG } from "../../constants/colorCodes";
 
 const BadgeDetailContainer = () => {
   const [userData, setUserData] = useState(null);
@@ -56,7 +57,7 @@ const BadgeDetailContainer = () => {
         <View style={styles.badgesHeaderContainer}>
           <Text style={styles.badgesHeader}>Daily Badges</Text>
           <TouchableOpacity onPress={() => handleSeeMorePress("daily")}>
-            <Text style={styles.seeMore}>See more</Text>
+            <Text style={styles.seeMore}>See More</Text>
           </TouchableOpacity>
         </View>
         <ScrollView
@@ -96,9 +97,9 @@ const BadgeDetailContainer = () => {
           <Text style={styles.badgesHeader}>Special Badges</Text>
           {specialMonstersBadges.filter((badge) =>
             userData?.badges.includes(badge.badgeTitle)
-          ).length > 0 && (
+          ).length > 5 && (
             <TouchableOpacity onPress={() => handleSeeMorePress("special")}>
-              <Text style={styles.seeMore}>See more</Text>
+              <Text style={styles.seeMore}>See More</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -141,6 +142,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 20,
+    paddingBottom: 60,
   },
   contentContainer: {
     paddingBottom: 30,
@@ -150,9 +152,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   badgesMainHeader: {
-    fontSize: 24,
+    color: TXT_LIGHT_BG,
+    fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 25,
   },
   badgesHeaderContainer: {
     flexDirection: "row",
@@ -160,25 +163,27 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   badgesHeader: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: "bold",
+    color: TXT_LIGHT_BG,
     marginBottom: 10,
   },
   badgeImage: {
-    width: 100,
-    height: 100,
+    width: 72,
+    height: 72,
     borderRadius: 50,
     marginRight: 10,
   },
   seeMore: {
-    color: "blue",
-    fontSize: 18,
+    color: PRIMARY_MEDIUM,
+    fontSize: 14,
     fontWeight: "bold",
     alignSelf: "flex-end",
+    paddingRight: 20,
   },
 
   noSpecialBadges: {
-    fontSize: 16,
+    fontSize: 14,
     fontStyle: "italic",
     textAlign: "center",
   },

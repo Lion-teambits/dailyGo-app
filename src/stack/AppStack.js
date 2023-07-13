@@ -42,8 +42,16 @@ const AppStack = () => {
           component={CreateGroupChallengeScreen}
         />
         <Stack.Screen name="GroupChallenge" component={GroupChallengeScreen} />
-        <Stack.Screen name="BadgeList" component={BadgeList} />
-        <Stack.Screen name="BadgeItem" component={BadgeItem} />
+        <Stack.Screen
+          name="BadgeList"
+          component={BadgeList}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="BadgeItem"
+          component={BadgeItem}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

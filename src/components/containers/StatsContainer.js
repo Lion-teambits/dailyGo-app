@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import axios from "axios";
 import { BACKEND_SERVER_URL } from "@env";
+import { TXT_LIGHT_BG } from "../../constants/colorCodes";
 
 const StatsContainer = () => {
   const [fireflies, setFireflies] = useState(0);
@@ -60,28 +61,31 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   statsHeader: {
-    fontSize: 18,
+    color: TXT_LIGHT_BG,
+    fontSize: 14,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 8,
   },
   statsText: {
-    fontSize: 16,
+    color: TXT_LIGHT_BG,
+    fontSize: 18,
     fontWeight: "bold",
-    marginRight: 10,
+    marginRight: 8,
   },
   statsItem: {
     flexDirection: "row",
     alignItems: "center",
-    marginRight: 10,
+    marginTop: 16,
+    marginRight: 24,
   },
   statsIconFirefly: {
-    width: 40,
-    height: 40,
-    marginRight: 10,
+    width: 34,
+    height: 34,
+    marginRight: 8,
   },
   statsIconHearts: {
-    width: 100,
-    height: 40,
+    width: 85,
+    height: 34,
   },
 });
 

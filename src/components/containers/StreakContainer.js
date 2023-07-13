@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import axios from "axios";
 import { BACKEND_SERVER_URL } from "@env";
+import { TXT_LIGHT_BG } from "../../constants/colorCodes";
 
 const StreakContainer = () => {
   const [streakData, setStreakData] = useState([]);
@@ -116,12 +117,13 @@ const StreakContainer = () => {
 
 const styles = StyleSheet.create({
   streakContainer: {
-    marginBottom: 20,
+    marginBottom: 16,
   },
   streakHeader: {
-    fontSize: 18,
+    color: TXT_LIGHT_BG,
+    fontSize: 14,
     fontWeight: "bold",
-    marginBottom: 20,
+    marginBottom: 8,
   },
   streakItem: {
     flexDirection: "row",
@@ -129,9 +131,10 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   streakIcon: {
-    width: 45,
-    height: 45,
-    marginRight: 10,
+    width: 34,
+    height: 34,
+    marginTop: 16,
+    marginRight: 16,
     borderRadius: 50,
   },
 });

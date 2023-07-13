@@ -8,6 +8,8 @@ import {
   StyleSheet,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { PRIMARY_DARK, TXT_MEDIUM_BG } from "../../constants/colorCodes";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const BadgeList = ({ route }) => {
   const { categoryBadges, userData } = route.params;
@@ -40,32 +42,64 @@ const BadgeList = ({ route }) => {
                 : require("../../../assets/images/badges/daily0.png")
             }
           />
-          <Text style={styles.badgeName}>{item.badgeTitle}</Text>
+          <Text
+            style={[styles.badgeName, !hasBadge && styles.disabledBadgeText]}
+          >
+            {item.badgeTitle}
+          </Text>
         </View>
       </TouchableOpacity>
     );
   };
 
   return (
-    <FlatList
-      data={filteredBadges}
-      renderItem={renderBadgeItem}
-      keyExtractor={(item) => item.id.toString()}
-      numColumns={3}
-      contentContainerStyle={styles.container}
-    />
+    <View style={styles.container}>
+      <View style={styles.headerContainer}>
+        <MaterialCommunityIcons
+          name="keyboard-backspace"
+          size={24}
+          color={PRIMARY_DARK}
+          onPress={() => navigation.goBack()}
+        />
+        <Text style={styles.header}>Badge List</Text>
+      </View>
+      <FlatList
+        data={filteredBadges}
+        renderItem={renderBadgeItem}
+        keyExtractor={(item) => item.id.toString()}
+        numColumns={3}
+        contentContainerStyle={styles.listContainer}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 16,
-    paddingHorizontal: 5,
+    flex: 1,
+    paddingHorizontal: 8,
+    paddingTop: 60,
+    backgroundColor: "white",
+  },
+  headerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    marginBottom: 32,
+    marginHorizontal: 8,
+  },
+  header: {
+    flex: 1,
+    color: PRIMARY_DARK,
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginRight: 20,
   },
   badgeContainer: {
     alignItems: "center",
     justifyContent: "center",
-    margin: 10,
+    margin: 9,
     width: 115,
   },
   badgeImage: {
@@ -74,10 +108,14 @@ const styles = StyleSheet.create({
     borderRadius: 40,
   },
   badgeName: {
-    marginTop: 8,
+    marginTop: 16,
     fontSize: 12,
     fontWeight: "bold",
     textAlign: "center",
+    color: PRIMARY_DARK,
+  },
+  disabledBadgeText: {
+    color: TXT_MEDIUM_BG,
   },
 });
 
