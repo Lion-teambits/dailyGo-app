@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Switch,
   TextInput,
-  ScrollView,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import axios from "axios";
@@ -142,57 +141,49 @@ const ProfileScreen = () => {
   return (
     <View style={styles.container}>
       {editMode ? (
-        <ScrollView>
-          <View style={styles.subpageContainer}>
-            <Text style={styles.subpageHeader}>Avatar</Text>
-            <Text style={styles.subpageText}>Select your avatar</Text>
-            <View style={styles.avatarContainer}>
-              {PROFILE_AVATAR_LIST.map((avatar, index) => (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => handleImageSelection(avatar)}
+        <View style={styles.subpageContainer}>
+          <Text style={styles.subpageHeader}>Avatar</Text>
+          <Text style={styles.subpageText}>Select your avatar</Text>
+          <View style={styles.avatarContainer}>
+            {PROFILE_AVATAR_LIST.map((avatar, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => handleImageSelection(avatar)}
+              >
+                <View
+                  style={[
+                    styles.avatarImage,
+                    selectedImage === avatar && styles.selectedImage,
+                  ]}
                 >
-                  <View
-                    style={[
-                      styles.avatarImage,
-                      selectedImage === avatar && styles.selectedImage,
-                    ]}
-                  >
-                    {selectedImage === avatar ? (
-                      <Image
-                        source={selectedImage}
-                        style={styles.avatarImage}
-                      />
-                    ) : (
-                      <Image source={avatar} style={styles.avatarImage} />
-                    )}
-                  </View>
-                </TouchableOpacity>
-              ))}
-            </View>
-
-            <TouchableOpacity
-              style={styles.applyButton}
-              onPress={handleApplyChanges}
-            >
-              <Text style={styles.applyButtonText}>Apply Changes</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.cancelButton}
-              onPress={handleCancelChanges}
-            >
-              <Text style={styles.cancelButtonText}>Cancel</Text>
-            </TouchableOpacity>
+                  {selectedImage === avatar ? (
+                    <Image source={selectedImage} style={styles.avatarImage} />
+                  ) : (
+                    <Image source={avatar} style={styles.avatarImage} />
+                  )}
+                </View>
+              </TouchableOpacity>
+            ))}
           </View>
-        </ScrollView>
+
+          <TouchableOpacity
+            style={styles.applyButton}
+            onPress={handleApplyChanges}
+          >
+            <Text style={styles.applyButtonText}>Apply Changes</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.cancelButton}
+            onPress={handleCancelChanges}
+          >
+            <Text style={styles.cancelButtonText}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
       ) : userData ? (
         <View style={styles.profileInfoContainer}>
           <Text style={styles.profileInfoHeader}>Profile</Text>
           <TouchableOpacity onPress={handleEditProfile}>
-            <Image
-              source={{ uri: userData.avatar }}
-              style={styles.profileImage}
-            />
+            <Image source={userData.avatar} style={styles.profileImage} />
             <View style={styles.editButton}>
               <Text style={styles.editButtonText}>Edit</Text>
             </View>
@@ -319,7 +310,7 @@ const styles = {
     color: TXT_DARK_BG,
   },
   cancelButton: {
-    padding: 16,
+    padding: 8,
     marginBottom: 10,
   },
   cancelButtonText: {
@@ -346,20 +337,20 @@ const styles = {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    paddingHorizontal: 40,
+    paddingHorizontal: 55,
     marginBottom: 20,
   },
   avatarImage: {
-    width: 96,
-    height: 96,
-    borderRadius: 48,
-    marginBottom: 20,
+    width: 86,
+    height: 86,
+    borderRadius: 43,
+    marginBottom: 15,
   },
   selectedImage: {
     borderWidth: 4,
-    width: 104,
-    height: 104,
-    borderRadius: 52,
+    width: 94,
+    height: 94,
+    borderRadius: 47,
     borderColor: PRIMARY_DARK,
   },
 
