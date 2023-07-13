@@ -20,7 +20,7 @@ const BadgeToAchieve = ({ badgeId, steps }) => {
           <Box width={"40%"} justifyContent="center" alignItems="center">
             <Image
               alt="Badge Image"
-              source={badgeInfo.badgeImage}
+              source={parseInt(badgeInfo.badgeImage)}
               style={{ width: 100, height: 100 }}
             />
           </Box>

@@ -6,6 +6,7 @@ import { createChallengeProgress } from "../../api/challengeProgressService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { retrieveUserInfo, updateUserInfo } from "../../api/userService";
 import BadgeToAchieve from "../cards/BadgeToAchieve";
+import FriendsCard from "../cards/FriendsCard";
 
 const ChallengeDetailContainer = (props) => {
   const { challenge, isGroupChallenge } = props;
@@ -46,6 +47,13 @@ const ChallengeDetailContainer = (props) => {
           });
         }
       }
+
+      // 3. Add uid to groupchallenge document
+      if (isGroupChallenge) {
+        challenge.member_list.push(uid);
+        // TODO: After Rena merged update groupChallenge code.
+      }
+
       navigation.goBack();
     } catch (error) {
       console.log(error);
@@ -71,6 +79,11 @@ const ChallengeDetailContainer = (props) => {
           size="2xl"
         />
         <Heading size={"md"}>{challenge.monster_name}</Heading>
+      </Box>
+      {isGroupChallenge ? (
+        <FriendsCard member={challenge.member_list} displayTitle={true} />
+      ) : null}
+      <Box space={1} alignItems="center">
         <BadgeToAchieve
           badgeId={challenge.badge_info}
           steps={challenge.target_steps}
