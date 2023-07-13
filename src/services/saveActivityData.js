@@ -13,12 +13,6 @@ import {
   updateChallengeProgress,
 } from "../api/challengeProgressService";
 import receiveReward from "./receiveReward";
-import {
-  retrieveGroupChallengeInfo,
-  updateGroupChallenge,
-} from "../api/groupChallengeService";
-
-let previousActivityData = null;
 
 // Fetch activity data & update database
 async function saveActivityData(user_id) {
@@ -164,26 +158,6 @@ const updateEventAndGroupChallengeProgresses = async (
             challengeProgress_id,
             newChallengeProgressData
           );
-
-          if (challengeProgressData.group_challenge_info) {
-            const groupChallengeInfo = await retrieveGroupChallengeInfo(
-              challengeProgressData.group_challenge_info
-            );
-
-            await updateGroupChallenge(
-              challengeProgressData.group_challenge_info,
-              {
-                group_current_steps:
-                  groupChallengeInfo.group_current_steps + differenceOfSteps,
-                group_current_calories:
-                  groupChallengeInfo.group_current_calories +
-                  differenceOfCalories,
-                group_current_distance:
-                  groupChallengeInfo.group_current_distance +
-                  differenceOfDistance,
-              }
-            );
-          }
         })
       );
     };

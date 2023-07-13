@@ -27,107 +27,30 @@ const RewardModal = ({
           borderRadius={24}
         >
           <Modal.Body>
-            <Box
-              alignItems="center"
-              paddingY={16}
-            >
-              <Typography
-                type="heading4"
-                style={[styles.heading, styles.color]}
-              >
-                Congratulations!
-              </Typography>
-
-              <Typography
-                type="subtitles"
-                style={[styles.subtitle, styles.color]}
-              >
-                You’ve reached {reward.streakDays} days streak
-              </Typography>
-
-              <Typography
-                type="body2Bold"
-                style={[styles.subtitle, styles.color]}
-              >
-                Collected
-              </Typography>
-
-              <HStack
-                space={4}
-                justifyContent="center"
-                alignItems="center"
-                marginBottom={20}
-              >
-                <HStack
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  <Typography
-                    type="subtitles"
-                    style={styles.color}
-                  >
-                    {reward.firefliesToday}x{" "}
-                  </Typography>
-                  <FireFlyIcon
-                    width={34}
-                    height={34}
-                  />
-                </HStack>
-
-                <HStack
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  <Typography
-                    type="subtitles"
-                    style={styles.color}
-                  >
-                    {reward.heartToday}x{" "}
-                  </Typography>
-                  <HeartIcon
-                    width={34}
-                    height={34}
-                  />
-                </HStack>
-              </HStack>
-
-              <Typography
-                type="body2Bold"
-                style={[styles.subtitle, styles.color]}
-              >
-                Tomorrow
-              </Typography>
-              <Box
-                paddingX={10}
-                alignItems="center"
-                textAlign="center"
-              >
-                <Typography
-                  type="body2"
-                  style={[styles.subtitle, styles.color]}
-                >
-                  You will get {reward.firefliesTmr} Fireflies and{" "}
-                  {reward.heartTmr} heart after reaching your daily goal.
-                </Typography>
-                <Typography
-                  type="body2"
-                  style={[styles.subtitle, styles.color]}
-                >
-                  Stay active!
-                </Typography>
-              </Box>
-              <Box width={40}>
-                <AccentButton
-                  onPress={() => {
-                    onSubmit("daily");
-                    setShowModal(false);
-                  }}
-                >
-                  OK
-                </AccentButton>
-              </Box>
-            </Box>
+            <Text>Congratulations!</Text>
+            <Text>You’ve reached {reward.streakDays} days streak</Text>
+            <Text>Collected</Text>
+            <Text>{reward.firefliesToday}x firefries</Text>
+            <Text>{reward.heartToday}x hearts</Text>
+            <Text>Tomorrow</Text>
+            <Text>
+              You will get {reward.firefliesTmr} Fireflies and {reward.heartTmr}{" "}
+              heart after reaching your daily goal.
+            </Text>
+            <Text>Stay active!</Text>
           </Modal.Body>
+          <Modal.Footer>
+            <Button.Group space={2}>
+              <Button
+                onPress={() => {
+                  onSubmit();
+                  setShowModal(false);
+                }}
+              >
+                OK
+              </Button>
+            </Button.Group>
+          </Modal.Footer>
         </Modal.Content>
       </Modal>
     );
@@ -144,43 +67,22 @@ const RewardModal = ({
           borderRadius={24}
         >
           <Modal.Body>
-            <Box
-              alignItems="center"
-              paddingY={16}
-              justifyContent="space-around"
-            >
-              <Typography
-                type="heading4"
-                style={[styles.heading, styles.color]}
-              >
-                Congratulations!
-              </Typography>
-
-              <Typography
-                type="subtitles"
-                style={[styles.subtitle, styles.color]}
-              >
-                You’ve reached the targeted steps!
-              </Typography>
-
-              <Typography
-                type="body2Bold"
-                style={[styles.subtitle, styles.color]}
-              >
-                Check achievement page :)
-              </Typography>
-              <Box width={40}>
-                <AccentButton
-                  onPress={() => {
-                    onSubmit("event");
-                    setShowModal(false);
-                  }}
-                >
-                  OK
-                </AccentButton>
-              </Box>
-            </Box>
+            <Text>Congratulations!</Text>
+            <Text>You’ve reached the targeted steps and collected the badge.</Text>
+            <Text>Check achievement page :)</Text>
           </Modal.Body>
+          <Modal.Footer>
+            <Button.Group space={2}>
+              <Button
+                onPress={() => {
+                  onSubmit();
+                  setShowModal(false);
+                }}
+              >
+                OK
+              </Button>
+            </Button.Group>
+          </Modal.Footer>
         </Modal.Content>
       </Modal>
     );
