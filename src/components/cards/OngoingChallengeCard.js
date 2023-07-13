@@ -309,6 +309,7 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
           </HStack>
         </Container>
       )}
+    
       {challenge.type !== "daily" && (
         <>
           <BadgeToAchieve
