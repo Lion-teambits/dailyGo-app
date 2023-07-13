@@ -9,7 +9,6 @@ export const retrieveDailyRecord = async (dailyRecord_id) => {
     const dailyRecord = await axios.get(
       `${BASE_URL}/dailyRecord/${dailyRecord_id}`
     );
-    // console.log("retrieveDailyRecord: ", dailyRecord.data);
     return dailyRecord.data;
   } catch (error) {
     console.log("retrieveDailyRecord Error: ", error.message);
