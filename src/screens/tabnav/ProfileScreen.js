@@ -93,7 +93,7 @@ const ProfileScreen = () => {
   const handleIncreaseDailyMode = () => {
     setDailyModeValue((prevValue) => {
       const newValue = prevValue + 500;
-      return newValue > 15000 ? 15000 : newValue;
+      return newValue > 10000 ? 10000 : newValue;
     });
   };
 
