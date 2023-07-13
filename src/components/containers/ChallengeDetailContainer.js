@@ -5,6 +5,9 @@ import { DISABLED, SECONDARY_MEDIUM } from "../../constants/colorCodes";
 import { createChallengeProgress } from "../../api/challengeProgressService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { retrieveUserInfo, updateUserInfo } from "../../api/userService";
+import BadgeToAchieve from "../cards/BadgeToAchieve";
+import FriendsCard from "../cards/FriendsCard";
+import { updateGroupChallenge } from "../../api/groupChallengeService";
 
 const ChallengeDetailContainer = (props) => {
   const { challenge, isGroupChallenge } = props;
@@ -45,6 +48,15 @@ const ChallengeDetailContainer = (props) => {
           });
         }
       }
+
+      // 3. Add uid to groupchallenge document
+      if (isGroupChallenge) {
+        challenge.member_list.push(uid);
+        await updateGroupChallenge(challenge._id, {
+          member_list: challenge.member_list,
+        });
+      }
+
       navigation.goBack();
     } catch (error) {
       console.log(error);
@@ -64,13 +76,21 @@ const ChallengeDetailContainer = (props) => {
         <Text>{timeDifference}</Text>
       </HStack>
       <Box space={1} alignItems="center">
-        <Heading size={"lg"}>{challenge.title}</Heading>
         <Image
           alt={challenge.title}
           source={challenge.monster_image}
           size="2xl"
         />
         <Heading size={"md"}>{challenge.monster_name}</Heading>
+      </Box>
+      {isGroupChallenge ? (
+        <FriendsCard member={challenge.member_list} displayTitle={true} />
+      ) : null}
+      <Box space={1} alignItems="center">
+        <BadgeToAchieve
+          badgeId={challenge.badge_info}
+          steps={challenge.target_steps}
+        />
         <Button
           margin={1}
           width={"100%"}

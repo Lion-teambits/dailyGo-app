@@ -1,5 +1,6 @@
 import { Box, HStack, Heading, Image, Text, VStack } from "native-base";
 import StepsBarGraph from "../graphs/StepsBarGraph";
+import FriendsCard from "../cards/FriendsCard";
 
 const GroupChallengeListItem = ({ challenge }) => {
   const targetSteps = challenge.target_steps;
@@ -21,7 +22,10 @@ const GroupChallengeListItem = ({ challenge }) => {
                 targetSteps={targetSteps}
                 progressBarWidth={progressBarWidth}
               />
-              <Text>TODO: Display Member</Text>
+              <FriendsCard
+                member={challenge.member_list}
+                displayTitle={false}
+              />
             </VStack>
           </Box>
           <Box width={"35%"} justifyContent="center" alignItems="center">

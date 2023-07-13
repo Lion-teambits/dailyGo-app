@@ -6,3 +6,10 @@ export const IMAGE_MONSTER_FROGGY = require("../../assets/images/monsters/Froggy
 export const IMAGE_MONSTER_TAKOYAKI = require("../../assets/images/monsters/Takoyaki.png");
 export const IMAGE_MONSTER_PINATA = require("../../assets/images/monsters/Piñata.png");
 export const IMAGE_MONSTER_MARATHON = require("../../assets/images/monsters/Marathon.png");
+
+export const AVATAR_LIST = [
+  IMAGE_MONSTER_FROGGY,
+  IMAGE_MONSTER_TAKOYAKI,
+  IMAGE_MONSTER_PINATA,
+  IMAGE_MONSTER_MARATHON,
+];

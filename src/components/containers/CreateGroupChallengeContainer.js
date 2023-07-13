@@ -17,6 +17,7 @@ import { SECONDARY_MEDIUM } from "../../constants/colorCodes";
 import { Share } from "react-native";
 import { retrieveUserInfo, updateUserInfo } from "../../api/userService";
 import { createChallengeProgress } from "../../api/challengeProgressService";
+import { GROUP_CHALLENGE_BADGE_INFO as badgeInfo } from "../../data/challengeData";
 
 const CreateGroupChallengeContainer = () => {
   const navigation = useNavigation();
@@ -36,7 +37,13 @@ const CreateGroupChallengeContainer = () => {
       const userData = await retrieveUserInfo(uid);
 
       // 1. Make team challenge event
-      const challenge = await createGroupChallenge(title, selectImgInfo, uid);
+      console.log("badgeInfo: ", badgeInfo);
+      const challenge = await createGroupChallenge(
+        title,
+        selectImgInfo,
+        uid,
+        badgeInfo
+      );
       setGroupInfo(challenge);
 
       // 2. Make team challenge progress event
