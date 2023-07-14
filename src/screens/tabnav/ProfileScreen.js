@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import {
   View,
+  ScrollView,
   Text,
   Image,
   TouchableOpacity,
@@ -150,107 +151,112 @@ const ProfileScreen = () => {
   }, [name, dailyModeValue]);
 
   return (
-    <View style={styles.container}>
-      {editMode ? (
-        <View style={styles.subpageContainer}>
-          <Text style={styles.subpageHeader}>Avatar</Text>
-          <Text style={styles.subpageText}>Select your avatar</Text>
-          <View style={styles.avatarContainer}>
-            {PROFILE_AVATAR_LIST.map((avatar, index) => (
-              <TouchableOpacity
-                key={index}
-                onPress={() => handleImageSelection(avatar)}
-              >
-                <View
-                  style={[
-                    styles.avatarImage,
-                    selectedImage === avatar && styles.selectedImage,
-                  ]}
+    <ScrollView>
+      <View style={styles.container}>
+        {editMode ? (
+          <View style={styles.subpageContainer}>
+            <Text style={styles.subpageHeader}>Avatar</Text>
+            <Text style={styles.subpageText}>Select your avatar</Text>
+            <View style={styles.avatarContainer}>
+              {PROFILE_AVATAR_LIST.map((avatar, index) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => handleImageSelection(avatar)}
                 >
-                  {selectedImage === avatar ? (
-                    <Image source={selectedImage} style={styles.avatarImage} />
-                  ) : (
-                    <Image source={avatar} style={styles.avatarImage} />
-                  )}
-                </View>
-              </TouchableOpacity>
-            ))}
-          </View>
-
-          <TouchableOpacity
-            style={styles.applyButton}
-            onPress={handleApplyChanges}
-          >
-            <Text style={styles.applyButtonText}>Apply Changes</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.cancelButton}
-            onPress={handleCancelChanges}
-          >
-            <Text style={styles.cancelButtonText}>Cancel</Text>
-          </TouchableOpacity>
-        </View>
-      ) : userData ? (
-        <View style={styles.profileInfoContainer}>
-          <Text style={styles.profileInfoHeader}>Profile</Text>
-          <TouchableOpacity onPress={handleEditProfile}>
-            <Image
-              source={parseInt(userData.avatar)}
-              style={styles.profileImage}
-            />
-            <View style={styles.editButton}>
-              <Text style={styles.editButtonText}>Edit</Text>
+                  <View
+                    style={[
+                      styles.avatarImage,
+                      selectedImage === avatar && styles.selectedImage,
+                    ]}
+                  >
+                    {selectedImage === avatar ? (
+                      <Image
+                        source={selectedImage}
+                        style={styles.avatarImage}
+                      />
+                    ) : (
+                      <Image source={avatar} style={styles.avatarImage} />
+                    )}
+                  </View>
+                </TouchableOpacity>
+              ))}
             </View>
-          </TouchableOpacity>
 
-          <View style={styles.nameContainer}>
-            <TextInput
-              ref={nameInputRef}
-              style={styles.nameInput}
-              value={name}
-              onChangeText={setName}
-            />
-            <TouchableOpacity onPress={handleEditName}>
-              <MaterialIcons name="edit" size={20} color={PRIMARY_DARK} />
+            <TouchableOpacity
+              style={styles.applyButton}
+              onPress={handleApplyChanges}
+            >
+              <Text style={styles.applyButtonText}>Apply Changes</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={handleCancelChanges}
+            >
+              <Text style={styles.cancelButtonText}>Cancel</Text>
             </TouchableOpacity>
           </View>
-          <Text style={styles.dailyModeText}>Preferred Daily Mode</Text>
-          <View style={styles.dailyModeContainer}>
-            <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={handleDecreaseDailyMode}
-            >
-              <Text style={styles.buttonText}>-</Text>
+        ) : userData ? (
+          <View style={styles.profileInfoContainer}>
+            <Text style={styles.profileInfoHeader}>Profile</Text>
+            <TouchableOpacity onPress={handleEditProfile}>
+              <Image
+                source={parseInt(userData.avatar)}
+                style={styles.profileImage}
+              />
+              <View style={styles.editButton}>
+                <Text style={styles.editButtonText}>Edit</Text>
+              </View>
             </TouchableOpacity>
-            <Text style={styles.dailyModeValue}>{dailyModeValue}</Text>
-            <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={handleIncreaseDailyMode}
-            >
-              <Text style={styles.buttonText}>+</Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.dailyLevelText}>{getDailyModeText()}</Text>
 
-          <View style={styles.notificationContainer}>
-            <Text style={styles.notificationText}>Push Notifications</Text>
-            <Switch
-              value={pushNotificationEnabled}
-              onValueChange={handleTogglePushNotification}
-              trackColor={{ false: BG_LIGHT, true: PRIMARY_MEDIUM }}
-            />
+            <View style={styles.nameContainer}>
+              <TextInput
+                ref={nameInputRef}
+                style={styles.nameInput}
+                value={name}
+                onChangeText={setName}
+              />
+              <TouchableOpacity onPress={handleEditName}>
+                <MaterialIcons name="edit" size={20} color={PRIMARY_DARK} />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.dailyModeText}>Preferred Daily Mode</Text>
+            <View style={styles.dailyModeContainer}>
+              <TouchableOpacity
+                style={styles.buttonContainer}
+                onPress={handleDecreaseDailyMode}
+              >
+                <Text style={styles.buttonText}>-</Text>
+              </TouchableOpacity>
+              <Text style={styles.dailyModeValue}>{dailyModeValue}</Text>
+              <TouchableOpacity
+                style={styles.buttonContainer}
+                onPress={handleIncreaseDailyMode}
+              >
+                <Text style={styles.buttonText}>+</Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.dailyLevelText}>{getDailyModeText()}</Text>
+
+            <View style={styles.notificationContainer}>
+              <Text style={styles.notificationText}>Push Notifications</Text>
+              <Switch
+                value={pushNotificationEnabled}
+                onValueChange={handleTogglePushNotification}
+                trackColor={{ false: BG_LIGHT, true: PRIMARY_MEDIUM }}
+              />
+            </View>
+            <TouchableOpacity
+              style={styles.logoutContainer}
+              onPress={handleLogout}
+            >
+              <Text style={styles.logoutButton}>Logout</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={styles.logoutContainer}
-            onPress={handleLogout}
-          >
-            <Text style={styles.logoutButton}>Logout</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <Text>Loading...</Text>
-      )}
-    </View>
+        ) : (
+          <Text>Loading...</Text>
+        )}
+      </View>
+    </ScrollView>
   );
 };
 
