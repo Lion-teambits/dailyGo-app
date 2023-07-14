@@ -8,10 +8,11 @@ import {
   checkEventChallengeProgress,
   checkGroupChallengeProgress,
 } from "../../services/checkChallengeProgress";
-import { ScrollView } from "native-base";
+import { HStack, ScrollView, Center } from "native-base";
 import UserContext from "../../state/context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 // Todo
 // setTimer to get data in foregraound
@@ -79,28 +80,35 @@ const HomeScreen = ({ route }) => {
 
   if (isLoading) {
     return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
+      <SafeAreaView style={{ flex: 1 }}>
+        <Center>
+          <Text>Loading...</Text>
+        </Center>
+      </SafeAreaView>
     );
   }
 
   return (
-    <ScrollView style={{ flex: 1 }}>
-      <UserContext.Provider
-        value={{ userInfo, setUserInfo, isLoading, setIsLoading }}
-      >
-        <View>
-          <Text>streak_days: {userInfo.streak_days}</Text>
-          <Text>hearts: {userInfo.hearts}</Text>
-          <Text>fireflies: {userInfo.fireflies}</Text>
-        </View>
-        <OngoingChallengeContainer
-          ongoingChallenges={ongoingChallenges}
-          focusChallengeID={joinedUserProgressId}
-        />
-      </UserContext.Provider>
-    </ScrollView>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView>
+        <UserContext.Provider
+          value={{ userInfo, setUserInfo, isLoading, setIsLoading }}
+        >
+          <HStack
+            space="2xl"
+            margin={4}
+          >
+            <Text>streak_days: {userInfo.streak_days}</Text>
+            <Text>hearts: {userInfo.hearts}</Text>
+            <Text>fireflies: {userInfo.fireflies}</Text>
+          </HStack>
+          <OngoingChallengeContainer
+            ongoingChallenges={ongoingChallenges}
+            focusChallengeID={joinedUserProgressId}
+          />
+        </UserContext.Provider>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

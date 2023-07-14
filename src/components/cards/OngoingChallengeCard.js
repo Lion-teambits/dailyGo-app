@@ -82,7 +82,7 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
     <View style={[styles.card, showCancelModal ? styles.blur : null]}>
       <Text>{challenge.type} Goal</Text>
       <Text>Time left: {challenge.remainingTime}</Text>
-      <View>
+      {/* <View>
         <LottieView
           autoPlay
           loop
@@ -92,9 +92,9 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
             height: 350,
             backgroundColor: "#eee",
           }}
-          source={require("../../../assets/images/dailyMonsters/Lazzzy-happy")}
+          source={require("../../../assets/images/animatedMonsters/Lazzzy-happy.json")}
         />
-      </View>
+      </View> */}
       <Image
         source={parseInt(challenge.monsterImg)}
         alt="testImage"
@@ -211,11 +211,6 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
 export default OngoingChallengeCard;
 
 function PagenationIndicator({ totalPageCount, currentPage, monsterName }) {
-  const [showInd1, setShowInd1] = useState(true);
-  const [showInd2, setShowInd2] = useState(true);
-  const [showInd3, setShowInd3] = useState(true);
-  const [showInd4, setShowInd4] = useState(true);
-  const [showInd5, setShowInd5] = useState(true);
 
   return (
     <View style={styles.indicatorContainer}>
