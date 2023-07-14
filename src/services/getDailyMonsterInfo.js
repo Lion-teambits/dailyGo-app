@@ -1,80 +1,48 @@
 export const getDailyMonsterInfo = (finishChallenge) => {
+  let monsterStatus = "sad";
   const date = new Date().getDate();
   const lastDigit = date % 10;
+
+  if (finishChallenge) {
+    monsterStatus = "happy";
+  }
 
   switch (lastDigit % 3) {
     case 0:
       if (finishChallenge) {
         return {
           monsterName: "Lag",
-          monsterImage: require("../../assets/images/animatedMonsters/Lag-happy.json"),
+          monsterImage: require("../../assets/images/animatedMonsters/LagHappy.gif"),
         };
       }
       return {
         monsterName: "Lag",
-        monsterImage: require("../../assets/images/animatedMonsters/Lag-sad.json"),
+        monsterImage: require("../../assets/images/animatedMonsters/LagSad.gif"),
       };
     case 1:
       if (finishChallenge) {
         return {
           monsterName: "Lava",
-          monsterImage: require("../../assets/images/animatedMonsters/Lava-happy.json"),
+          monsterImage: require("../../assets/images/animatedMonsters/LavaHappy.gif"),
         };
       }
       return {
         monsterName: "Lava",
-        monsterImage: require("../../assets/images/animatedMonsters/Lava-sad.json"),
+        monsterImage: require("../../assets/images/animatedMonsters/LavaSad.gif"),
       };
 
     case 2:
       if (finishChallenge) {
         return {
           monsterName: "Lazzzy",
-          monsterImage: require("../../assets/images/animatedMonsters/Lazzzy-happy.json"),
+          monsterImage: require("../../assets/images/animatedMonsters/LazzzyHappy.gif"),
         };
       }
       return {
         monsterName: "Lazzzy",
-        monsterImage: require("../../assets/images/animatedMonsters/Lazzzy-sad.json"),
+        monsterImage: require("../../assets/images/animatedMonsters/LazzzySad.gif"),
       };
     default:
       return null;
-  }
-};
-
-export const getMonsterImg = (monster_name) => {
-  switch (monster_name) {
-    case "Froggy":
-      return {
-        monsterImage: require("../../assets/images/animatedMonsters/Froggy.json"),
-      };
-    case "Marathon":
-      return {
-        monsterImage: require("../../assets/images/animatedMonsters/Marathon.json"),
-      };
-    case "Piñata":
-      return {
-        monsterImage: require("../../assets/images/animatedMonsters/Piñata.json"),
-      };
-    case "Summer Jam":
-      return {
-        monsterImage: require("../../assets/images/animatedMonsters/SummerJam.json"),
-      };
-    case "Takoyaki":
-      return {
-        monsterImage: require("../../assets/images/animatedMonsters/Takoyaki.json"),
-      };
-    case "Trickster":
-      return {
-        monsterImage: require("../../assets/images/animatedMonsters/Trickster.json"),
-      };
-    case "Water melone":
-      return {
-        monsterImage: require("../../assets/images/animatedMonsters/Watermelone.json"),
-      };
-    default:
-      return {
-        monsterImage: require("../../assets/images/animatedMonsters/Watermelone.json"),
-      };
   }
 };
