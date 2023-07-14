@@ -11,7 +11,7 @@ import {
   View,
   useClipboard,
 } from "native-base";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { StyleSheet } from "react-native";
 import RewardModal from "../modals/RewardModal";
 import ConfirmationModal from "../modals/ConfirmationModal";
@@ -22,6 +22,7 @@ import UserContext from "../../state/context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import BadgeToAchieve from "./BadgeToAchieve";
 import FriendsCard from "./FriendsCard";
+import LottieView from "lottie-react-native";
 
 const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
   const [progressRate, setProgressRate] = useState(0);
@@ -31,6 +32,8 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
   const [showCancelModal, setShowCancelModal] = useState(false);
   const { setIsLoading } = useContext(UserContext);
   const { value, onCopy } = useClipboard();
+
+  const animation = useRef(null);
 
   useEffect(() => {
     setProgressRate(
@@ -75,21 +78,30 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
     }
   }
 
-  function handleCopyCode() {
-    console.log("Pressed copy code");
-  }
-
   return (
     <View style={[styles.card, showCancelModal ? styles.blur : null]}>
       <Text>{challenge.type} Goal</Text>
       <Text>Time left: {challenge.remainingTime}</Text>
+      {/* <View>
+        <LottieView
+          autoPlay
+          loop
+          ref={animation}
+          style={{
+            width: 350,
+            height: 350,
+            backgroundColor: "#eee",
+          }}
+          source={require("../../../assets/images/animatedMonsters/Lazzzy-happy.json")}
+        />
+      </View> */}
       <Image
-        source={challenge.monsterImg}
+        source={parseInt(challenge.monsterImg)}
         alt="testImage"
-        size="lg"
+        size="2xl"
       />
       <PagenationIndicator
-        totalPageCount={totalPageCount}
+        totalPageCount={Math.min(totalPageCount, 5)}
         currentPage={currentPage}
         monsterName={challenge.monsterName}
       />
@@ -199,11 +211,16 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
 export default OngoingChallengeCard;
 
 function PagenationIndicator({ totalPageCount, currentPage, monsterName }) {
+
   return (
     <View style={styles.indicatorContainer}>
       {Array.from({ length: totalPageCount }, (_, index) => {
         const pageNumber = index + 1;
         const isCurrentPage = pageNumber === currentPage;
+        const isSmallLeft = pageNumber === currentPage - 2;
+        const isMediumLeft = pageNumber === currentPage - 1;
+        const isMediumRight = pageNumber === currentPage + 1;
+        const isSmallRight = pageNumber === currentPage + 2;
 
         return (
           <View
@@ -211,9 +228,15 @@ function PagenationIndicator({ totalPageCount, currentPage, monsterName }) {
             style={[
               styles.indicator,
               isCurrentPage ? styles.selectedIndicator : null,
+              isSmallLeft ? styles.smallIndicatorLeft : null,
+              isMediumLeft ? styles.mediumIndicatorLeft : null,
+              isMediumRight ? styles.mediumIndicatorRight : null,
+              isSmallRight ? styles.smallIndicatorRight : null,
             ]}
           >
-            {isCurrentPage ? <Text>{monsterName}</Text> : null}
+            {isCurrentPage ? (
+              <Text style={styles.selectedIndicatorText}>{monsterName}</Text>
+            ) : null}
           </View>
         );
       })}
@@ -254,8 +277,11 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     padding: 20,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
+    flexGrow: 0,
+    flexShrink: 1,
+    flexBasis: "auto",
     backgroundColor: "aliceblue",
   },
   blur: {
@@ -273,6 +299,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    height: 100,
   },
   indicator: {
     width: 10,
@@ -283,7 +310,41 @@ const styles = StyleSheet.create({
   },
   selectedIndicator: {
     width: 72,
-    height: 40,
+    height: 48,
+    justifyContent: "center",
+    alignItems: "center",
+    // textAlign: "center",
     backgroundColor: "grey",
+  },
+  smallIndicatorLeft: {
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: "gray",
+  },
+  mediumIndicatorLeft: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "gray",
+  },
+  mediumIndicatorRight: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "gray",
+  },
+  smallIndicatorRight: {
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: "gray",
+  },
+  hiddenIndicator: { opacity: 0 },
+  dummyIndicator: {
+    width: 10,
+    height: 10,
+    margin: 5,
+    backgroundColor: "transparent", // ダミーの要素は透明にする
   },
 });

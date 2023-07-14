@@ -7,42 +7,41 @@ export const getDailyMonsterInfo = (finishChallenge) => {
     monsterStatus = "happy";
   }
 
-  switch (lastDigit%3) {
+  switch (lastDigit % 3) {
     case 0:
       if (finishChallenge) {
         return {
           monsterName: "Lag",
-          monsterImage: require("../../assets/images/dailyMonsters/Lag-happy.png"),
+          monsterImage: require("../../assets/images/animatedMonsters/LagHappy.gif"),
         };
       }
       return {
         monsterName: "Lag",
-        monsterImage: require("../../assets/images/dailyMonsters/Lag-sad.png"),
+        monsterImage: require("../../assets/images/animatedMonsters/LagSad.gif"),
       };
     case 1:
       if (finishChallenge) {
         return {
           monsterName: "Lava",
-          monsterImage: require("../../assets/images/dailyMonsters/Lava-happy.png"),
+          monsterImage: require("../../assets/images/animatedMonsters/LavaHappy.gif"),
         };
       }
       return {
         monsterName: "Lava",
-        monsterImage: require("../../assets/images/dailyMonsters/Lava-sad.png"),
+        monsterImage: require("../../assets/images/animatedMonsters/LavaSad.gif"),
       };
 
     case 2:
       if (finishChallenge) {
         return {
           monsterName: "Lazzzy",
-          monsterImage: require("../../assets/images/dailyMonsters/Lazzzy-happy.png"),
+          monsterImage: require("../../assets/images/animatedMonsters/LazzzyHappy.gif"),
         };
       }
       return {
         monsterName: "Lazzzy",
-        monsterImage: require("../../assets/images/dailyMonsters/Lazzzy-sad.png"),
+        monsterImage: require("../../assets/images/animatedMonsters/LazzzySad.gif"),
       };
-
     default:
       return null;
   }
