@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import { retrieveDailyRecord } from "../../api/dailyRecordService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TXT_LIGHT_BG } from "../../constants/colorCodes";
@@ -112,7 +112,13 @@ const StreakContainer = () => {
   return (
     <View style={styles.streakContainer}>
       <Text style={styles.streakHeader}>Streak (Last 7 days)</Text>
-      <View style={styles.streakItem}>{renderStreakIcons()}</View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.horizontalScrollContainer}
+      >
+        <View style={styles.streakItem}>{renderStreakIcons()}</View>
+      </ScrollView>
     </View>
   );
 };
