@@ -7,7 +7,7 @@ export const getDailyMonsterInfo = (finishChallenge) => {
     monsterStatus = "happy";
   }
 
-  switch (lastDigit%3) {
+  switch (lastDigit % 3) {
     case 0:
       if (finishChallenge) {
         return {
@@ -17,7 +17,8 @@ export const getDailyMonsterInfo = (finishChallenge) => {
       }
       return {
         monsterName: "Lag",
-        monsterImage: require("../../assets/images/dailyMonsters/Lag-sad.png"),
+        // monsterImage: require("../../assets/images/dailyMonsters/Lag-sad.png"),
+        monsterImage: require("../../assets/images/dailyMonsters/Lazzzy-happy.gif"),
       };
     case 1:
       if (finishChallenge) {
@@ -35,14 +36,13 @@ export const getDailyMonsterInfo = (finishChallenge) => {
       if (finishChallenge) {
         return {
           monsterName: "Lazzzy",
-          monsterImage: require("../../assets/images/dailyMonsters/Lazzzy-happy.png"),
+          monsterImage: require("../../assets/images/dailyMonsters/Lazzzy-happy.gif"),
         };
       }
       return {
         monsterName: "Lazzzy",
         monsterImage: require("../../assets/images/dailyMonsters/Lazzzy-sad.png"),
       };
-
     default:
       return null;
   }
