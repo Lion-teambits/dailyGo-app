@@ -17,6 +17,8 @@ export const createGroupChallenge = async (
       target_steps: selectImgInfo.steps,
       badge_info: badgeInfo,
       group_current_steps: 0,
+      group_current_calories: 0,
+      group_current_distance: 0,
       member_list: [uId],
     };
     const groupChallengeData = await axios.post(
