@@ -10,7 +10,7 @@ import { retrieveGroupChallengeInfo } from "../api/groupChallengeService";
 import { retrieveUserInfo, updateUserInfo } from "../api/userService";
 import { challenges } from "../data/challengeData";
 import { calculateRemainingTime } from "./calculateRemainingTime";
-import { getDailyMonsterInfo } from "./getDailyMonsterInfo";
+import { getDailyMonsterInfo, getMonsterImg } from "./getDailyMonsterInfo";
 
 export const checkDailyChallengeProgress = async (user_id) => {
   let returnObj = {
@@ -141,12 +141,15 @@ export const checkEventChallengeProgress = async (user_id) => {
         });
       }
 
+      // Get monster Image
+      const monsterImgPath = getMonsterImg(challengeProgress.monster_name);
+
       // Update returnObj
       returnObj.remainingTime = calculateRemainingTime(
         challengeInfo.expired_date
       );
       returnObj.monsterName = challengeInfo.monster_name;
-      returnObj.monsterImg = challengeInfo.monster_image;
+      returnObj.monsterImg = monsterImgPath.monsterImage;
       returnObj.targetSteps = challengeInfo.target_steps;
       returnObj.currentDistance = challengeProgress.current_distance;
       returnObj.currentSteps = challengeProgress.current_steps;
@@ -215,11 +218,14 @@ export const checkGroupChallengeProgress = async (user_id) => {
         });
       }
 
+      // Get monster Image
+      const monsterImgPath = getMonsterImg(challengeProgress.monster_name);
+
       returnObj.remainingTime = calculateRemainingTime(
         challengeProgress.expired_date
       );
       returnObj.monsterName = challengeProgress.monster_name;
-      returnObj.monsterImg = challengeProgress.monster_image;
+      returnObj.monsterImg = monsterImgPath.monsterImage;
       returnObj.targetSteps = groupChallengeInfo.target_steps;
       returnObj.currentDistance = challengeProgress.current_distance;
       returnObj.currentSteps = groupChallengeInfo.group_current_steps;
