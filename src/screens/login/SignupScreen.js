@@ -3,8 +3,13 @@ import { Center, Box, Heading, Button } from "native-base";
 import { View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Form from "../../components/forms/Form";
-import { createUserWithEmailAndPassword, updateProfile } from "@firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "@firebase/auth";
 import { auth } from "../../config/firebaseConfig";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SignupScreen = ({ navigation }) => {
   const handleSignupGmail = () => {
@@ -22,7 +27,9 @@ const SignupScreen = ({ navigation }) => {
       await updateProfile(user, {
         displayName: name,
       });
-      navigation.navigate("Login");
+      const emailUser = await signInWithEmailAndPassword(auth, email, password);
+      await AsyncStorage.setItem("@uid", emailUser.user.uid);
+      navigation.navigate("Onboarding", { user });
     } catch (error) {
       console.log("There was a problem creating account: ", error);
     }
