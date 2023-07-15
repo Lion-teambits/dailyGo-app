@@ -60,7 +60,6 @@ const LoginScreen = ({ navigation }) => {
   }, []);
 
   const handleLoginGmail = () => {
-    // Logic for signing in with Gmail
     promptAsync();
   };
 
