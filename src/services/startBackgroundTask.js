@@ -1,17 +1,10 @@
-import BackgroundFetch from "react-native-background-fetch";
-import { fetchActivityData } from "../api/healthInfoAPI";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import saveActivityData from "./saveActivityData";
-import {
-  checkDailyChallengeProgress,
-  checkEventChallengeProgress,
-  checkGroupChallengeProgress,
-} from "./checkChallengeProgress";
+import BackgroundFetch from 'react-native-background-fetch';
+import { fetchActivityData } from '../api/healthInfoAPI';
 
 const startBackgroundTask = async () => {
   // callback function
   const onEvent = async (taskId) => {
-    console.log("[BackgroundFetch] task: ", taskId);
+    console.log('[BackgroundFetch] task: ', taskId);
 
     // Stop the previous background task, if any.
     await BackgroundFetch.stop();
@@ -24,8 +17,8 @@ const startBackgroundTask = async () => {
   };
 
   const onTimeout = (taskId) => {
-    console.warn("[BackgroundFetch] TIMEOUT task: ", taskId);
-    BackgroundFetch.finish(taskId);
+    console.warn('[BackgroundFetch] TIMEOUT task: ', taskId);
+    BackgroundFetch.finish(taskId); 
   };
 
   const fetchConfig = {
@@ -40,22 +33,14 @@ const startBackgroundTask = async () => {
 };
 
 const fetchActivityDataFromAPI = async () => {
-  console.log("Fetching activity data on background...");
+  console.log('Fetching activity data on background...');
 
   // execute fetchActivityData
   try {
-    const user_id = await AsyncStorage.getItem("@uid");
-
-    // Save activity data to Database
-    const result = await saveActivityData(user_id);
-
-    // Check daily, event, group challenge progress
-    await checkDailyChallengeProgress(user_id);
-    await checkEventChallengeProgress(user_id);
-    await checkGroupChallengeProgress(user_id);
-    console.log("[Background] Fetched data:", result);
+    const result = await fetchActivityData();
+    console.log('[Background] Fetched data:', result);
   } catch (error) {
-    console.error("[Background] Error fetching data:", error);
+    console.error('[Background] Error fetching data:', error);
   }
 };
 
