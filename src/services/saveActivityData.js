@@ -108,7 +108,7 @@ export const createDailyRecordAndUpdateFields = async (
     //   steps: 4856,
     //   distance: 3271.07,
     //   calories: 124.04,
-    //   streak_status: "continued",
+    //   streak_status: "continue",
     // };
 
     // Update today_record id in userInfo

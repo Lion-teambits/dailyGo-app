@@ -38,7 +38,7 @@ export const createDailyRecord = async (user_id, activityData) => {
     const newDailyRecord = await axios.post(`${BASE_URL}/dailyRecord`, {
       ...activityData,
       uid: user_id,
-      streak_status: "continued", // default
+      streak_status: "continue", // default
     });
     return newDailyRecord.data;
   } catch (error) {
