@@ -31,6 +31,7 @@ const HomeScreen = ({ route }) => {
       setOngoingChallenges([]);
       // user real uid
       const user_id = await AsyncStorage.getItem("@uid");
+      console.log("user_id", user_id);
 
       // Save activity data to Database
       await saveActivityData(user_id);
@@ -76,16 +77,6 @@ const HomeScreen = ({ route }) => {
 
     return unsubscribe;
   }, [isLoading, challengeProgressID]);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setIsLoading(true);
-    }, 600000); // 1 min = 60000 ms
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
 
   if (isLoading) {
     return (
