@@ -1,6 +1,7 @@
 import axios from "axios";
 import { BACKEND_URL } from "./constants";
 import { retrieveUserInfo } from "./userService";
+import { makeAuthHeaders } from "./apiUtils";
 
 const BASE_URL = BACKEND_URL + "/api/v1";
 
@@ -25,9 +26,11 @@ export const createChallengeProgress = async (challenge, isGroupChallenge) => {
       challengProgressInitData.event_challenge_info = challenge._id;
     }
 
+    const headers = await makeAuthHeaders();
     const challengProgressData = await axios.post(
       `${BASE_URL}/challengeProgress`,
-      challengProgressInitData
+      challengProgressInitData,
+      { headers }
     );
     return challengProgressData.data;
   } catch (error) {
@@ -38,8 +41,10 @@ export const createChallengeProgress = async (challenge, isGroupChallenge) => {
 // Retrieve single challenge progress
 export const retrieveChallengeProgressInfo = async (challengeProgress_id) => {
   try {
+    const headers = await makeAuthHeaders();
     const challengeProgressInfo = await axios.get(
-      `${BASE_URL}/challengeProgress/${challengeProgress_id}`
+      `${BASE_URL}/challengeProgress/${challengeProgress_id}`,
+      { headers }
     );
     return challengeProgressInfo.data;
   } catch (error) {
@@ -80,9 +85,11 @@ export const updateChallengeProgress = async (
   newChallengeProgressData
 ) => {
   try {
+    const headers = await makeAuthHeaders();
     const challenge = await axios.put(
       `${BASE_URL}/challengeProgress/${challengeProgress_id}`,
-      newChallengeProgressData
+      newChallengeProgressData,
+      { headers }
     );
     return challenge.data;
   } catch (error) {
@@ -94,8 +101,10 @@ export const updateChallengeProgress = async (
 // Delete challenge progress
 export const deleteChallengeProgress = async (challengeProgress_id) => {
   try {
+    const headers = await makeAuthHeaders();
     const challenge = await axios.delete(
-      `${BASE_URL}/challengeProgress/${challengeProgress_id}`
+      `${BASE_URL}/challengeProgress/${challengeProgress_id}`,
+      { headers }
     );
     return challenge.data;
   } catch (error) {

@@ -29,6 +29,7 @@ const SignupScreen = ({ navigation }) => {
       });
       const emailUser = await signInWithEmailAndPassword(auth, email, password);
       await AsyncStorage.setItem("@uid", emailUser.user.uid);
+      await AsyncStorage.setItem("@accessToken", emailUser.user.accessToken);
       navigation.navigate("Onboarding", { user });
     } catch (error) {
       console.log("There was a problem creating account: ", error);

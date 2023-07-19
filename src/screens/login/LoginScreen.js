@@ -37,6 +37,7 @@ const LoginScreen = ({ navigation }) => {
     if (user) {
       try {
         await AsyncStorage.setItem("@uid", user.uid);
+        await AsyncStorage.setItem("@accessToken", user.accessToken);
         const userInfo = await retrieveUserInfo(user.uid);
         if (userInfo == null) {
           navigation.navigate("Onboarding", { user });
