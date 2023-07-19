@@ -123,6 +123,7 @@ const ProfileScreen = () => {
     try {
       await signOut(auth);
       await AsyncStorage.removeItem("@uid");
+      await AsyncStorage.removeItem("@accessToken");
     } catch (error) {
       console.log("Logout error: ", error);
     }
