@@ -1,1 +1,1 @@
-export const BULID_MODE = "release"; // development, release
+export const BUILD_MODE = "release"; // development, release
