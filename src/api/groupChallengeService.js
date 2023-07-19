@@ -8,7 +8,8 @@ export const createGroupChallenge = async (
   title,
   selectImgInfo,
   uId,
-  badgeInfo
+  badgeInfo,
+  shareCode
 ) => {
   try {
     const groupChallengeInitData = {
@@ -21,6 +22,7 @@ export const createGroupChallenge = async (
       group_current_calories: 0,
       group_current_distance: 0,
       member_list: [uId],
+      share_id: shareCode,
     };
     const headers = await makeAuthHeaders();
     const groupChallengeData = await axios.post(
@@ -39,6 +41,19 @@ export const retrieveGroupChallengeInfo = async (id) => {
     const headers = await makeAuthHeaders();
     const groupChallengeInfo = await axios.get(
       `${BASE_URL}/groupChallenge/${id}`,
+      { headers }
+    );
+    return groupChallengeInfo.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const retrieveGroupChallengeInfoByShareId = async (shareId) => {
+  try {
+    const headers = await makeAuthHeaders();
+    const groupChallengeInfo = await axios.get(
+      `${BASE_URL}/groupChallenge/code/${shareId}`,
       { headers }
     );
     return groupChallengeInfo.data;
