@@ -14,9 +14,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-// Todo
-// setTimer to get data in foregraound
-
 const HomeScreen = ({ route }) => {
   const { challengeProgressID } = route.params;
 
