@@ -1,10 +1,10 @@
-import { ScrollView, Text } from "native-base";
+import { ScrollView } from "native-base";
 import CreateGroupChallengeContainer from "../../components/containers/CreateGroupChallengeContainer";
+import { challengeStyles } from "../../styles/challengeStyles";
 
 const CreateGroupChallengeScreen = () => {
   return (
-    <ScrollView>
-      <Text>Create Team Challenge Screen</Text>
+    <ScrollView style={challengeStyles.container}>
       <CreateGroupChallengeContainer />
     </ScrollView>
   );
