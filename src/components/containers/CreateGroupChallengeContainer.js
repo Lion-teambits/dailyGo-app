@@ -18,12 +18,20 @@ import { Share } from "react-native";
 import { retrieveUserInfo, updateUserInfo } from "../../api/userService";
 import { createChallengeProgress } from "../../api/challengeProgressService";
 import { GROUP_CHALLENGE_BADGE_INFO as badgeInfo } from "../../data/challengeData";
+import { convertToBase32 } from "../../utils/dateUtils";
 
 const CreateGroupChallengeContainer = () => {
   const navigation = useNavigation();
   const [groupInfo, setGroupInfo] = useState("");
   const { value, onCopy } = useClipboard();
   const isGroupChallenge = true;
+
+  const makeShareCode = () => {
+    const currentTimeStamp = new Date().getTime();
+    const currentTimeStampString = currentTimeStamp.toString();
+    const shortenNumber = currentTimeStampString.slice(-10);
+    return convertToBase32(shortenNumber);
+  };
 
   const createGroupEvent = async (title, selectImgInfo) => {
     if (title === "" || selectImgInfo === "") {
@@ -37,12 +45,12 @@ const CreateGroupChallengeContainer = () => {
       const userData = await retrieveUserInfo(uid);
 
       // 1. Make team challenge event
-      console.log("badgeInfo: ", badgeInfo);
       const challenge = await createGroupChallenge(
         title,
         selectImgInfo,
         uid,
-        badgeInfo
+        badgeInfo,
+        makeShareCode()
       );
       setGroupInfo(challenge);
 
@@ -71,7 +79,7 @@ const CreateGroupChallengeContainer = () => {
   const shareCode = async () => {
     try {
       await Share.share({
-        message: `${groupInfo._id}`,
+        message: `${groupInfo.share_id}`,
       });
     } catch (error) {
       console.log("Error sharing code:", error);
@@ -93,8 +101,8 @@ const CreateGroupChallengeContainer = () => {
           </Box>
           <Center>
             <HStack>
-              <Text>Code: {groupInfo._id}</Text>
-              <Button bordered onPress={() => onCopy(groupInfo._id)}>
+              <Text>Code: {groupInfo.share_id}</Text>
+              <Button bordered onPress={() => onCopy(groupInfo.share_id)}>
                 Copy
               </Button>
             </HStack>
