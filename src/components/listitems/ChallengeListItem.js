@@ -1,6 +1,7 @@
 import { Box, HStack, Heading, Image, Text, VStack } from "native-base";
 import { eventDateStatus } from "../../utils/dateUtils";
 import StepsBarGraph from "../graphs/StepsBarGraph";
+import { TimeDiffTextBox } from "../textBoxes/TimeDiffTextBox";
 
 const ChallengeListItem = ({ challenge, joinedUserProgress }) => {
   const { status, timeDifference } = eventDateStatus(
@@ -20,7 +21,7 @@ const ChallengeListItem = ({ challenge, joinedUserProgress }) => {
         <Box>
           <HStack justifyContent="space-between">
             <Text>{status}</Text>
-            <Text>{timeDifference}</Text>
+            <TimeDiffTextBox timeDifference={timeDifference} />
           </HStack>
         </Box>
         <HStack space={1}>

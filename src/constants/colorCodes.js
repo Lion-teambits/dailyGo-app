@@ -13,6 +13,7 @@ export const ACCENT_DARK = "#A79600";
 export const BG_LIGHT = "#F3F3F3";
 export const BG_MEDIUM = "#EFEFEF";
 export const BG_DARK = "#38363D";
+export const BG_PRIMARY = "#F3F5FF";
 
 export const DISABLED = "rgba(0, 0, 0, 0.15)";
 export const ERROR = "#D00000";
