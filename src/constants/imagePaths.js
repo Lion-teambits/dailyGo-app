@@ -1,3 +1,7 @@
+//Intro
+export const WELCOME_LOGO = require("../../assets/images/intro/logo.png");
+export const WELCOME_MONSTER = require("../../assets/images/intro/welcome.png");
+
 // Challenge
 export const IMAGE_GROUP_EVENT_LIST = require("../../assets/images/challenge/group_event.png");
 
