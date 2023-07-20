@@ -8,6 +8,7 @@ import { retrieveUserInfo, updateUserInfo } from "../../api/userService";
 import BadgeToAchieve from "../cards/BadgeToAchieve";
 import FriendsCard from "../cards/FriendsCard";
 import { updateGroupChallenge } from "../../api/groupChallengeService";
+import { TimeDiffTextBox } from "../textBoxes/TimeDiffTextBox";
 
 const ChallengeDetailContainer = (props) => {
   const { challenge, isGroupChallenge } = props;
@@ -73,7 +74,7 @@ const ChallengeDetailContainer = (props) => {
     <VStack space={1} margin={4}>
       <HStack justifyContent="space-between">
         <Text>{status}</Text>
-        <Text>{timeDifference}</Text>
+        <TimeDiffTextBox timeDifference={timeDifference} />
       </HStack>
       <Box space={1} alignItems="center">
         <Image
