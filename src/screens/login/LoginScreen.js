@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Center, Box, Heading, Button } from "native-base";
+import {
+  Center,
+  Box,
+  Heading,
+  Button,
+  KeyboardAvoidingView,
+} from "native-base";
 import { View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Form from "../../components/forms/Form";
@@ -79,7 +85,13 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <Center flex={1}>
-      <Box safeArea p="2" py="8" w="90%" maxW="290">
+      <Box
+        safeArea
+        p="2"
+        py="8"
+        w="90%"
+        maxW="290"
+      >
         <Heading>Login</Heading>
         <Button onPress={handleLoginGmail}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -87,13 +99,16 @@ const LoginScreen = ({ navigation }) => {
             <Text style={{ marginLeft: 5 }}>Login with Gmail</Text>
           </View>
         </Button>
-
-        <Form
-          buttonText="Login"
-          handleSubmit={handleLoginEmail}
-          handleLink={handleSignup}
-          linkText="Don't have an account? "
-        />
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <Form
+            buttonText="Login"
+            handleSubmit={handleLoginEmail}
+            handleLink={handleSignup}
+            linkText="Don't have an account? "
+          />
+        </KeyboardAvoidingView>
       </Box>
     </Center>
   );
