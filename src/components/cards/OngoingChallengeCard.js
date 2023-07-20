@@ -4,7 +4,6 @@ import {
   Box,
   HStack,
   VStack,
-  Image,
   Divider,
   Button,
   Text,
@@ -23,6 +22,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import BadgeToAchieve from "./BadgeToAchieve";
 import FriendsCard from "./FriendsCard";
 import LottieView from "lottie-react-native";
+import { updateGroupChallenge } from "../../api/groupChallengeService";
 
 const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
   const [progressRate, setProgressRate] = useState(0);
@@ -50,15 +50,16 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
 
   async function handleLeaveChallenge() {
     const uid = await AsyncStorage.getItem("@uid");
-
-    // Demove challenge progress
-    await deleteChallengeProgress(challenge._id);
     // Remove single challenge progress from array in user info
     const updatedUserInfo = await removeChallengeProgress(
       uid,
       challenge.type,
       challenge._id
     );
+
+    if (challenge.type === "group") {
+      await removeIDFromMembers(uid, challenge);
+    }
 
     setIsLoading(true);
   }
@@ -73,8 +74,21 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
       const updatedUserInfo = await receiveReward(uid);
       setIsLoading(true);
     } else {
-      console.log("Conglatulation! Receive reward later :D");
-      // update get_reward in challenge progress
+      const uid = await AsyncStorage.getItem("@uid");
+      const userInfo = await retrieveUserInfo(uid);
+      // Update user info (populate badge, remove challenge progress from Array)
+      userInfo.badges.push(challenge.reward);
+      const updatedUserInfo = await updateUserInfo(uid, {
+        badges: userInfo.badges,
+      });
+
+      await removeChallengeProgress(uid, challenge.type, challenge._id);
+
+      if (challenge.type === "group") {
+        await removeIDFromMembers(uid, challenge);
+      }
+
+      setIsLoading(true);
     }
   }
 
@@ -82,17 +96,17 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
     <View style={[styles.card, showCancelModal ? styles.blur : null]}>
       <Text>{challenge.type} Goal</Text>
       <Text>Time left: {challenge.remainingTime}</Text>
-        <LottieView
-          autoPlay
-          loop
-          ref={animation}
-          style={{
-            width: 350,
-            height: 350,
-            backgroundColor: "#eee",
-          }}
-          source={challenge.monsterImg}
-        />
+      <LottieView
+        autoPlay
+        loop
+        ref={animation}
+        style={{
+          width: 350,
+          height: 350,
+          backgroundColor: "#eee",
+        }}
+        source={challenge.monsterImg}
+      />
 
       <PagenationIndicator
         totalPageCount={Math.min(totalPageCount, 5)}
@@ -170,7 +184,7 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
             <FriendsCard member={challenge.memberList} />
           </HStack>
           <HStack>
-            <Text>Code: {challenge._id.slice(0, 6)}...</Text>
+            <Text>Code: {challenge.shareCode}</Text>
             <Button
               bordered
               onPress={() => onCopy(challenge._id)}
@@ -240,10 +254,6 @@ function PagenationIndicator({ totalPageCount, currentPage, monsterName }) {
 const removeChallengeProgress = async (user_id, challengeType, removeID) => {
   try {
     const userInfo = await retrieveUserInfo(user_id);
-    console.log(
-      "removeChallengeProgress userInfo array",
-      userInfo.event_challenge_progress
-    );
 
     if (challengeType === "event") {
       userInfo.event_challenge_progress =
@@ -259,10 +269,28 @@ const removeChallengeProgress = async (user_id, challengeType, removeID) => {
 
     const updatedUserInfo = await updateUserInfo(user_id, userInfo);
 
+    // Remove challenge progress
+    await deleteChallengeProgress(removeID);
+
     return updatedUserInfo;
   } catch (error) {
     console.log("Error in removeChallengeProgress");
     throw error;
+  }
+};
+
+const removeIDFromMembers = async (user_id, challenge) => {
+  challenge.memberList = challenge.memberList.filter(
+    (member_id) => member_id !== user_id
+  );
+
+  if (challenge.memberList.length === 0) {
+    // [TODO] Delete groupChallenge table
+    console.log("Group challenge table will be deleted later :)");
+  } else {
+    await updateGroupChallenge(challenge.groupChallengeID, {
+      memberList: challenge.memberList,
+    });
   }
 };
 
@@ -338,6 +366,6 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     margin: 5,
-    backgroundColor: "transparent", // ダミーの要素は透明にする
+    backgroundColor: "transparent",
   },
 });
