@@ -26,8 +26,16 @@ const AppStack = () => {
         />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Signup" component={SignupScreen} />
-        <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-        <Stack.Screen name="Preferences" component={PreferencesScreen} />
+        <Stack.Screen
+          name="Onboarding"
+          component={OnboardingScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Preferences"
+          component={PreferencesScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="HomeScreen"
           component={TabStack}
