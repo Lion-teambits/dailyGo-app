@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {  Text } from "react-native";
+import { ActivityIndicator, Text } from "react-native";
 import saveActivityData from "../../services/saveActivityData";
 import { retrieveUserInfo } from "../../api/userService";
 import OngoingChallengeContainer from "../../components/containers/OngoingChallengeContainer";
@@ -15,6 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusChip from "../../components/chips/StatusChip";
 import HomeBG from "../../../assets/images/homeBG.svg";
+import { PRIMARY_MEDIUM } from "../../constants/colorCodes";
 
 const HomeScreen = ({ route }) => {
   const { challengeProgressID } = route.params;
@@ -79,9 +80,12 @@ const HomeScreen = ({ route }) => {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <Center>
-          <Text>Loading...</Text>
+      <SafeAreaView style={{ flex: 1, alignItems: "center" }}>
+        <Center style={{flex:1}}>
+          <ActivityIndicator
+            size="large"
+            color={PRIMARY_MEDIUM}
+          />
         </Center>
       </SafeAreaView>
     );
