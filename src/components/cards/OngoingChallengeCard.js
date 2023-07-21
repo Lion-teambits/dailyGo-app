@@ -1,5 +1,4 @@
 import {
-  Progress,
   Center,
   Box,
   HStack,
@@ -9,6 +8,7 @@ import {
   Text,
   View,
   useClipboard,
+  Container,
 } from "native-base";
 import { useContext, useEffect, useRef, useState } from "react";
 import { StyleSheet } from "react-native";
@@ -23,6 +23,12 @@ import BadgeToAchieve from "./BadgeToAchieve";
 import FriendsCard from "./FriendsCard";
 import LottieView from "lottie-react-native";
 import { updateGroupChallenge } from "../../api/groupChallengeService";
+import { TimeDiffTextBox } from "../textBoxes/TimeDiffTextBox";
+import {
+  BG_PRIMARY,
+  PRIMARY_LIGHT,
+} from "../../constants/colorCodes";
+import ProgressBarHome from "../progressBar/ProgressBarHome";
 
 const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
   const [progressRate, setProgressRate] = useState(0);
@@ -36,9 +42,10 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
   const animation = useRef(null);
 
   useEffect(() => {
-    setProgressRate(
-      Math.floor((challenge.currentSteps / challenge.targetSteps) * 100)
+    const result = Math.floor(
+      (challenge.currentSteps / challenge.targetSteps) * 100
     );
+    setProgressRate(result < 100 ? result : 100);
     if (challenge.finishChallenge && !challenge.getReward) {
       setShowRewardButton(true);
     }
@@ -94,33 +101,41 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
 
   return (
     <View style={[styles.card, showCancelModal ? styles.blur : null]}>
-      <Text>{challenge.type} Goal</Text>
-      <Text>Time left: {challenge.remainingTime}</Text>
-      <LottieView
-        autoPlay
-        loop
-        ref={animation}
-        style={{
-          width: 350,
-          height: 350,
-          backgroundColor: "#eee",
-        }}
-        source={challenge.monsterImg}
-      />
-
-      <PagenationIndicator
-        totalPageCount={Math.min(totalPageCount, 5)}
-        currentPage={currentPage}
-        monsterName={challenge.monsterName}
-      />
-      <Center w="100%">
-        <Box w="90%">
-          <Progress
-            colorScheme="primary"
-            value={progressRate}
+      <Container marginBottom="12">
+        <Center>
+          <Text textTransform="capitalize">{challenge.type} Goal</Text>
+          <Text>
+            <TimeDiffTextBox timeDifference={challenge.remainingTime} />
+          </Text>
+          <LottieView
+            autoPlay
+            loop
+            ref={animation}
+            style={{
+              width: 224,
+              height: 188,
+            }}
+            source={challenge.monsterImg}
           />
-        </Box>
-      </Center>
+
+          <Box
+            p="4"
+            rounded="xl"
+            _text={{
+              fontSize: "md",
+              fontWeight: "medium",
+              color: "warmGray.50",
+              textAlign: "center",
+            }}
+            alignItems="center"
+            backgroundColor="white"
+          >
+            <Text>{challenge.monsterName}</Text>
+          </Box>
+        </Center>
+      </Container>
+
+      <ProgressBarHome progressRate={progressRate} />
       {/* Switch button visibility depends on challenge status */}
       <Box p={4}>
         {showRewardButton && (
@@ -138,45 +153,40 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
         )}
         {challenge.getReward && <Text>Firefly collected!</Text>}
       </Box>
-      <Text>Current Progress</Text>
-      <HStack
-        space="1"
-        backgroundColor="amber.100"
-        padding="3"
-      >
-        <VStack>
-          <Text>{challenge.currentDistance}</Text>
-          <Text>KM</Text>
-        </VStack>
-        <Divider
-          orientation="vertical"
-          mx="3"
-          _light={{
-            bg: "muted.800",
-          }}
-          _dark={{
-            bg: "muted.50",
-          }}
-        />
-        <VStack>
-          <Text>{challenge.currentSteps}</Text>
-          <Text>Steps</Text>
-        </VStack>
-        <Divider
-          orientation="vertical"
-          mx="3"
-          _light={{
-            bg: "muted.800",
-          }}
-          _dark={{
-            bg: "muted.50",
-          }}
-        />
-        <VStack>
-          <Text>{challenge.currentCalories}</Text>
-          <Text>Kcal</Text>
-        </VStack>
-      </HStack>
+
+      <Container>
+        <Text>Current Progress</Text>
+        <Box
+          backgroundColor={BG_PRIMARY}
+          padding={6}
+          rounded="xl"
+        >
+          <HStack space="2">
+            <VStack>
+              <Text>{challenge.currentDistance}</Text>
+              <Text>KM</Text>
+            </VStack>
+            <Divider
+              orientation="vertical"
+              mx="3"
+              bg={PRIMARY_LIGHT}
+            />
+            <VStack>
+              <Text>{challenge.currentSteps}</Text>
+              <Text>Steps</Text>
+            </VStack>
+            <Divider
+              orientation="vertical"
+              mx="3"
+              bg={PRIMARY_LIGHT}
+            />
+            <VStack>
+              <Text>{challenge.currentCalories}</Text>
+              <Text>Kcal</Text>
+            </VStack>
+          </HStack>
+        </Box>
+      </Container>
       {challenge.type === "group" && (
         <>
           <Text>Friends</Text>
@@ -217,39 +227,6 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
 };
 
 export default OngoingChallengeCard;
-
-function PagenationIndicator({ totalPageCount, currentPage, monsterName }) {
-  return (
-    <View style={styles.indicatorContainer}>
-      {Array.from({ length: totalPageCount }, (_, index) => {
-        const pageNumber = index + 1;
-        const isCurrentPage = pageNumber === currentPage;
-        const isSmallLeft = pageNumber === currentPage - 2;
-        const isMediumLeft = pageNumber === currentPage - 1;
-        const isMediumRight = pageNumber === currentPage + 1;
-        const isSmallRight = pageNumber === currentPage + 2;
-
-        return (
-          <View
-            key={index}
-            style={[
-              styles.indicator,
-              isCurrentPage ? styles.selectedIndicator : null,
-              isSmallLeft ? styles.smallIndicatorLeft : null,
-              isMediumLeft ? styles.mediumIndicatorLeft : null,
-              isMediumRight ? styles.mediumIndicatorRight : null,
-              isSmallRight ? styles.smallIndicatorRight : null,
-            ]}
-          >
-            {isCurrentPage ? (
-              <Text style={styles.selectedIndicatorText}>{monsterName}</Text>
-            ) : null}
-          </View>
-        );
-      })}
-    </View>
-  );
-}
 
 const removeChallengeProgress = async (user_id, challengeType, removeID) => {
   try {
@@ -303,7 +280,6 @@ const styles = StyleSheet.create({
     flexGrow: 0,
     flexShrink: 1,
     flexBasis: "auto",
-    backgroundColor: "aliceblue",
   },
   blur: {
     opacity: 0.5,

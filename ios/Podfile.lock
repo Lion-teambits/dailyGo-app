@@ -479,7 +479,7 @@ PODS:
     - React-Core
   - RNGestureHandler (2.12.0):
     - React-Core
-  - RNSVG (13.9.0):
+  - RNSVG (13.4.0):
     - React-Core
   - RNVectorIcons (9.2.0):
     - React-Core
@@ -750,7 +750,7 @@ SPEC CHECKSUMS:
   RNBackgroundFetch: 9fcdeee8aa00e1e1b3895ff9bbaaf10275288a87
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNGestureHandler: dec4645026e7401a0899f2846d864403478ff6a5
-  RNSVG: 53c661b76829783cdaf9b7a57258f3d3b4c28315
+  RNSVG: 07dbd870b0dcdecc99b3a202fa37c8ca163caec2
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   Yoga: 065f0b74dba4832d6e328238de46eb72c5de9556
 

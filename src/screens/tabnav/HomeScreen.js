@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, Text } from "react-native";
+import { ActivityIndicator } from "react-native";
 import saveActivityData from "../../services/saveActivityData";
 import { retrieveUserInfo } from "../../api/userService";
 import OngoingChallengeContainer from "../../components/containers/OngoingChallengeContainer";
@@ -13,6 +13,9 @@ import UserContext from "../../state/context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import StatusChip from "../../components/chips/StatusChip";
+import HomeBG from "../../../assets/images/homeBG.svg";
+import { PRIMARY_MEDIUM } from "../../constants/colorCodes";
 
 const HomeScreen = ({ route }) => {
   const { challengeProgressID } = route.params;
@@ -77,35 +80,59 @@ const HomeScreen = ({ route }) => {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <Center>
-          <Text>Loading...</Text>
+      <SafeAreaView style={{ flex: 1, alignItems: "center" }}>
+        <Center style={{flex:1}}>
+          <ActivityIndicator
+            size="large"
+            color={PRIMARY_MEDIUM}
+          />
         </Center>
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView>
-        <UserContext.Provider
-          value={{ userInfo, setUserInfo, isLoading, setIsLoading }}
-        >
-          <HStack
-            space="2xl"
-            margin={4}
-          >
-            <Text>streak_days: {userInfo.streak_days}</Text>
-            <Text>hearts: {userInfo.hearts}</Text>
-            <Text>fireflies: {userInfo.fireflies}</Text>
-          </HStack>
-          <OngoingChallengeContainer
-            ongoingChallenges={ongoingChallenges}
-            focusChallengeID={joinedUserProgressId}
+    <>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+        <ScrollView>
+          <HomeBG
+            width="100%"
+            style={{
+              position: "absolute",
+              top: -60,
+              left: 0,
+              right: 0,
+              bottom: 0,
+            }}
           />
-        </UserContext.Provider>
-      </ScrollView>
-    </SafeAreaView>
+          <UserContext.Provider
+            value={{ userInfo, setUserInfo, isLoading, setIsLoading }}
+          >
+            <HStack
+              space="2xl"
+              margin={4}
+            >
+              <StatusChip
+                type="streak"
+                number={userInfo.streak_days}
+              />
+              <StatusChip
+                type="firefly"
+                number={userInfo.fireflies}
+              />
+              <StatusChip
+                type="heart"
+                number={userInfo.hearts}
+              />
+            </HStack>
+            <OngoingChallengeContainer
+              ongoingChallenges={ongoingChallenges}
+              focusChallengeID={joinedUserProgressId}
+            />
+          </UserContext.Provider>
+        </ScrollView>
+      </SafeAreaView>
+    </>
   );
 };
 
