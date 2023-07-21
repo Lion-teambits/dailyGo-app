@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { ScrollView, View, Text, TouchableOpacity, Image } from "react-native";
 import {
   TXT_DARK_BG,
   PRIMARY_MEDIUM,
@@ -17,23 +17,30 @@ const WelcomePage = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.welcomeHeader}>
-        <Image source={WELCOME_LOGO} style={styles.welcomeLogo} />
+    <ScrollView style={styles.scrollContainer}>
+      <View style={styles.container}>
+        <View style={styles.welcomeHeader}>
+          <Image source={WELCOME_LOGO} style={styles.welcomeLogo} />
+        </View>
+        <Image source={WELCOME_MONSTER} style={styles.welcomeImage} />
+        <Text style={styles.welcomeText}>
+          Daily walking towards your goals.
+        </Text>
+        <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
+          <Text style={styles.signupButtonText}>Sign up on DailyGo</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+          <Text style={styles.loginButtonText}>Login with your account</Text>
+        </TouchableOpacity>
       </View>
-      <Image source={WELCOME_MONSTER} style={styles.welcomeImage} />
-      <Text style={styles.welcomeText}>Daily walking towards your goals.</Text>
-      <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
-        <Text style={styles.signupButtonText}>Sign up on DailyGo</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-        <Text style={styles.loginButtonText}>Login with your account</Text>
-      </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = {
+  scrollContainer: {
+    backgroundColor: "white",
+  },
   container: {
     flex: 1,
     alignItems: "center",
