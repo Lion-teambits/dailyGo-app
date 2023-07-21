@@ -6,12 +6,3 @@ export const challengeStyles = {
     backgroundColor: "white",
   },
 };
-
-export const challengeTitleOption = (title) => ({
-  title: title,
-  headerTitleStyle: {
-    color: PRIMARY_DARK,
-  },
-  headerTitleAlign: "center",
-  headerTintColor: PRIMARY_MEDIUM,
-});

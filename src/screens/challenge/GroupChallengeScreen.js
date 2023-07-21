@@ -1,17 +1,15 @@
 import { ScrollView } from "native-base";
 import GroupChallengeContainer from "../../components/containers/GroupChallengeContainer";
-import {
-  challengeStyles,
-  challengeTitleOption,
-} from "../../styles/challengeStyles";
+import { challengeStyles } from "../../styles/challengeStyles";
 import { useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { screenTitleOption } from "../../styles/commonStyles";
 
 const GroupChallengeScreen = () => {
   const navigation = useNavigation();
 
   useLayoutEffect(() => {
-    navigation.setOptions(challengeTitleOption("Team Challenge"));
+    navigation.setOptions(screenTitleOption("Team Challenge"));
   }, [navigation]);
 
   return (
