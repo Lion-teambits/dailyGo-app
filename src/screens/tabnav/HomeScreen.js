@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Text } from "react-native";
+import { ActivityIndicator } from "react-native";
 import saveActivityData from "../../services/saveActivityData";
 import { retrieveUserInfo } from "../../api/userService";
 import OngoingChallengeContainer from "../../components/containers/OngoingChallengeContainer";
