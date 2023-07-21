@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { ScrollView, View, Text, TouchableOpacity } from "react-native";
 import { createUserInfo } from "../../api/userService";
 import { useNavigation } from "@react-navigation/native";
 import { AVATAR_6 } from "../../constants/imagePaths";
@@ -44,103 +44,110 @@ const PreferencesScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.questionText}>
-        How much do you think you walk per day?
-      </Text>
-      <TouchableOpacity
-        style={[
-          styles.button,
-          selectedButtonIndex === 0 && styles.selectedButton,
-        ]}
-        onPress={() => {
-          setSelectedSteps(3000);
-          setSelectedButtonIndex(0);
-        }}
-      >
-        <Text
-          style={[
-            styles.buttonText,
-            selectedButtonIndex === 0 && styles.selectedButtonText,
-          ]}
-        >
-          I don’t walk much
+      <ScrollView>
+        <Text style={styles.questionText}>
+          How much do you think you walk per day?
         </Text>
-        <Text
+        <TouchableOpacity
           style={[
-            styles.buttonSmallText,
-            selectedButtonIndex === 0 && styles.selectedButtonText,
+            styles.button,
+            selectedButtonIndex === 0 && styles.selectedButton,
           ]}
+          onPress={() => {
+            setSelectedSteps(3000);
+            setSelectedButtonIndex(0);
+          }}
         >
-          You just walk inside your house to grab some food and go to the
-          bathroom.
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[
-          styles.button,
-          selectedButtonIndex === 1 && styles.selectedButton,
-        ]}
-        onPress={() => {
-          setSelectedSteps(5000);
-          setSelectedButtonIndex(1);
-        }}
-      >
-        <Text
+          <Text
+            style={[
+              styles.buttonText,
+              selectedButtonIndex === 0 && styles.selectedButtonText,
+            ]}
+          >
+            I don’t walk much
+          </Text>
+          <Text
+            style={[
+              styles.buttonSmallText,
+              selectedButtonIndex === 0 && styles.selectedButtonText,
+            ]}
+          >
+            You just walk inside your house to grab some food and go to the
+            bathroom.
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
           style={[
-            styles.buttonText,
-            selectedButtonIndex === 1 && styles.selectedButtonText,
+            styles.button,
+            selectedButtonIndex === 1 && styles.selectedButton,
           ]}
+          onPress={() => {
+            setSelectedSteps(5000);
+            setSelectedButtonIndex(1);
+          }}
         >
-          I walk a little bit
-        </Text>
-        <Text
+          <Text
+            style={[
+              styles.buttonText,
+              selectedButtonIndex === 1 && styles.selectedButtonText,
+            ]}
+          >
+            I walk a little bit
+          </Text>
+          <Text
+            style={[
+              styles.buttonSmallText,
+              selectedButtonIndex === 1 && styles.selectedButtonText,
+            ]}
+          >
+            Although you spend most of the time seated, you go to some places
+            near you on foot.
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
           style={[
-            styles.buttonSmallText,
-            selectedButtonIndex === 1 && styles.selectedButtonText,
+            styles.button,
+            selectedButtonIndex === 2 && styles.selectedButton,
           ]}
+          onPress={() => {
+            setSelectedSteps(8000);
+            setSelectedButtonIndex(2);
+          }}
         >
-          Although you spend most of the time seated, you go to some places near
-          you on foot.
+          <Text
+            style={[
+              styles.buttonText,
+              selectedButtonIndex === 2 && styles.selectedButtonText,
+            ]}
+          >
+            I usually walk, but I want a challenge
+          </Text>
+          <Text
+            style={[
+              styles.buttonSmallText,
+              selectedButtonIndex === 2 && styles.selectedButtonText,
+            ]}
+          >
+            You are very close to have a more active lifestyle, but without
+            goals and consistency.
+          </Text>
+        </TouchableOpacity>
+        <Text style={styles.normalText}>
+          Don’t worry, you can change your preferences later.
         </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[
-          styles.button,
-          selectedButtonIndex === 2 && styles.selectedButton,
-        ]}
-        onPress={() => {
-          setSelectedSteps(8000);
-          setSelectedButtonIndex(2);
-        }}
-      >
-        <Text
+        <TouchableOpacity
           style={[
-            styles.buttonText,
-            selectedButtonIndex === 2 && styles.selectedButtonText,
+            styles.submitButton,
+            isSubmitDisabled && styles.disabledButton,
           ]}
+          onPress={submitButton}
+          disabled={isSubmitDisabled}
         >
-          I usually walk, but I want a challenge
-        </Text>
-        <Text
-          style={[
-            styles.buttonSmallText,
-            selectedButtonIndex === 2 && styles.selectedButtonText,
-          ]}
-        >
-          You are very close to have a more active lifestyle, but without goals
-          and consistency.
-        </Text>
-      </TouchableOpacity>
-      <Text style={styles.normalText}>
-        Don’t worry, you can change your preferences later.
-      </Text>
-      <TouchableOpacity
-        style={[styles.submitButton, isSubmitDisabled && styles.disabledButton]}
-        onPress={submitButton}
-        disabled={isSubmitDisabled}
-      >
-        <Text style={styles.submitButtonText}>I'm ready for my challenge!</Text>
-      </TouchableOpacity>
+          <Text style={styles.submitButtonText}>
+            I'm ready for my challenge!
+          </Text>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 };
