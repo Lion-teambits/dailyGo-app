@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Center, Box, Button } from "native-base";
+import { Center, Box, Button, KeyboardAvoidingView } from "native-base";
 import { View, Text, StyleSheet, Image } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import Form from "../../components/forms/Form";
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
@@ -15,14 +14,9 @@ import { auth } from "../../config/firebaseConfig";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { IOS_CLIENT_ID, ANDROID_CLIENT_ID } from "@env";
 import { retrieveUserInfo } from "../../api/userService";
-import {
-  SECONDARY_MEDIUM,
-  PRIMARY_MEDIUM,
-  PRIMARY_DARK,
-} from "../../constants/colorCodes";
+import { PRIMARY_MEDIUM, PRIMARY_DARK } from "../../constants/colorCodes";
 import { WELCOME_MONSTER, WELCOME_LOGO } from "../../constants/imagePaths";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -45,6 +39,7 @@ const LoginScreen = ({ navigation }) => {
     if (user) {
       try {
         await AsyncStorage.setItem("@uid", user.uid);
+        await AsyncStorage.setItem("@accessToken", user.accessToken);
         const userInfo = await retrieveUserInfo(user.uid);
         if (userInfo == null) {
           navigation.navigate("Onboarding", { user });
@@ -68,7 +63,6 @@ const LoginScreen = ({ navigation }) => {
   }, []);
 
   const handleLoginGmail = () => {
-    // Logic for signing in with Gmail
     promptAsync();
   };
 
@@ -99,28 +93,46 @@ const LoginScreen = ({ navigation }) => {
       <Image source={WELCOME_MONSTER} style={styles.welcomeImage} />
       <Text style={styles.welcomeText}>Daily walking towards your goals.</Text>
       <Center flex={1}>
-        <Box safeArea p="2" py="8" w="100%" maxW="290">
+        <Box safeArea>
           <Button
             onPress={handleLoginGmail}
             title="Login with Google"
             accessibilityLabel="Login with Google"
-            style={styles.button}
+            borderRadius={24}
+            maxHeight={10}
+            marginBottom={20}
+            variant="outline"
+            borderColor={PRIMARY_MEDIUM}
           >
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Ionicons name="logo-google" />
-              <Text style={{ marginLeft: 5, color: "white" }}>
+              <Image
+                source={require("../../../assets/images/icons/google.png")}
+                style={{ width: 20, height: 20 }}
+              />
+              <Text
+                style={{
+                  marginLeft: 5,
+                  color: PRIMARY_MEDIUM,
+                  fontWeight: "bold",
+                }}
+              >
                 Login with Google
               </Text>
             </View>
           </Button>
-          <Text>Or login with your email</Text>
-          <Form
-            buttonText="Login with Email"
-            handleSubmit={handleLoginEmail}
-            style={styles.formButton}
-            handleLink={handleSignup}
-            linkText="Don't have an account? "
-          />
+          <Text style={styles.loginText}>Or login with your email</Text>
+
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+          >
+            <Form
+              buttonText="Login with Email"
+              handleSubmit={handleLoginEmail}
+              style={styles.formButton}
+              handleLink={handleSignup}
+              linkText="Don't have an account? "
+            />
+          </KeyboardAvoidingView>
         </Box>
       </Center>
     </View>
@@ -162,23 +174,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: PRIMARY_MEDIUM,
     width: "60%",
-    // marginBottom: "10%",
+    marginBottom: "10%",
   },
-  button: {
-    width: "87%",
-    height: 40,
-    padding: 10,
-    marginBottom: 8,
-    borderRadius: 24,
-    backgroundColor: SECONDARY_MEDIUM,
-  },
-  formButton: {
-    width: "87%",
-    height: 40,
-    padding: 10,
-    marginBottom: 8,
-    borderRadius: 24,
-    backgroundColor: SECONDARY_MEDIUM,
+  loginText: {
+    fontSize: 14,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: PRIMARY_DARK,
   },
 });
 

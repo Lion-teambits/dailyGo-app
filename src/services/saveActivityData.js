@@ -100,16 +100,6 @@ export const createDailyRecordAndUpdateFields = async (
   try {
     // Create a new daily_record
     const newDailyRecord = await createDailyRecord(user_id, activityData);
-    // Dummy to stop creating new daily_record (for testing)
-    // const newDailyRecord = {
-    //   _id: "649e5581d0f20a8448e3095a",
-    //   uid: "sushilove",
-    //   date: "2023-06-29T07:00:00.000Z",
-    //   steps: 4856,
-    //   distance: 3271.07,
-    //   calories: 124.04,
-    //   streak_status: "continued",
-    // };
 
     // Update today_record id in userInfo
     const userInfo = await retrieveUserInfo(user_id);
@@ -171,6 +161,12 @@ const updateEventAndGroupChallengeProgresses = async (
               {
                 group_current_steps:
                   groupChallengeInfo.group_current_steps + differenceOfSteps,
+                group_current_calories:
+                  groupChallengeInfo.group_current_calories +
+                  differenceOfCalories,
+                group_current_distance:
+                  groupChallengeInfo.group_current_distance +
+                  differenceOfDistance,
               }
             );
           }

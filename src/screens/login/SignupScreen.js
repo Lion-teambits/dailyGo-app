@@ -1,18 +1,16 @@
 import React from "react";
-import { Center, Box, Heading, Button } from "native-base";
-import { View, Text, StyleSheet, Image } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Center, Box, Button, KeyboardAvoidingView } from "native-base";
+import { ScrollView, View, Text, StyleSheet, Image } from "react-native";
 import Form from "../../components/forms/Form";
-import { createUserWithEmailAndPassword, updateProfile } from "@firebase/auth";
-import { auth } from "../../config/firebaseConfig";
 import {
-  SECONDARY_MEDIUM,
-  PRIMARY_MEDIUM,
-  PRIMARY_DARK,
-} from "../../constants/colorCodes";
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "@firebase/auth";
+import { auth } from "../../config/firebaseConfig";
+import { PRIMARY_MEDIUM, PRIMARY_DARK } from "../../constants/colorCodes";
 import { WELCOME_MONSTER, WELCOME_LOGO } from "../../constants/imagePaths";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 
 const SignupScreen = ({ navigation }) => {
   const handleSignupGmail = () => {
@@ -30,7 +28,10 @@ const SignupScreen = ({ navigation }) => {
       await updateProfile(user, {
         displayName: name,
       });
-      navigation.navigate("Login");
+      const emailUser = await signInWithEmailAndPassword(auth, email, password);
+      await AsyncStorage.setItem("@uid", emailUser.user.uid);
+      await AsyncStorage.setItem("@accessToken", emailUser.user.accessToken);
+      navigation.navigate("Onboarding", { user });
     } catch (error) {
       console.log("There was a problem creating account: ", error);
     }
@@ -54,23 +55,43 @@ const SignupScreen = ({ navigation }) => {
       <Image source={WELCOME_MONSTER} style={styles.welcomeImage} />
       <Text style={styles.welcomeText}>Daily walking towards your goals.</Text>
       <Center flex={1}>
-        <Box safeArea p="2" py="8" w="90%" maxW="290">
-          <Heading>Sign Up</Heading>
-
-          <Button onPress={handleSignupGmail}>
+        <Box safeArea>
+          <Button
+            onPress={handleSignupGmail}
+            borderRadius={24}
+            maxHeight={10}
+            variant="outline"
+            borderColor={PRIMARY_MEDIUM}
+          >
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Ionicons name="logo-google" />
-              <Text style={{ marginLeft: 5 }}>Login with Gmail</Text>
+              <Image
+                source={require("../../../assets/images/icons/google.png")}
+                style={{ width: 20, height: 20 }}
+              />
+              <Text
+                style={{
+                  marginLeft: 5,
+                  color: PRIMARY_MEDIUM,
+                  fontWeight: "bold",
+                }}
+              >
+                Sign up with Google
+              </Text>
             </View>
           </Button>
 
-          <Form
-            buttonText="Sign Up"
-            handleSubmit={handleSignupEmail}
-            handleLink={handleLogin}
-            linkText="Already have an account? "
-            showNameField={true}
-          />
+          <Text style={styles.signupText}>Or create a new account</Text>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+          >
+            <Form
+              buttonText="Create new account"
+              handleSubmit={handleSignupEmail}
+              handleLink={handleLogin}
+              linkText="Already have an account? "
+              showNameField={true}
+            />
+          </KeyboardAvoidingView>
         </Box>
       </Center>
     </View>
@@ -112,23 +133,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: PRIMARY_MEDIUM,
     width: "60%",
-    // marginBottom: "10%",
+    marginBottom: "10%",
   },
-  button: {
-    width: "87%",
-    height: 40,
-    padding: 10,
-    marginBottom: 8,
-    borderRadius: 24,
-    backgroundColor: SECONDARY_MEDIUM,
-  },
-  formButton: {
-    width: "87%",
-    height: 40,
-    padding: 10,
-    marginBottom: 8,
-    borderRadius: 24,
-    backgroundColor: SECONDARY_MEDIUM,
+  signupText: {
+    fontSize: 14,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: PRIMARY_DARK,
+    marginTop: "10%",
   },
 });
 

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { BACKEND_URL } from "./constants";
+import { makeAuthHeaders } from "./apiUtils";
 
 const BASE_URL = BACKEND_URL + "/api/v1";
 
@@ -7,7 +8,8 @@ export const createGroupChallenge = async (
   title,
   selectImgInfo,
   uId,
-  badgeInfo
+  badgeInfo,
+  shareCode
 ) => {
   try {
     const groupChallengeInitData = {
@@ -20,10 +22,13 @@ export const createGroupChallenge = async (
       group_current_calories: 0,
       group_current_distance: 0,
       member_list: [uId],
+      share_id: shareCode,
     };
+    const headers = await makeAuthHeaders();
     const groupChallengeData = await axios.post(
       `${BASE_URL}/groupChallenge`,
-      groupChallengeInitData
+      groupChallengeInitData,
+      { headers }
     );
     return groupChallengeData.data;
   } catch (error) {
@@ -33,8 +38,23 @@ export const createGroupChallenge = async (
 
 export const retrieveGroupChallengeInfo = async (id) => {
   try {
+    const headers = await makeAuthHeaders();
     const groupChallengeInfo = await axios.get(
-      `${BASE_URL}/groupChallenge/${id}`
+      `${BASE_URL}/groupChallenge/${id}`,
+      { headers }
+    );
+    return groupChallengeInfo.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const retrieveGroupChallengeInfoByShareId = async (shareId) => {
+  try {
+    const headers = await makeAuthHeaders();
+    const groupChallengeInfo = await axios.get(
+      `${BASE_URL}/groupChallenge/code/${shareId}`,
+      { headers }
     );
     return groupChallengeInfo.data;
   } catch (error) {
@@ -48,9 +68,11 @@ export const updateGroupChallenge = async (
   newGroupChallengeData
 ) => {
   try {
+    const headers = await makeAuthHeaders();
     const challenge = await axios.put(
       `${BASE_URL}/groupChallenge/${groupChallenge_id}`,
-      newGroupChallengeData
+      newGroupChallengeData,
+      { headers }
     );
     return challenge.data;
   } catch (error) {

@@ -123,6 +123,7 @@ const ProfileScreen = () => {
     try {
       await signOut(auth);
       await AsyncStorage.removeItem("@uid");
+      await AsyncStorage.removeItem("@accessToken");
     } catch (error) {
       console.log("Logout error: ", error);
     }
@@ -151,8 +152,8 @@ const ProfileScreen = () => {
   }, [name, dailyModeValue]);
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
+    <ScrollView style={styles.container}>
+      <View>
         {editMode ? (
           <View style={styles.subpageContainer}>
             <Text style={styles.subpageHeader}>Avatar</Text>
@@ -317,7 +318,7 @@ const styles = {
   },
   applyButton: {
     backgroundColor: SECONDARY_MEDIUM,
-    width: 358,
+    width: "87%",
     height: 40,
     padding: 10,
     marginBottom: 8,
@@ -433,7 +434,7 @@ const styles = {
     textAlign: "center",
   },
   notificationContainer: {
-    width: 358,
+    width: "87%",
     height: 64,
     borderRadius: 24,
     backgroundColor: "white",
@@ -457,7 +458,7 @@ const styles = {
     color: PRIMARY_DARK,
   },
   logoutContainer: {
-    width: 358,
+    width: "87%",
     height: 64,
     borderRadius: 24,
     backgroundColor: "white",

@@ -2,11 +2,21 @@ import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import SwiperFlatList from "react-native-swiper-flatlist";
 import CarouselItem from "../listitems/CarouselItem";
-import image1 from "../../../assets/images/image1.jpeg";
-import image2 from "../../../assets/images/image2.jpeg";
-import image3 from "../../../assets/images/image3.jpeg";
-import image4 from "../../../assets/images/image4.jpeg";
+import {
+  ONBOARD_1,
+  ONBOARD_2,
+  ONBOARD_3,
+  ONBOARD_4,
+  ONBOARD_5,
+} from "../../constants/imagePaths";
 import { useNavigation } from "@react-navigation/native";
+import {
+  PRIMARY_DARK,
+  PRIMARY_MEDIUM,
+  TXT_DARK_BG,
+  ACCENT_MEDIUM,
+  TXT_LIGHT_BG,
+} from "../../constants/colorCodes";
 
 const CarouselList = ({ userInfo }) => {
   const navigation = useNavigation();
@@ -14,43 +24,70 @@ const CarouselList = ({ userInfo }) => {
     navigation.navigate("Preferences", { userInfo });
   };
 
-  const renderCarouselItem = ({ item }) => {
-    return <CarouselItem item={item} />;
+  const renderCarouselItem = ({ item, index }) => {
+    const isLastPage = index === carouselData.length - 1;
+    const isFirstPage = index === 0;
+    const backgroundColor = isFirstPage ? PRIMARY_DARK : PRIMARY_MEDIUM;
+
+    return (
+      <View style={[styles.carouselItem, { backgroundColor }]}>
+        <SwiperFlatList
+          data={[item]}
+          renderItem={({ item }) => <CarouselItem item={item} />}
+          paginationStyleItem={styles.paginationContainer}
+        />
+
+        {isLastPage ? (
+          <TouchableOpacity style={styles.startButton} onPress={handleSkip}>
+            <Text style={styles.startButtonText}>
+              Start my DailyGo challenge!
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
+            <Text style={styles.buttonText}>Skip</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    );
   };
 
   const carouselData = [
     {
-      image: image1,
-      description: "These are the most dangerous monsters that are inside you!",
+      image: ONBOARD_1,
+      description: "These are the most dangerous monsters inside you.",
+      description2:
+        "They’re cute, but they represent your difficulty to have a more active lifestyle.",
     },
     {
-      image: image2,
+      image: ONBOARD_2,
       description:
-        "Reach your daily steps to collect the fireflies and defeat your inner monsters.",
+        "Every step you take will help you to collect fireflies to make the monsters happier.",
     },
     {
-      image: image3,
-      description: "Level up yourself by choosing the special challenges.",
-    },
-    {
-      image: image4,
+      image: ONBOARD_3,
       description:
-        "Collect your daily fireflies and special badges, track your achievement and be new you!",
+        "It will also help you to keep motivated and change your life.",
+    },
+    {
+      image: ONBOARD_4,
+      description:
+        "Bring your friends to walk more and have some fun together.",
+    },
+    {
+      image: ONBOARD_5,
+      description: "Get special badges on special events.",
     },
   ];
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
-        <Text style={styles.buttonText}>Skip</Text>
-      </TouchableOpacity>
-      <View style={styles.carouselContainer}>
-        <SwiperFlatList
-          data={carouselData}
-          renderItem={renderCarouselItem}
-          showPagination
-        />
-      </View>
+      <SwiperFlatList
+        data={carouselData}
+        renderItem={renderCarouselItem}
+        showPagination
+        paginationStyleItem={styles.paginationContainer}
+      />
     </View>
   );
 };
@@ -58,21 +95,42 @@ const CarouselList = ({ userInfo }) => {
 const styles = {
   container: {
     flex: 1,
-    padding: 60,
   },
   skipButton: {
     position: "absolute",
-    top: 10,
-    right: 10,
+    top: 60,
+    right: 20,
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "bold",
+    color: TXT_DARK_BG,
   },
-  carouselContainer: {
+  carouselItem: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+  },
+  paginationContainer: {
+    width: 8,
+    height: 8,
+    marginHorizontal: 5,
+    marginVertical: -100,
+  },
+  startButton: {
+    position: "absolute",
+    backgroundColor: ACCENT_MEDIUM,
+    width: "87%",
+    height: 40,
+    padding: 12,
+    borderRadius: 24,
+    bottom: "5%",
+    right: "7%",
+  },
+
+  startButtonText: {
+    fontSize: 14,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: TXT_LIGHT_BG,
   },
 };
 

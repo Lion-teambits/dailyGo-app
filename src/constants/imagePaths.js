@@ -2,6 +2,14 @@
 export const WELCOME_LOGO = require("../../assets/images/intro/logo.png");
 export const WELCOME_MONSTER = require("../../assets/images/intro/welcome.png");
 
+// Onboarding
+export const ONBOARD_1 = require("../../assets/images/onboarding/onboarding1.png");
+export const ONBOARD_2 = require("../../assets/images/onboarding/onboarding2.png");
+export const ONBOARD_3 = require("../../assets/images/onboarding/onboarding3.png");
+export const ONBOARD_4 = require("../../assets/images/onboarding/onboarding4.png");
+export const ONBOARD_5 = require("../../assets/images/onboarding/onboarding5.png");
+
+
 // Challenge
 export const IMAGE_GROUP_EVENT_LIST = require("../../assets/images/challenge/group_event.png");
 
