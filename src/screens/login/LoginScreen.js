@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Center, Box, Button, KeyboardAvoidingView } from "native-base";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { ScrollView, View, Text, StyleSheet, Image } from "react-native";
 import Form from "../../components/forms/Form";
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
@@ -81,60 +81,64 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.welcomeHeader}>
-        <MaterialCommunityIcons
-          name="keyboard-backspace"
-          size={24}
-          color={PRIMARY_DARK}
-          onPress={() => navigation.goBack()}
-        />
-        <Image source={WELCOME_LOGO} style={styles.welcomeLogo} />
-      </View>
-      <Image source={WELCOME_MONSTER} style={styles.welcomeImage} />
-      <Text style={styles.welcomeText}>Daily walking towards your goals.</Text>
-      <Center flex={1}>
-        <Box safeArea>
-          <Button
-            onPress={handleLoginGmail}
-            title="Login with Google"
-            accessibilityLabel="Login with Google"
-            borderRadius={24}
-            maxHeight={10}
-            marginBottom={20}
-            variant="outline"
-            borderColor={PRIMARY_MEDIUM}
-          >
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image
-                source={require("../../../assets/images/icons/google.png")}
-                style={{ width: 20, height: 20 }}
-              />
-              <Text
-                style={{
-                  marginLeft: 5,
-                  color: PRIMARY_MEDIUM,
-                  fontWeight: "bold",
-                }}
-              >
-                Login with Google
-              </Text>
-            </View>
-          </Button>
-          <Text style={styles.loginText}>Or login with your email</Text>
+      <ScrollView>
+        <View style={styles.welcomeHeader}>
+          <MaterialCommunityIcons
+            name="keyboard-backspace"
+            size={24}
+            color={PRIMARY_DARK}
+            onPress={() => navigation.goBack()}
+          />
+          <Image source={WELCOME_LOGO} style={styles.welcomeLogo} />
+        </View>
+        <Image source={WELCOME_MONSTER} style={styles.welcomeImage} />
+        <Text style={styles.welcomeText}>
+          Daily walking towards your goals.
+        </Text>
+        <Center flex={1}>
+          <Box safeArea>
+            <Button
+              onPress={handleLoginGmail}
+              title="Login with Google"
+              accessibilityLabel="Login with Google"
+              borderRadius={24}
+              maxHeight={10}
+              marginBottom={20}
+              variant="outline"
+              borderColor={PRIMARY_MEDIUM}
+            >
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  source={require("../../../assets/images/icons/google.png")}
+                  style={{ width: 20, height: 20 }}
+                />
+                <Text
+                  style={{
+                    marginLeft: 5,
+                    color: PRIMARY_MEDIUM,
+                    fontWeight: "bold",
+                  }}
+                >
+                  Login with Google
+                </Text>
+              </View>
+            </Button>
+            <Text style={styles.loginText}>Or login with your email</Text>
 
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-          >
-            <Form
-              buttonText="Login with Email"
-              handleSubmit={handleLoginEmail}
-              style={styles.formButton}
-              handleLink={handleSignup}
-              linkText="Don't have an account? "
-            />
-          </KeyboardAvoidingView>
-        </Box>
-      </Center>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+            >
+              <Form
+                buttonText="Login with Email"
+                handleSubmit={handleLoginEmail}
+                style={styles.formButton}
+                handleLink={handleSignup}
+                linkText="Don't have an account? "
+              />
+            </KeyboardAvoidingView>
+          </Box>
+        </Center>
+      </ScrollView>
     </View>
   );
 };
@@ -164,12 +168,14 @@ const styles = StyleSheet.create({
   },
 
   welcomeImage: {
+    alignSelf: "center",
     width: 148,
     height: 156.67,
     marginBottom: "2%",
   },
   welcomeText: {
     fontSize: 24,
+    alignSelf: "center",
     fontWeight: "bold",
     textAlign: "center",
     color: PRIMARY_MEDIUM,

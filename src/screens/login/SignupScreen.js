@@ -43,57 +43,61 @@ const SignupScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.welcomeHeader}>
-        <MaterialCommunityIcons
-          name="keyboard-backspace"
-          size={24}
-          color={PRIMARY_DARK}
-          onPress={() => navigation.goBack()}
-        />
-        <Image source={WELCOME_LOGO} style={styles.welcomeLogo} />
-      </View>
-      <Image source={WELCOME_MONSTER} style={styles.welcomeImage} />
-      <Text style={styles.welcomeText}>Daily walking towards your goals.</Text>
-      <Center flex={1}>
-        <Box safeArea>
-          <Button
-            onPress={handleSignupGmail}
-            borderRadius={24}
-            maxHeight={10}
-            variant="outline"
-            borderColor={PRIMARY_MEDIUM}
-          >
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image
-                source={require("../../../assets/images/icons/google.png")}
-                style={{ width: 20, height: 20 }}
-              />
-              <Text
-                style={{
-                  marginLeft: 5,
-                  color: PRIMARY_MEDIUM,
-                  fontWeight: "bold",
-                }}
-              >
-                Sign up with Google
-              </Text>
-            </View>
-          </Button>
+      <ScrollView>
+        <View style={styles.welcomeHeader}>
+          <MaterialCommunityIcons
+            name="keyboard-backspace"
+            size={24}
+            color={PRIMARY_DARK}
+            onPress={() => navigation.goBack()}
+          />
+          <Image source={WELCOME_LOGO} style={styles.welcomeLogo} />
+        </View>
+        <Image source={WELCOME_MONSTER} style={styles.welcomeImage} />
+        <Text style={styles.welcomeText}>
+          Daily walking towards your goals.
+        </Text>
+        <Center flex={1}>
+          <Box safeArea>
+            <Button
+              onPress={handleSignupGmail}
+              borderRadius={24}
+              maxHeight={10}
+              variant="outline"
+              borderColor={PRIMARY_MEDIUM}
+            >
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  source={require("../../../assets/images/icons/google.png")}
+                  style={{ width: 20, height: 20 }}
+                />
+                <Text
+                  style={{
+                    marginLeft: 5,
+                    color: PRIMARY_MEDIUM,
+                    fontWeight: "bold",
+                  }}
+                >
+                  Sign up with Google
+                </Text>
+              </View>
+            </Button>
 
-          <Text style={styles.signupText}>Or create a new account</Text>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-          >
-            <Form
-              buttonText="Create new account"
-              handleSubmit={handleSignupEmail}
-              handleLink={handleLogin}
-              linkText="Already have an account? "
-              showNameField={true}
-            />
-          </KeyboardAvoidingView>
-        </Box>
-      </Center>
+            <Text style={styles.signupText}>Or create a new account</Text>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+            >
+              <Form
+                buttonText="Create new account"
+                handleSubmit={handleSignupEmail}
+                handleLink={handleLogin}
+                linkText="Already have an account? "
+                showNameField={true}
+              />
+            </KeyboardAvoidingView>
+          </Box>
+        </Center>
+      </ScrollView>
     </View>
   );
 };
@@ -123,12 +127,14 @@ const styles = StyleSheet.create({
   },
 
   welcomeImage: {
+    alignSelf: "center",
     width: 148,
     height: 156.67,
     marginBottom: "2%",
   },
   welcomeText: {
     fontSize: 24,
+    alignSelf: "center",
     fontWeight: "bold",
     textAlign: "center",
     color: PRIMARY_MEDIUM,
