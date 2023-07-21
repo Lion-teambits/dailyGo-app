@@ -7,13 +7,15 @@ const ProgressBarHome = ({ progressRate }) => {
   return (
     <Center w="100%">
       <Box
-        w="90%"
+        w="82%"
         marginBottom={1}
       >
         <TouchableWithoutFeedback onPress={() => {}}>
           <Slider
             size="sm"
             value={progressRate}
+            minValue={0}
+            maxValue={100}
           >
             <Slider.Track bg="transparent">
               <Slider.FilledTrack bg="transparent" />
