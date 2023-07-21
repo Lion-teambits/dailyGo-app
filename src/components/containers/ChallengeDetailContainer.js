@@ -9,6 +9,7 @@ import BadgeToAchieve from "../cards/BadgeToAchieve";
 import FriendsCard from "../cards/FriendsCard";
 import { updateGroupChallenge } from "../../api/groupChallengeService";
 import { TimeDiffTextBox } from "../textBoxes/TimeDiffTextBox";
+import { MonsterNameTextBox } from "../textBoxes/MonsterNameTextBox";
 
 const ChallengeDetailContainer = (props) => {
   const { challenge, isGroupChallenge } = props;
@@ -82,7 +83,7 @@ const ChallengeDetailContainer = (props) => {
           source={challenge.monster_image}
           size="2xl"
         />
-        <Heading size={"md"}>{challenge.monster_name}</Heading>
+        <MonsterNameTextBox name={challenge.monster_name} />
       </Box>
       {isGroupChallenge ? (
         <FriendsCard member={challenge.member_list} displayTitle={true} />

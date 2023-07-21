@@ -9,7 +9,7 @@ import {
   VStack,
 } from "native-base";
 import { useState } from "react";
-import { SECONDARY_MEDIUM } from "../../constants/colorCodes";
+import { SECONDARY_LIGHT, SECONDARY_MEDIUM } from "../../constants/colorCodes";
 import {
   GROUP_CHALLENGE_BADGE_INFO,
   groupChallengeMosters,
@@ -54,13 +54,14 @@ const CreateChallengeForm = ({ createGroupEvent, goBackToChallenges }) => {
                 <Box
                   padding={1}
                   backgroundColor={"blue.100"}
+                  borderRadius={10}
                   borderColor={
                     selectImgInfo.source === imageData.source
-                      ? "red"
+                      ? SECONDARY_LIGHT
                       : undefined
                   }
                   borderWidth={
-                    selectImgInfo.source === imageData.source ? 2 : 0
+                    selectImgInfo.source === imageData.source ? 3 : 0
                   }
                 >
                   <Image

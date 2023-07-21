@@ -28,7 +28,7 @@ const GroupChallengeContainer = () => {
 
   return (
     <VStack marginX={4}>
-      <Text>Group event code</Text>
+      <Text>Team event code</Text>
       <SearchForm handleSubmit={handleGroupChallengeSearch} />
       {groupInfo ? (
         <Box>
