@@ -9,10 +9,14 @@ import { retrieveChallengeProgressInfo } from "../../api/challengeProgressServic
 const GroupChallengeList = ({ userData }) => {
   const navigation = useNavigation();
   const [groupChallengeList, setGroupChallengeList] = useState();
+  const [groupChallengeProgressDds, setGroupChallengeProgressDds] = useState();
 
-  const navigateToHome = (challenge) => {
+  const navigateToHome = (challenge, index) => {
     if (challenge._id) {
-      navigation.navigate("Home", challenge._id);
+      navigation.navigate("HomeScreen", {
+        screen: "Home",
+        params: { challengeProgressID: groupChallengeProgressDds[index] },
+      });
     } else {
       console.log("[Error]Team progress id not found.");
     }
@@ -32,6 +36,7 @@ const GroupChallengeList = ({ userData }) => {
             );
           })
         );
+        setGroupChallengeProgressDds(groupChallengeIds);
         setGroupChallengeList(groupChallengeList);
       }
     };
@@ -42,10 +47,10 @@ const GroupChallengeList = ({ userData }) => {
     <View>
       {groupChallengeList ? (
         <Box>
-          {groupChallengeList.map((item) => (
+          {groupChallengeList.map((item, index) => (
             <TouchableOpacity
               key={item._id}
-              onPress={() => navigateToHome(item)}
+              onPress={() => navigateToHome(item, index)}
             >
               <Box
                 borderRadius={10}
