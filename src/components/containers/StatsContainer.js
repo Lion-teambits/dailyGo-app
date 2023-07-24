@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 import { retrieveUserInfo } from "../../api/userService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TXT_LIGHT_BG } from "../../constants/colorCodes";
+import Typography from "../typography/typography";
 
 const StatsContainer = () => {
   const [fireflies, setFireflies] = useState(0);
@@ -26,17 +27,23 @@ const StatsContainer = () => {
 
   return (
     <View style={styles.statsContainer}>
-      <Text style={styles.statsHeader}>Fireflies and Hearts</Text>
+      <Typography type="body2Bold" style={styles.statsHeader}>
+        Fireflies and Hearts
+      </Typography>
       <View style={styles.statsTextContainer}>
         <View style={styles.statsItem}>
-          <Text style={styles.statsText}>{fireflies}</Text>
+          <Typography type="subtitles" style={styles.statsText}>
+            {fireflies}
+          </Typography>
           <Image
             style={styles.statsIconFirefly}
             source={require("../../../assets/images/icons/firefly.png")}
           />
         </View>
         <View style={styles.statsItem}>
-          <Text style={styles.statsText}>{hearts}</Text>
+          <Typography type="subtitles" style={styles.statsText}>
+            {hearts}
+          </Typography>
           <Image
             style={styles.statsIconHearts}
             source={
@@ -65,14 +72,10 @@ const styles = StyleSheet.create({
   },
   statsHeader: {
     color: TXT_LIGHT_BG,
-    fontSize: 14,
-    fontWeight: "bold",
     marginBottom: 8,
   },
   statsText: {
     color: TXT_LIGHT_BG,
-    fontSize: 18,
-    fontWeight: "bold",
     marginRight: 8,
   },
   statsItem: {

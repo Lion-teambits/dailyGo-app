@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import BarChart from "./BarChart";
 import FilterButton from "../buttons/FilterButton";
 import { retrieveDailyRecord } from "../../api/dailyRecordService";
@@ -11,12 +11,13 @@ import {
   PRIMARY_DARK,
   SECONDARY_MEDIUM,
 } from "../../constants/colorCodes";
+import Typography from "../typography/typography";
 
 const StatisticsContainer = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [averageValue, setAverageValue] = useState(null);
   const [selectedDataType, setSelectedDataType] = useState("steps");
-  const [selectedFilter, setSelectedFilter] = useState("daily");
+  const [selectedFilter, setSelectedFilter] = useState("weekly");
 
   useEffect(() => {
     const getDailyRecord = async () => {
@@ -42,7 +43,7 @@ const StatisticsContainer = () => {
   const calculateFilteredData = (filter, selectedDataType, data) => {
     let newData = [];
     switch (filter) {
-      case "daily":
+      case "weekly":
         const today = new Date();
         const past7Days = [];
         for (let i = 7; i > 0; i--) {
@@ -67,7 +68,7 @@ const StatisticsContainer = () => {
           }
         });
         break;
-      case "weekly":
+      case "monthly":
         newData = [];
         for (let i = 0; i < data.length; i += 7) {
           const weekData = data.slice(i, i + 7);
@@ -170,7 +171,7 @@ const StatisticsContainer = () => {
     ];
 
     switch (filter) {
-      case "daily":
+      case "weekly":
         const past7Days = [];
         for (let i = 6; i >= 0; i--) {
           const date = new Date(today);
@@ -178,7 +179,7 @@ const StatisticsContainer = () => {
           past7Days.push(`${monthNames[date.getMonth()]} ${date.getDate()}`);
         }
         return `${past7Days[0]} - ${past7Days[6]}, ${today.getFullYear()}`;
-      case "weekly":
+      case "monthly":
         const oneMonthAgo = new Date(today);
         oneMonthAgo.setMonth(today.getMonth() - 1);
         return `${
@@ -206,19 +207,21 @@ const StatisticsContainer = () => {
 
   return (
     <View>
-      <Text style={styles.title}>Statistics</Text>
+      <Typography type="subtitles" style={styles.title}>
+        Statistics
+      </Typography>
       <View style={styles.buttonContainer}>
-        <FilterButton
-          label="Daily"
-          isActive={selectedFilter === "daily"}
-          onPress={() => handleFilterChange("daily")}
-          activeColor={SECONDARY_MEDIUM}
-          inactiveColor={BG_LIGHT}
-        />
         <FilterButton
           label="Weekly"
           isActive={selectedFilter === "weekly"}
           onPress={() => handleFilterChange("weekly")}
+          activeColor={SECONDARY_MEDIUM}
+          inactiveColor={BG_LIGHT}
+        />
+        <FilterButton
+          label="Monthly"
+          isActive={selectedFilter === "monthly"}
+          onPress={() => handleFilterChange("monthly")}
           activeColor={SECONDARY_MEDIUM}
           inactiveColor={BG_LIGHT}
         />
@@ -238,19 +241,19 @@ const StatisticsContainer = () => {
         />
       </View>
       {averageValue !== null && (
-        <Text style={styles.averageText}>
+        <Typography type="body2Bold" style={styles.averageText}>
           {`${averageValue.toFixed(0)} ${getDataTypeUnit()} - Average`}
-        </Text>
+        </Typography>
       )}
-      {selectedFilter === "daily" && (
-        <Text style={styles.dateRangeText}>
+      {selectedFilter === "weekly" && (
+        <Typography type="smallTextBold" style={styles.dateRangeText}>
           {getDateRangeText(selectedFilter)}
-        </Text>
+        </Typography>
       )}
-      {selectedFilter !== "daily" && (
-        <Text style={styles.dateRangeText}>
+      {selectedFilter !== "weekly" && (
+        <Typography type="smallTextBold" style={styles.dateRangeText}>
           {getDateRangeText(selectedFilter)}
-        </Text>
+        </Typography>
       )}
       <View style={styles.chartContainer}>
         <BarChart data={filteredData} averageValue={averageValue} />
@@ -284,9 +287,7 @@ const StatisticsContainer = () => {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 18,
     color: BG_DARK,
-    fontWeight: "bold",
     textAlign: "left",
     marginVertical: 25,
   },
@@ -297,14 +298,10 @@ const styles = StyleSheet.create({
   },
   averageText: {
     color: BG_DARK,
-    fontSize: 14,
-    fontWeight: "bold",
     marginVertical: 10,
   },
   dateRangeText: {
     color: PRIMARY_MEDIUM,
-    fontSize: 12,
-    fontWeight: "bold",
   },
   chartContainer: {
     marginTop: -20,

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   Image,
@@ -11,7 +10,12 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { badges } from "../../data/badgeData";
 import { retrieveUserInfo } from "../../api/userService";
-import { PRIMARY_MEDIUM, TXT_LIGHT_BG } from "../../constants/colorCodes";
+import {
+  PRIMARY_MEDIUM,
+  TXT_LIGHT_BG,
+  TXT_MEDIUM_BG,
+} from "../../constants/colorCodes";
+import Typography from "../typography/typography";
 
 const BadgeDetailContainer = () => {
   const [userData, setUserData] = useState(null);
@@ -38,12 +42,16 @@ const BadgeDetailContainer = () => {
 
   const handleSeeMorePress = (category) => {
     let categoryBadges = [];
+    let headerText = "Badges";
+
     if (category === "daily") {
       categoryBadges = dailyMonstersBadges;
+      headerText = "Daily Badges";
     } else if (category === "special") {
       categoryBadges = specialMonstersBadges;
+      headerText = "Special Badges";
     }
-    navigation.navigate("BadgeList", { categoryBadges, userData });
+    navigation.navigate("BadgeList", { categoryBadges, userData, headerText });
   };
 
   const dailyMonstersBadges = badges.slice(0, 6);
@@ -55,11 +63,17 @@ const BadgeDetailContainer = () => {
       contentContainerStyle={styles.contentContainer}
     >
       <View style={styles.badgesContainer}>
-        <Text style={styles.badgesMainHeader}>Rewards</Text>
+        <Typography type="subtitles" style={styles.badgesMainHeader}>
+          Rewards
+        </Typography>
         <View style={styles.badgesHeaderContainer}>
-          <Text style={styles.badgesHeader}>Daily Badges</Text>
+          <Typography type="body2Bold" style={styles.badgesHeader}>
+            Daily Badges
+          </Typography>
           <TouchableOpacity onPress={() => handleSeeMorePress("daily")}>
-            <Text style={styles.seeMore}>See More</Text>
+            <Typography type="body2Bold" style={styles.seeMore}>
+              See More
+            </Typography>
           </TouchableOpacity>
         </View>
         <ScrollView
@@ -96,12 +110,16 @@ const BadgeDetailContainer = () => {
 
       <View style={styles.badgesContainer}>
         <View style={styles.badgesHeaderContainer}>
-          <Text style={styles.badgesHeader}>Special Badges</Text>
+          <Typography type="body2Bold" style={styles.badgesHeader}>
+            Special Badges
+          </Typography>
           {specialMonstersBadges.filter((badge) =>
             userData?.badges.includes(badge.badgeTitle)
           ).length > 5 && (
             <TouchableOpacity onPress={() => handleSeeMorePress("special")}>
-              <Text style={styles.seeMore}>See More</Text>
+              <Typography type="body2Bold" style={styles.seeMore}>
+                See More
+              </Typography>
             </TouchableOpacity>
           )}
         </View>
@@ -130,9 +148,9 @@ const BadgeDetailContainer = () => {
           {specialMonstersBadges.filter((badge) =>
             userData?.badges.includes(badge.badgeTitle)
           ).length === 0 && (
-            <Text style={styles.noSpecialBadges}>
+            <Typography type="smallTextRegular" style={styles.noSpecialBadges}>
               No special badges available
-            </Text>
+            </Typography>
           )}
         </ScrollView>
       </View>
@@ -155,8 +173,6 @@ const styles = StyleSheet.create({
   },
   badgesMainHeader: {
     color: TXT_LIGHT_BG,
-    fontSize: 18,
-    fontWeight: "bold",
     marginBottom: 25,
   },
   badgesHeaderContainer: {
@@ -165,8 +181,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   badgesHeader: {
-    fontSize: 14,
-    fontWeight: "bold",
     color: TXT_LIGHT_BG,
     marginBottom: 10,
   },
@@ -178,15 +192,12 @@ const styles = StyleSheet.create({
   },
   seeMore: {
     color: PRIMARY_MEDIUM,
-    fontSize: 14,
-    fontWeight: "bold",
     alignSelf: "flex-end",
     paddingRight: 20,
   },
 
   noSpecialBadges: {
-    fontSize: 14,
-    fontStyle: "italic",
+    color: TXT_MEDIUM_BG,
     textAlign: "center",
   },
 });

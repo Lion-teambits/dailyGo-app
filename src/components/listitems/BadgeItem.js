@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  Share,
-} from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity, Share } from "react-native";
 import { badges } from "../../data/badgeData";
 import {
   PRIMARY_DARK,
@@ -15,6 +8,7 @@ import {
   TXT_LIGHT_BG,
 } from "../../constants/colorCodes";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Typography from "../typography/typography";
 
 const BadgeItem = ({ navigation, route }) => {
   const { badgeTitle } = route.params;
@@ -43,17 +37,27 @@ const BadgeItem = ({ navigation, route }) => {
           color={PRIMARY_DARK}
           onPress={() => navigation.goBack()}
         />
-        <Text style={styles.header}>Badge Details</Text>
+        <Typography type="subtitles" style={styles.header}>
+          Badge Details
+        </Typography>
       </View>
       <Image style={styles.badgeImage} source={badge.badgeImage} />
-      <Text style={styles.badgeName}>{badge.badgeTitle}</Text>
-      <Text style={styles.badgeDetail}>{badge.description}</Text>
+      <Typography type="subtitles" style={styles.badgeName}>
+        {badge.badgeTitle}
+      </Typography>
+      <Typography type="body2" style={styles.badgeDetail}>
+        {badge.description}
+      </Typography>
       <TouchableOpacity style={styles.shareButton} onPress={handleShareBadge}>
-        <Text style={styles.shareButtonText}>Share Badge</Text>
+        <Typography type="button" style={styles.shareButtonText}>
+          Share Badge
+        </Typography>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.goBackButton} onPress={handleGoBack}>
-        <Text style={styles.backButtonText}>Go back to Achievements</Text>
+        <Typography type="button" style={styles.backButtonText}>
+          Go back to Achievements
+        </Typography>
       </TouchableOpacity>
     </View>
   );
@@ -77,8 +81,6 @@ const styles = StyleSheet.create({
   header: {
     flex: 1,
     color: PRIMARY_DARK,
-    fontSize: 18,
-    fontWeight: "bold",
     textAlign: "center",
     marginRight: 20,
   },
@@ -90,26 +92,22 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
   badgeName: {
-    fontSize: 18,
-    fontWeight: "bold",
     color: PRIMARY_DARK,
     marginBottom: 25,
     textAlign: "center",
   },
   badgeDetail: {
-    fontSize: 14,
     color: TXT_LIGHT_BG,
     marginBottom: 32,
     textAlign: "center",
+    paddingHorizontal: 5,
   },
   shareButtonText: {
     textAlign: "center",
-    fontWeight: "bold",
-    color: "white",
+    color: TXT_DARK_BG,
   },
   backButtonText: {
     textAlign: "center",
-    fontWeight: "bold",
     color: PRIMARY_DARK,
   },
   shareButton: {

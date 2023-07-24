@@ -4,15 +4,15 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
-  Text,
   StyleSheet,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { PRIMARY_DARK, TXT_MEDIUM_BG } from "../../constants/colorCodes";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Typography from "../typography/typography";
 
 const BadgeList = ({ route }) => {
-  const { categoryBadges, userData } = route.params;
+  const { categoryBadges, userData, headerText } = route.params;
   const navigation = useNavigation();
 
   const filteredBadges = categoryBadges.filter((badge) => {
@@ -42,11 +42,12 @@ const BadgeList = ({ route }) => {
                 : require("../../../assets/images/badges/daily0.png")
             }
           />
-          <Text
+          <Typography
+            type="smallTextBold"
             style={[styles.badgeName, !hasBadge && styles.disabledBadgeText]}
           >
             {item.badgeTitle}
-          </Text>
+          </Typography>
         </View>
       </TouchableOpacity>
     );
@@ -61,7 +62,9 @@ const BadgeList = ({ route }) => {
           color={PRIMARY_DARK}
           onPress={() => navigation.goBack()}
         />
-        <Text style={styles.header}>Badge List</Text>
+        <Typography type="subtitles" style={styles.header}>
+          {headerText}
+        </Typography>
       </View>
       <FlatList
         data={filteredBadges}
@@ -91,15 +94,13 @@ const styles = StyleSheet.create({
   header: {
     flex: 1,
     color: PRIMARY_DARK,
-    fontSize: 18,
-    fontWeight: "bold",
     textAlign: "center",
     marginRight: 20,
   },
   badgeContainer: {
     alignItems: "center",
     justifyContent: "center",
-    margin: 9,
+    margin: 5,
     width: 115,
   },
   badgeImage: {
@@ -109,8 +110,6 @@ const styles = StyleSheet.create({
   },
   badgeName: {
     marginTop: 16,
-    fontSize: 12,
-    fontWeight: "bold",
     textAlign: "center",
     color: PRIMARY_DARK,
   },

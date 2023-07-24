@@ -1,6 +1,7 @@
 import React from "react";
-import { TouchableOpacity, Text, StyleSheet } from "react-native";
+import { TouchableOpacity, StyleSheet } from "react-native";
 import { TXT_DARK_BG, TXT_LIGHT_BG } from "../../constants/colorCodes";
+import Typography from "../typography/typography";
 
 const FilterButton = ({
   label,
@@ -16,7 +17,9 @@ const FilterButton = ({
 
   return (
     <TouchableOpacity style={buttonStyle} onPress={onPress}>
-      <Text style={[styles.label, labelStyle]}>{label}</Text>
+      <Typography type="smallTextBold" style={[styles.label, labelStyle]}>
+        {label}
+      </Typography>
     </TouchableOpacity>
   );
 };
@@ -36,11 +39,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
   },
   label: {
-    fontWeight: "bold",
     color: TXT_LIGHT_BG,
   },
   activeLabel: {
-    fontWeight: "bold",
     color: TXT_DARK_BG,
   },
 });

@@ -1,6 +1,6 @@
 import React from "react";
 import { Center, Box, Button, KeyboardAvoidingView } from "native-base";
-import { ScrollView, View, Text, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 import Form from "../../components/forms/Form";
 import {
   createUserWithEmailAndPassword,
@@ -11,6 +11,7 @@ import { auth } from "../../config/firebaseConfig";
 import { PRIMARY_MEDIUM, PRIMARY_DARK } from "../../constants/colorCodes";
 import { WELCOME_MONSTER, WELCOME_LOGO } from "../../constants/imagePaths";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Typography from "../../components/typography/typography";
 
 const SignupScreen = ({ navigation }) => {
   const handleSignupGmail = () => {
@@ -43,61 +44,61 @@ const SignupScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <View style={styles.welcomeHeader}>
-          <MaterialCommunityIcons
-            name="keyboard-backspace"
-            size={24}
-            color={PRIMARY_DARK}
-            onPress={() => navigation.goBack()}
-          />
-          <Image source={WELCOME_LOGO} style={styles.welcomeLogo} />
-        </View>
-        <Image source={WELCOME_MONSTER} style={styles.welcomeImage} />
-        <Text style={styles.welcomeText}>
-          Daily walking towards your goals.
-        </Text>
-        <Center flex={1}>
-          <Box safeArea>
-            <Button
-              onPress={handleSignupGmail}
-              borderRadius={24}
-              maxHeight={10}
-              variant="outline"
-              borderColor={PRIMARY_MEDIUM}
-            >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image
-                  source={require("../../../assets/images/icons/google.png")}
-                  style={{ width: 20, height: 20 }}
-                />
-                <Text
-                  style={{
-                    marginLeft: 5,
-                    color: PRIMARY_MEDIUM,
-                    fontWeight: "bold",
-                  }}
-                >
-                  Sign up with Google
-                </Text>
-              </View>
-            </Button>
-
-            <Text style={styles.signupText}>Or create a new account</Text>
-            <KeyboardAvoidingView
-              behavior={Platform.OS === "ios" ? "padding" : "height"}
-            >
-              <Form
-                buttonText="Create new account"
-                handleSubmit={handleSignupEmail}
-                handleLink={handleLogin}
-                linkText="Already have an account? "
-                showNameField={true}
+      <View style={styles.welcomeHeader}>
+        <MaterialCommunityIcons
+          name="keyboard-backspace"
+          size={24}
+          color={PRIMARY_DARK}
+          onPress={() => navigation.goBack()}
+        />
+        <Image source={WELCOME_LOGO} style={styles.welcomeLogo} />
+      </View>
+      <Image source={WELCOME_MONSTER} style={styles.welcomeImage} />
+      <Typography type="heading4" style={styles.welcomeText}>
+        Daily walking towards your goals.
+      </Typography>
+      <Center flex={1}>
+        <Box safeArea>
+          <Button
+            onPress={handleSignupGmail}
+            borderRadius={24}
+            maxHeight={10}
+            variant="outline"
+            borderColor={PRIMARY_MEDIUM}
+          >
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                source={require("../../../assets/images/icons/google.png")}
+                style={{ width: 20, height: 20 }}
               />
-            </KeyboardAvoidingView>
-          </Box>
-        </Center>
-      </ScrollView>
+              <Typography
+                type="button"
+                style={{
+                  marginLeft: 5,
+                  color: PRIMARY_MEDIUM,
+                }}
+              >
+                Sign up with Google
+              </Typography>
+            </View>
+          </Button>
+
+          <Typography type="button" style={styles.signupText}>
+            Or create a new account
+          </Typography>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+          >
+            <Form
+              buttonText="Create new account"
+              handleSubmit={handleSignupEmail}
+              handleLink={handleLogin}
+              linkText="Already have an account? "
+              showNameField={true}
+            />
+          </KeyboardAvoidingView>
+        </Box>
+      </Center>
     </View>
   );
 };
@@ -133,17 +134,13 @@ const styles = StyleSheet.create({
     marginBottom: "2%",
   },
   welcomeText: {
-    fontSize: 24,
     alignSelf: "center",
-    fontWeight: "bold",
     textAlign: "center",
     color: PRIMARY_MEDIUM,
     width: "60%",
-    marginBottom: "10%",
+    marginBottom: "30%",
   },
   signupText: {
-    fontSize: 14,
-    fontWeight: "bold",
     textAlign: "center",
     color: PRIMARY_DARK,
     marginTop: "10%",

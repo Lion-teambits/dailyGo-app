@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity, Text } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import SwiperFlatList from "react-native-swiper-flatlist";
 import CarouselItem from "../listitems/CarouselItem";
 import {
@@ -17,6 +17,7 @@ import {
   ACCENT_MEDIUM,
   TXT_LIGHT_BG,
 } from "../../constants/colorCodes";
+import Typography from "../typography/typography";
 
 const CarouselList = ({ userInfo }) => {
   const navigation = useNavigation();
@@ -39,13 +40,15 @@ const CarouselList = ({ userInfo }) => {
 
         {isLastPage ? (
           <TouchableOpacity style={styles.startButton} onPress={handleSkip}>
-            <Text style={styles.startButtonText}>
+            <Typography type="button" style={styles.startButtonText}>
               Start my DailyGo challenge!
-            </Text>
+            </Typography>
           </TouchableOpacity>
         ) : (
           <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
-            <Text style={styles.buttonText}>Skip</Text>
+            <Typography type="button" style={styles.buttonText}>
+              Skip
+            </Typography>
           </TouchableOpacity>
         )}
       </View>
@@ -102,8 +105,6 @@ const styles = {
     right: 20,
   },
   buttonText: {
-    fontSize: 14,
-    fontWeight: "bold",
     color: TXT_DARK_BG,
   },
   carouselItem: {
@@ -127,8 +128,6 @@ const styles = {
   },
 
   startButtonText: {
-    fontSize: 14,
-    fontWeight: "bold",
     textAlign: "center",
     color: TXT_LIGHT_BG,
   },

@@ -12,6 +12,7 @@ import {
   PRIMARY_DARK,
   TXT_MEDIUM_BG,
 } from "../../constants/colorCodes";
+import Typography from "../typography/typography";
 
 const BarChart = ({ data, averageValue }) => {
   const ValueLabel = () => null;
@@ -30,7 +31,11 @@ const BarChart = ({ data, averageValue }) => {
           style={{
             axis: { stroke: PRIMARY_DARK, strokeWidth: 2 },
             ticks: { size: 0 },
-            tickLabels: { fill: TXT_MEDIUM_BG, fontSize: 12 },
+            tickLabels: {
+              fill: TXT_MEDIUM_BG,
+              fontSize: 12,
+              fontFamily: "WorkSansRegular",
+            },
             grid: { stroke: "none" },
           }}
         />
