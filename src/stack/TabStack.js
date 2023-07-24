@@ -5,12 +5,14 @@ import HomeScreen from "../screens/tabnav/HomeScreen";
 import ChallengesScreen from "../screens/tabnav/ChallengesScreen";
 import AchievementsScreen from "../screens/tabnav/AchievementsScreen";
 import ProfileScreen from "../screens/tabnav/ProfileScreen";
+import { AnimatedTabBar } from "../styles/tabStackStyles";
 
 const Tab = createBottomTabNavigator();
 
 const TabStack = () => {
   return (
     <Tab.Navigator
+      tabBar={(props) => <AnimatedTabBar {...props} />}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -26,11 +28,7 @@ const TabStack = () => {
           }
 
           return (
-            <MaterialCommunityIcons
-              name={iconName}
-              size={size}
-              color={color}
-            />
+            <MaterialCommunityIcons name={iconName} size={size} color={color} />
           );
         },
       })}
@@ -41,10 +39,7 @@ const TabStack = () => {
         initialParams={{ challengeProgressID: null }}
         options={{ headerShown: false }}
       />
-      <Tab.Screen
-        name="Challenges"
-        component={ChallengesScreen}
-      />
+      <Tab.Screen name="Challenges" component={ChallengesScreen} />
       <Tab.Screen
         name="Achievements"
         component={AchievementsScreen}
