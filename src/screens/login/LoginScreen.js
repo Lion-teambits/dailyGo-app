@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Center, Box, Button, KeyboardAvoidingView } from "native-base";
-import { ScrollView, View, Text, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 import Form from "../../components/forms/Form";
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
@@ -17,6 +17,7 @@ import { retrieveUserInfo } from "../../api/userService";
 import { PRIMARY_MEDIUM, PRIMARY_DARK } from "../../constants/colorCodes";
 import { WELCOME_MONSTER, WELCOME_LOGO } from "../../constants/imagePaths";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Typography from "../../components/typography/typography";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -81,64 +82,64 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <View style={styles.welcomeHeader}>
-          <MaterialCommunityIcons
-            name="keyboard-backspace"
-            size={24}
-            color={PRIMARY_DARK}
-            onPress={() => navigation.goBack()}
-          />
-          <Image source={WELCOME_LOGO} style={styles.welcomeLogo} />
-        </View>
-        <Image source={WELCOME_MONSTER} style={styles.welcomeImage} />
-        <Text style={styles.welcomeText}>
-          Daily walking towards your goals.
-        </Text>
-        <Center flex={1}>
-          <Box safeArea>
-            <Button
-              onPress={handleLoginGmail}
-              title="Login with Google"
-              accessibilityLabel="Login with Google"
-              borderRadius={24}
-              maxHeight={10}
-              marginBottom={20}
-              variant="outline"
-              borderColor={PRIMARY_MEDIUM}
-            >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image
-                  source={require("../../../assets/images/icons/google.png")}
-                  style={{ width: 20, height: 20 }}
-                />
-                <Text
-                  style={{
-                    marginLeft: 5,
-                    color: PRIMARY_MEDIUM,
-                    fontWeight: "bold",
-                  }}
-                >
-                  Login with Google
-                </Text>
-              </View>
-            </Button>
-            <Text style={styles.loginText}>Or login with your email</Text>
-
-            <KeyboardAvoidingView
-              behavior={Platform.OS === "ios" ? "padding" : "height"}
-            >
-              <Form
-                buttonText="Login with Email"
-                handleSubmit={handleLoginEmail}
-                style={styles.formButton}
-                handleLink={handleSignup}
-                linkText="Don't have an account? "
+      <View style={styles.welcomeHeader}>
+        <MaterialCommunityIcons
+          name="keyboard-backspace"
+          size={24}
+          color={PRIMARY_DARK}
+          onPress={() => navigation.goBack()}
+        />
+        <Image source={WELCOME_LOGO} style={styles.welcomeLogo} />
+      </View>
+      <Image source={WELCOME_MONSTER} style={styles.welcomeImage} />
+      <Typography type="heading4" style={styles.welcomeText}>
+        Daily walking towards your goals.
+      </Typography>
+      <Center flex={1}>
+        <Box safeArea>
+          <Button
+            onPress={handleLoginGmail}
+            title="Login with Google"
+            accessibilityLabel="Login with Google"
+            borderRadius={24}
+            maxHeight={10}
+            marginBottom={20}
+            variant="outline"
+            borderColor={PRIMARY_MEDIUM}
+          >
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                source={require("../../../assets/images/icons/google.png")}
+                style={{ width: 20, height: 20 }}
               />
-            </KeyboardAvoidingView>
-          </Box>
-        </Center>
-      </ScrollView>
+              <Typography
+                type="button"
+                style={{
+                  marginLeft: 5,
+                  color: PRIMARY_MEDIUM,
+                }}
+              >
+                Login with Google
+              </Typography>
+            </View>
+          </Button>
+          <Typography type="button" style={styles.loginText}>
+            Or login with your email
+          </Typography>
+
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+          >
+            <Form
+              buttonText="Login with Email"
+              handleSubmit={handleLoginEmail}
+              style={styles.formButton}
+              handleLink={handleSignup}
+              linkText="Don't have an account? "
+            />
+          </KeyboardAvoidingView>
+        </Box>
+      </Center>
     </View>
   );
 };
@@ -174,17 +175,13 @@ const styles = StyleSheet.create({
     marginBottom: "2%",
   },
   welcomeText: {
-    fontSize: 24,
     alignSelf: "center",
-    fontWeight: "bold",
     textAlign: "center",
     color: PRIMARY_MEDIUM,
     width: "60%",
-    marginBottom: "10%",
+    marginBottom: "20%",
   },
   loginText: {
-    fontSize: 14,
-    fontWeight: "bold",
     textAlign: "center",
     color: PRIMARY_DARK,
   },

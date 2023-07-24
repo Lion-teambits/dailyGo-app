@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState } from "react";
-import { ScrollView, View, Text, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { createUserInfo } from "../../api/userService";
 import { useNavigation } from "@react-navigation/native";
 import { AVATAR_6 } from "../../constants/imagePaths";
@@ -10,6 +10,7 @@ import {
   PRIMARY_DARK,
   PRIMARY_MEDIUM,
 } from "../../constants/colorCodes";
+import Typography from "../../components/typography/typography";
 
 const name = "Mufasa";
 const photo = AVATAR_6;
@@ -44,110 +45,111 @@ const PreferencesScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <Text style={styles.questionText}>
-          How much do you think you walk per day?
-        </Text>
-        <TouchableOpacity
+      <Typography type="heading4" style={styles.questionText}>
+        How much do you think you walk per day?
+      </Typography>
+      <TouchableOpacity
+        style={[
+          styles.button,
+          selectedButtonIndex === 0 && styles.selectedButton,
+        ]}
+        onPress={() => {
+          setSelectedSteps(3000);
+          setSelectedButtonIndex(0);
+        }}
+      >
+        <Typography
+          type="body1Bold"
           style={[
-            styles.button,
-            selectedButtonIndex === 0 && styles.selectedButton,
+            styles.buttonText,
+            selectedButtonIndex === 0 && styles.selectedButtonText,
           ]}
-          onPress={() => {
-            setSelectedSteps(3000);
-            setSelectedButtonIndex(0);
-          }}
         >
-          <Text
-            style={[
-              styles.buttonText,
-              selectedButtonIndex === 0 && styles.selectedButtonText,
-            ]}
-          >
-            I don’t walk much
-          </Text>
-          <Text
-            style={[
-              styles.buttonSmallText,
-              selectedButtonIndex === 0 && styles.selectedButtonText,
-            ]}
-          >
-            You just walk inside your house to grab some food and go to the
-            bathroom.
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+          I don’t walk much
+        </Typography>
+        <Typography
+          type="smallTextRegular"
           style={[
-            styles.button,
-            selectedButtonIndex === 1 && styles.selectedButton,
+            styles.buttonSmallText,
+            selectedButtonIndex === 0 && styles.selectedButtonText,
           ]}
-          onPress={() => {
-            setSelectedSteps(5000);
-            setSelectedButtonIndex(1);
-          }}
         >
-          <Text
-            style={[
-              styles.buttonText,
-              selectedButtonIndex === 1 && styles.selectedButtonText,
-            ]}
-          >
-            I walk a little bit
-          </Text>
-          <Text
-            style={[
-              styles.buttonSmallText,
-              selectedButtonIndex === 1 && styles.selectedButtonText,
-            ]}
-          >
-            Although you spend most of the time seated, you go to some places
-            near you on foot.
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+          You just walk inside your house to grab some food and go to the
+          bathroom.
+        </Typography>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[
+          styles.button,
+          selectedButtonIndex === 1 && styles.selectedButton,
+        ]}
+        onPress={() => {
+          setSelectedSteps(5000);
+          setSelectedButtonIndex(1);
+        }}
+      >
+        <Typography
+          type="body1Bold"
           style={[
-            styles.button,
-            selectedButtonIndex === 2 && styles.selectedButton,
+            styles.buttonText,
+            selectedButtonIndex === 1 && styles.selectedButtonText,
           ]}
-          onPress={() => {
-            setSelectedSteps(8000);
-            setSelectedButtonIndex(2);
-          }}
         >
-          <Text
-            style={[
-              styles.buttonText,
-              selectedButtonIndex === 2 && styles.selectedButtonText,
-            ]}
-          >
-            I usually walk, but I want a challenge
-          </Text>
-          <Text
-            style={[
-              styles.buttonSmallText,
-              selectedButtonIndex === 2 && styles.selectedButtonText,
-            ]}
-          >
-            You are very close to have a more active lifestyle, but without
-            goals and consistency.
-          </Text>
-        </TouchableOpacity>
-        <Text style={styles.normalText}>
-          Don’t worry, you can change your preferences later.
-        </Text>
-        <TouchableOpacity
+          I walk a little bit
+        </Typography>
+        <Typography
+          type="smallTextRegular"
           style={[
-            styles.submitButton,
-            isSubmitDisabled && styles.disabledButton,
+            styles.buttonSmallText,
+            selectedButtonIndex === 1 && styles.selectedButtonText,
           ]}
-          onPress={submitButton}
-          disabled={isSubmitDisabled}
         >
-          <Text style={styles.submitButtonText}>
-            I'm ready for my challenge!
-          </Text>
-        </TouchableOpacity>
-      </ScrollView>
+          Although you spend most of the time seated, you go to some places near
+          you on foot.
+        </Typography>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[
+          styles.button,
+          selectedButtonIndex === 2 && styles.selectedButton,
+        ]}
+        onPress={() => {
+          setSelectedSteps(8000);
+          setSelectedButtonIndex(2);
+        }}
+      >
+        <Typography
+          type="body1Bold"
+          style={[
+            styles.buttonText,
+            selectedButtonIndex === 2 && styles.selectedButtonText,
+          ]}
+        >
+          I usually walk, but I want a challenge
+        </Typography>
+        <Typography
+          type="smallTextRegular"
+          style={[
+            styles.buttonSmallText,
+            selectedButtonIndex === 2 && styles.selectedButtonText,
+          ]}
+        >
+          You are very close to have a more active lifestyle, but without goals
+          and consistency.
+        </Typography>
+      </TouchableOpacity>
+      <Typography type="body1" style={styles.normalText}>
+        Don’t worry, you can change your preferences later.
+      </Typography>
+      <TouchableOpacity
+        style={[styles.submitButton, isSubmitDisabled && styles.disabledButton]}
+        onPress={submitButton}
+        disabled={isSubmitDisabled}
+      >
+        <Typography type="button" style={styles.submitButtonText}>
+          I'm ready for my challenge!
+        </Typography>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -160,8 +162,6 @@ const styles = {
     backgroundColor: "white",
   },
   questionText: {
-    fontSize: 24,
-    fontWeight: "bold",
     color: PRIMARY_MEDIUM,
     margin: 50,
     textAlign: "center",
@@ -182,9 +182,7 @@ const styles = {
     backgroundColor: PRIMARY_MEDIUM,
   },
   buttonText: {
-    fontSize: 16,
     color: PRIMARY_MEDIUM,
-    fontWeight: "bold",
     paddingTop: 5,
     paddingBottom: 5,
   },
@@ -192,11 +190,9 @@ const styles = {
     color: TXT_DARK_BG,
   },
   buttonSmallText: {
-    fontSize: 12,
     color: PRIMARY_MEDIUM,
   },
   normalText: {
-    fontSize: 16,
     color: PRIMARY_DARK,
     textAlign: "center",
     padding: 50,
@@ -210,8 +206,6 @@ const styles = {
     borderRadius: 24,
   },
   submitButtonText: {
-    fontSize: 16,
-    fontWeight: "bold",
     textAlign: "center",
     color: TXT_DARK_BG,
   },

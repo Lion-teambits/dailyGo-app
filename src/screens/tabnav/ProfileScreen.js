@@ -2,10 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   ScrollView,
-  Text,
   Image,
   TouchableOpacity,
   Switch,
+  Text,
   TextInput,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -22,6 +22,7 @@ import {
   TXT_DARK_BG,
 } from "../../constants/colorCodes";
 import { retrieveUserInfo, updateUserInfo } from "../../api/userService";
+import Typography from "../../components/typography/typography";
 
 const ProfileScreen = () => {
   const [editMode, setEditMode] = useState(false);
@@ -156,8 +157,12 @@ const ProfileScreen = () => {
       <View>
         {editMode ? (
           <View style={styles.subpageContainer}>
-            <Text style={styles.subpageHeader}>Avatar</Text>
-            <Text style={styles.subpageText}>Select your avatar</Text>
+            <Typography type="subtitles" style={styles.subpageHeader}>
+              Avatar
+            </Typography>
+            <Typography type="body2Bold" style={styles.subpageText}>
+              Select your avatar
+            </Typography>
             <View style={styles.avatarContainer}>
               {PROFILE_AVATAR_LIST.map((avatar, index) => (
                 <TouchableOpacity
@@ -187,25 +192,33 @@ const ProfileScreen = () => {
               style={styles.applyButton}
               onPress={handleApplyChanges}
             >
-              <Text style={styles.applyButtonText}>Apply Changes</Text>
+              <Typography type="button" style={styles.applyButtonText}>
+                Apply Changes
+              </Typography>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.cancelButton}
               onPress={handleCancelChanges}
             >
-              <Text style={styles.cancelButtonText}>Cancel</Text>
+              <Typography type="button" style={styles.cancelButtonText}>
+                Cancel
+              </Typography>
             </TouchableOpacity>
           </View>
         ) : userData ? (
           <View style={styles.profileInfoContainer}>
-            <Text style={styles.profileInfoHeader}>Profile</Text>
+            <Typography type="subtitles" style={styles.profileInfoHeader}>
+              Profile
+            </Typography>
             <TouchableOpacity onPress={handleEditProfile}>
               <Image
                 source={parseInt(userData.avatar)}
                 style={styles.profileImage}
               />
               <View style={styles.editButton}>
-                <Text style={styles.editButtonText}>Edit</Text>
+                <Typography type="smallTextBold" style={styles.editButtonText}>
+                  Edit
+                </Typography>
               </View>
             </TouchableOpacity>
 
@@ -220,7 +233,9 @@ const ProfileScreen = () => {
                 <MaterialIcons name="edit" size={20} color={PRIMARY_DARK} />
               </TouchableOpacity>
             </View>
-            <Text style={styles.dailyModeText}>Preferred Daily Mode</Text>
+            <Typography type="body2" style={styles.dailyModeText}>
+              Preferred Daily Mode
+            </Typography>
             <View style={styles.dailyModeContainer}>
               <TouchableOpacity
                 style={styles.buttonContainer}
@@ -228,7 +243,9 @@ const ProfileScreen = () => {
               >
                 <Text style={styles.buttonText}>-</Text>
               </TouchableOpacity>
-              <Text style={styles.dailyModeValue}>{dailyModeValue}</Text>
+              <Typography type="heading3" style={styles.dailyModeValue}>
+                {dailyModeValue}
+              </Typography>
               <TouchableOpacity
                 style={styles.buttonContainer}
                 onPress={handleIncreaseDailyMode}
@@ -236,10 +253,14 @@ const ProfileScreen = () => {
                 <Text style={styles.buttonText}>+</Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.dailyLevelText}>{getDailyModeText()}</Text>
+            <Typography type="body2Bold" style={styles.dailyLevelText}>
+              {getDailyModeText()}
+            </Typography>
 
             <View style={styles.notificationContainer}>
-              <Text style={styles.notificationText}>Push Notifications</Text>
+              <Typography type="body1Bold" style={styles.notificationText}>
+                Push Notifications
+              </Typography>
               <Switch
                 value={pushNotificationEnabled}
                 onValueChange={handleTogglePushNotification}
@@ -250,7 +271,9 @@ const ProfileScreen = () => {
               style={styles.logoutContainer}
               onPress={handleLogout}
             >
-              <Text style={styles.logoutButton}>Logout</Text>
+              <Typography type="body1Bold" style={styles.logoutButton}>
+                Logout
+              </Typography>
             </TouchableOpacity>
           </View>
         ) : (
@@ -274,8 +297,6 @@ const styles = {
     backgroundColor: "white",
   },
   profileInfoHeader: {
-    fontSize: 18,
-    fontWeight: "bold",
     color: PRIMARY_DARK,
     textAlign: "center",
     marginBottom: 50,
@@ -303,8 +324,6 @@ const styles = {
     marginLeft: 27,
   },
   editButtonText: {
-    fontSize: 12,
-    fontWeight: "bold",
     color: PRIMARY_DARK,
     textAlign: "center",
     paddingVertical: 8,
@@ -325,8 +344,6 @@ const styles = {
     borderRadius: 24,
   },
   applyButtonText: {
-    fontSize: 16,
-    fontWeight: "bold",
     textAlign: "center",
     color: TXT_DARK_BG,
   },
@@ -335,21 +352,15 @@ const styles = {
     marginBottom: 10,
   },
   cancelButtonText: {
-    fontSize: 16,
     textAlign: "center",
-    fontWeight: "bold",
     color: PRIMARY_DARK,
   },
   subpageHeader: {
-    fontSize: 18,
-    fontWeight: "bold",
     color: PRIMARY_DARK,
     textAlign: "center",
     marginBottom: 32,
   },
   subpageText: {
-    fontSize: 14,
-    fontWeight: "bold",
     color: PRIMARY_DARK,
     textAlign: "center",
     marginBottom: 20,
@@ -358,14 +369,15 @@ const styles = {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    paddingHorizontal: 55,
-    marginBottom: 20,
+    paddingHorizontal: 45,
+    marginTop: "5%",
+    marginBottom: "15%",
   },
   avatarImage: {
     width: 86,
     height: 86,
     borderRadius: 43,
-    marginBottom: 15,
+    marginBottom: 20,
   },
   selectedImage: {
     borderWidth: 4,
@@ -383,6 +395,7 @@ const styles = {
   },
   nameInput: {
     fontSize: 18,
+    fontFamily: "WorkSansBold",
     color: PRIMARY_DARK,
     fontWeight: "bold",
     paddingVertical: 8,
@@ -422,16 +435,16 @@ const styles = {
   buttonText: {
     fontSize: 30,
     fontWeight: "bold",
+    color: PRIMARY_DARK,
     paddingHorizontal: 12,
     paddingVertical: 1,
   },
   dailyModeValue: {
-    fontSize: 36,
-    fontWeight: "bold",
     color: PRIMARY_DARK,
     width: 188,
     height: 36,
     textAlign: "center",
+    paddingTop: 5,
   },
   notificationContainer: {
     width: "87%",
@@ -450,11 +463,9 @@ const styles = {
     justifyContent: "space-between",
     paddingHorizontal: 20,
     marginVertical: 10,
-    marginTop: 60,
+    marginTop: "30%",
   },
   notificationText: {
-    fontSize: 16,
-    fontWeight: "bold",
     color: PRIMARY_DARK,
   },
   logoutContainer: {
@@ -474,8 +485,6 @@ const styles = {
     marginTop: 10,
   },
   logoutButton: {
-    fontSize: 16,
-    fontWeight: "bold",
     color: PRIMARY_DARK,
     paddingHorizontal: 20,
   },

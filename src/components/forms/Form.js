@@ -5,17 +5,18 @@ import {
   Input,
   Button,
   HStack,
-  Text,
   Link,
-  ScrollView,
+  View,
 } from "native-base";
 import {
   PRIMARY_DARK,
   PRIMARY_MEDIUM,
   SECONDARY_MEDIUM,
+  TXT_DARK_BG,
   TXT_MEDIUM_BG,
 } from "../../constants/colorCodes";
 import { StyleSheet } from "react-native";
+import Typography from "../typography/typography";
 
 const Form = ({
   buttonText,
@@ -30,6 +31,7 @@ const Form = ({
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [passwordLengthError, setPasswordLengthError] = useState("");
 
   const handleNameChange = (value) => {
     setName(value);
@@ -44,6 +46,7 @@ const Form = ({
   const handlePasswordChange = (value) => {
     setPassword(value);
     setPasswordError("");
+    setPasswordLengthError("");
   };
 
   const handleFormSubmit = () => {
@@ -65,6 +68,9 @@ const Form = ({
     if (password.trim() === "") {
       setPasswordError("Please input password");
       isFormValid = false;
+    } else if (password.trim().length <= 7) {
+      setPasswordLengthError("Password must be at least 8 characters");
+      isFormValid = false;
     }
 
     if (isFormValid) {
@@ -77,17 +83,20 @@ const Form = ({
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <VStack space={2} mt="5">
         {showNameField && (
           <FormControl isInvalid={nameError !== ""}>
-            <FormControl.Label
-              _text={{
-                color: nameError !== "" ? "#D03E00" : "black",
-                paddingLeft: 3,
-              }}
-            >
-              Name
+            <FormControl.Label>
+              <Typography
+                type="body2"
+                style={{
+                  color: nameError !== "" ? "#D03E00" : "black",
+                  paddingLeft: 12,
+                }}
+              >
+                Name
+              </Typography>
             </FormControl.Label>
             <Input
               placeholder="Name"
@@ -96,6 +105,7 @@ const Form = ({
               onChangeText={handleNameChange}
               variant="rounded"
               height={10}
+              fontFamily="WorkSansRegular"
               _focus={{
                 borderColor: PRIMARY_MEDIUM,
                 backgroundColor: "white",
@@ -109,19 +119,22 @@ const Form = ({
                   paddingLeft: "3",
                 }}
               >
-                {nameError}
+                <Typography type="body2">{nameError}</Typography>
               </FormControl.ErrorMessage>
             )}
           </FormControl>
         )}
         <FormControl isInvalid={emailError !== ""}>
-          <FormControl.Label
-            _text={{
-              color: emailError !== "" ? "#D03E00" : "black",
-              paddingLeft: 3,
-            }}
-          >
-            Email
+          <FormControl.Label>
+            <Typography
+              type="body2"
+              style={{
+                color: emailError !== "" ? "#D03E00" : "black",
+                paddingLeft: 12,
+              }}
+            >
+              Email
+            </Typography>
           </FormControl.Label>
           <Input
             placeholder="Email"
@@ -131,6 +144,7 @@ const Form = ({
             autoCapitalize="none"
             variant="rounded"
             height={10}
+            fontFamily="WorkSansRegular"
             _focus={{
               borderColor: PRIMARY_MEDIUM,
               backgroundColor: "white",
@@ -144,18 +158,26 @@ const Form = ({
                 paddingLeft: "3",
               }}
             >
-              {emailError}
+              <Typography type="body2">{emailError}</Typography>
             </FormControl.ErrorMessage>
           )}
         </FormControl>
-        <FormControl isInvalid={passwordError !== ""}>
-          <FormControl.Label
-            _text={{
-              color: passwordError !== "" ? "#D03E00" : "black",
-              paddingLeft: 3,
-            }}
-          >
-            Password
+        <FormControl
+          isInvalid={passwordError !== "" || passwordLengthError !== ""}
+        >
+          <FormControl.Label>
+            <Typography
+              type="body2"
+              style={{
+                color:
+                  passwordError !== "" || passwordLengthError !== ""
+                    ? "#D03E00"
+                    : "black",
+                paddingLeft: 12,
+              }}
+            >
+              Password
+            </Typography>
           </FormControl.Label>
           <Input
             type="password"
@@ -165,20 +187,35 @@ const Form = ({
             onChangeText={handlePasswordChange}
             variant="rounded"
             height={10}
+            fontFamily="WorkSansRegular"
             _focus={{
               borderColor: PRIMARY_MEDIUM,
               backgroundColor: "white",
             }}
-            borderColor={passwordError !== "" ? "#D03E00" : TXT_MEDIUM_BG}
+            borderColor={
+              passwordError !== "" || passwordLengthError !== ""
+                ? "#D03E00"
+                : TXT_MEDIUM_BG
+            }
           />
           {passwordError !== "" && (
             <FormControl.ErrorMessage
               _text={{
                 color: "#D03E00",
-                paddingLeft: "3",
+                paddingLeft: "2",
               }}
             >
-              {passwordError}
+              <Typography type="body2"> {passwordError}</Typography>
+            </FormControl.ErrorMessage>
+          )}
+          {passwordLengthError !== "" && (
+            <FormControl.ErrorMessage
+              _text={{
+                color: "#D03E00",
+                paddingLeft: "2",
+              }}
+            >
+              <Typography type="body2"> {passwordLengthError}</Typography>
             </FormControl.ErrorMessage>
           )}
         </FormControl>
@@ -188,32 +225,28 @@ const Form = ({
           maxHeight={10}
           backgroundColor={SECONDARY_MEDIUM}
           onPress={handleFormSubmit}
-          _text={{
-            fontWeight: "bold",
-            fontSize: "sm",
-          }}
         >
-          {buttonText}
+          <Typography type="button" style={{ color: TXT_DARK_BG }}>
+            {buttonText}
+          </Typography>
         </Button>
         <HStack mt="4" justifyContent="center" w="100%">
-          <Text fontSize="sm" color={PRIMARY_DARK} fontWeight="bold">
+          <Typography type="button" style={{ color: PRIMARY_DARK }}>
             {linkText}
-          </Text>
-          <Link
-            _text={{
-              color: PRIMARY_DARK,
-              fontWeight: "bold",
-              fontSize: "sm",
-            }}
-            onPress={handleLink}
-          >
-            {handleLink.name === "handleLogin"
-              ? "Login here."
-              : "Sign up here."}
+          </Typography>
+          <Link onPress={handleLink}>
+            <Typography
+              type="button"
+              style={{ color: PRIMARY_DARK, textDecorationLine: "underline" }}
+            >
+              {handleLink.name === "handleLogin"
+                ? "Login here."
+                : "Sign up here."}
+            </Typography>
           </Link>
         </HStack>
       </VStack>
-    </ScrollView>
+    </View>
   );
 };
 

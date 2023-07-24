@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
+import { View, StyleSheet, Image, ScrollView } from "react-native";
 import { retrieveDailyRecord } from "../../api/dailyRecordService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TXT_LIGHT_BG } from "../../constants/colorCodes";
+import Typography from "../typography/typography";
 
 const StreakContainer = () => {
   const [streakData, setStreakData] = useState([]);
@@ -111,7 +112,9 @@ const StreakContainer = () => {
 
   return (
     <View style={styles.streakContainer}>
-      <Text style={styles.streakHeader}>Streak (Last 7 days)</Text>
+      <Typography type="body2Bold" style={styles.streakHeader}>
+        Streak (Last 7 days)
+      </Typography>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -129,8 +132,6 @@ const styles = StyleSheet.create({
   },
   streakHeader: {
     color: TXT_LIGHT_BG,
-    fontSize: 14,
-    fontWeight: "bold",
     marginBottom: 8,
   },
   streakItem: {

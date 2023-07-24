@@ -6,6 +6,7 @@ import {
   SECONDARY_MEDIUM,
 } from "../../constants/colorCodes";
 import { WELCOME_MONSTER, WELCOME_LOGO } from "../../constants/imagePaths";
+import Typography from "../../components/typography/typography";
 
 const WelcomePage = ({ navigation }) => {
   const handleLogin = () => {
@@ -23,14 +24,18 @@ const WelcomePage = ({ navigation }) => {
           <Image source={WELCOME_LOGO} style={styles.welcomeLogo} />
         </View>
         <Image source={WELCOME_MONSTER} style={styles.welcomeImage} />
-        <Text style={styles.welcomeText}>
+        <Typography type="heading4" style={styles.welcomeText}>
           Daily walking towards your goals.
-        </Text>
+        </Typography>
         <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
-          <Text style={styles.signupButtonText}>Sign up on DailyGo</Text>
+          <Typography type="button" style={styles.signupButtonText}>
+            Sign up on DailyGo
+          </Typography>
         </TouchableOpacity>
         <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-          <Text style={styles.loginButtonText}>Login with your account</Text>
+          <Typography type="button" style={styles.loginButtonText}>
+            Login with your account
+          </Typography>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -63,8 +68,6 @@ const styles = {
     marginBottom: "10%",
   },
   welcomeText: {
-    fontSize: 24,
-    fontWeight: "bold",
     textAlign: "center",
     color: PRIMARY_MEDIUM,
     width: "60%",
@@ -81,8 +84,6 @@ const styles = {
     borderWidth: 1,
   },
   signupButtonText: {
-    fontSize: 16,
-    fontWeight: "bold",
     textAlign: "center",
     color: PRIMARY_MEDIUM,
   },
@@ -95,8 +96,6 @@ const styles = {
     borderRadius: 24,
   },
   loginButtonText: {
-    fontSize: 16,
-    fontWeight: "bold",
     textAlign: "center",
     color: TXT_DARK_BG,
   },

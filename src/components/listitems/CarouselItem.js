@@ -1,6 +1,7 @@
 import React from "react";
-import { View, Text, Image, Dimensions } from "react-native";
+import { View, Image, Dimensions } from "react-native";
 import { TXT_DARK_BG } from "../../constants/colorCodes";
+import Typography from "../typography/typography";
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -8,8 +9,12 @@ const CarouselItem = ({ item }) => {
   return (
     <View style={styles.carouselItem}>
       <Image source={item.image} style={styles.image} />
-      <Text style={styles.description}>{item.description}</Text>
-      <Text style={styles.description2}>{item.description2}</Text>
+      <Typography type="subtitles" style={styles.description}>
+        {item.description}
+      </Typography>
+      <Typography type="body2" style={styles.description2}>
+        {item.description2}
+      </Typography>
     </View>
   );
 };
@@ -29,14 +34,11 @@ const styles = {
     marginBottom: 10,
   },
   description: {
-    fontSize: 18,
-    fontWeight: "bold",
     color: TXT_DARK_BG,
     textAlign: "center",
     padding: "10%",
   },
   description2: {
-    fontSize: 14,
     textAlign: "center",
     color: TXT_DARK_BG,
     paddingLeft: "10%",
