@@ -6,6 +6,14 @@ import ChallengesScreen from "../screens/tabnav/ChallengesScreen";
 import AchievementsScreen from "../screens/tabnav/AchievementsScreen";
 import ProfileScreen from "../screens/tabnav/ProfileScreen";
 import { AnimatedTabBar } from "../styles/tabStackStyles";
+import { ACCENT_MEDIUM } from "../constants/colorCodes";
+import {
+  TabAchievements,
+  TabChallenges,
+  TabHome,
+  TabProfile,
+  UserNav,
+} from "../../assets/images/icons/tabIcons";
 
 const Tab = createBottomTabNavigator();
 
@@ -13,42 +21,64 @@ const TabStack = () => {
   return (
     <Tab.Navigator
       tabBar={(props) => <AnimatedTabBar {...props} />}
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
+      // screenOptions={({ route }) => ({
+      //   tabBarIcon: ({ active, color }) => {
+      //     let iconName;
+      //     if (route.name === "Home") {
+      //       iconName = active ? "home" : "home-outline";
+      //     } else if (route.name === "Challenges") {
+      //       iconName = active ? "sword-cross" : "sword-cross";
+      //     } else if (route.name === "Achievements") {
+      //       iconName = active ? "star-circle" : "star-circle-outline";
+      //     } else if (route.name === "Profile") {
+      //       iconName = active ? "face-man-profile" : "face-man-profile";
+      //     }
 
-          if (route.name === "Home") {
-            iconName = focused ? "home" : "home-outline";
-          } else if (route.name === "Challenges") {
-            iconName = focused ? "sword-cross" : "sword-cross";
-          } else if (route.name === "Achievements") {
-            iconName = focused ? "star-circle" : "star-circle-outline";
-          } else if (route.name === "Profile") {
-            iconName = focused ? "face-man-profile" : "face-man-profile";
-          }
-
-          return (
-            <MaterialCommunityIcons name={iconName} size={size} color={color} />
-          );
-        },
-      })}
+      //     return (
+      //       <MaterialCommunityIcons name={iconName} size={20} color={color} />
+      //     );
+      //   },
+      // })}
     >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         initialParams={{ challengeProgressID: null }}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ active }) => (
+            <TabHome fillColor={active ? ACCENT_MEDIUM : "white"} />
+          ),
+        }}
       />
-      <Tab.Screen name="Challenges" component={ChallengesScreen} />
+      <Tab.Screen
+        name="Challenges"
+        component={ChallengesScreen}
+        options={{
+          tabBarIcon: ({ active }) => (
+            <TabChallenges fillColor={active ? ACCENT_MEDIUM : "white"} />
+          ),
+        }}
+      />
       <Tab.Screen
         name="Achievements"
         component={AchievementsScreen}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ active }) => (
+            <TabAchievements fillColor={active ? ACCENT_MEDIUM : "white"} />
+          ),
+        }}
       />
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ active }) => (
+            <TabProfile fillColor={active ? ACCENT_MEDIUM : "white"} />
+          ),
+        }}
       />
     </Tab.Navigator>
   );

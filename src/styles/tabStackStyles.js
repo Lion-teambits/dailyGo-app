@@ -122,7 +122,11 @@ const TabBarComponent = ({ active, options, onLayout, onPress }) => {
       <Animated.View
         style={[styles.iconContainer, animatedIconContainerStyles]}
       >
-        {options.tabBarIcon ? options.tabBarIcon({ ref }) : <Text>?</Text>}
+        {options.tabBarIcon ? (
+          options.tabBarIcon({ active, ref })
+        ) : (
+          <Text>?</Text>
+        )}
       </Animated.View>
     </Pressable>
   );
