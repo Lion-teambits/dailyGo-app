@@ -135,6 +135,7 @@ const TabBarComponent = ({ active, options, onLayout, onPress }) => {
 const styles = StyleSheet.create({
   tabBar: {
     backgroundColor: PRIMARY_MEDIUM,
+    height: 66,
   },
   activeBackground: {
     position: "absolute",

@@ -1,6 +1,5 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import HomeScreen from "../screens/tabnav/HomeScreen";
 import ChallengesScreen from "../screens/tabnav/ChallengesScreen";
 import AchievementsScreen from "../screens/tabnav/AchievementsScreen";
@@ -12,34 +11,13 @@ import {
   TabChallenges,
   TabHome,
   TabProfile,
-  UserNav,
 } from "../../assets/images/icons/tabIcons";
 
 const Tab = createBottomTabNavigator();
 
 const TabStack = () => {
   return (
-    <Tab.Navigator
-      tabBar={(props) => <AnimatedTabBar {...props} />}
-      // screenOptions={({ route }) => ({
-      //   tabBarIcon: ({ active, color }) => {
-      //     let iconName;
-      //     if (route.name === "Home") {
-      //       iconName = active ? "home" : "home-outline";
-      //     } else if (route.name === "Challenges") {
-      //       iconName = active ? "sword-cross" : "sword-cross";
-      //     } else if (route.name === "Achievements") {
-      //       iconName = active ? "star-circle" : "star-circle-outline";
-      //     } else if (route.name === "Profile") {
-      //       iconName = active ? "face-man-profile" : "face-man-profile";
-      //     }
-
-      //     return (
-      //       <MaterialCommunityIcons name={iconName} size={20} color={color} />
-      //     );
-      //   },
-      // })}
-    >
+    <Tab.Navigator tabBar={(props) => <AnimatedTabBar {...props} />}>
       <Tab.Screen
         name="Home"
         component={HomeScreen}
