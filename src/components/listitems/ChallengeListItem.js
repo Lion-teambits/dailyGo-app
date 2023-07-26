@@ -32,7 +32,7 @@ const ChallengeListItem = ({ challenge, joinedUserProgress }) => {
           </HStack>
         </Box>
         <HStack space={1}>
-          <Box width={"65%"}>
+          <Box width={"60%"}>
             <VStack>
               <Typography type="subtitles" style={styles.subtitles}>
                 {challenge.title}
@@ -61,11 +61,12 @@ const ChallengeListItem = ({ challenge, joinedUserProgress }) => {
               </Typography>
             </VStack>
           </Box>
-          <Box width={"35%"} justifyContent="center" alignItems="center">
+          <Box width={"40%"} justifyContent="center" alignItems="center">
             <Image
               alt={challenge.title}
               source={challenge.monster_image}
-              size="lg"
+              style={{ width: 136, height: 153 }}
+              resizeMode="contain"
             />
           </Box>
         </HStack>

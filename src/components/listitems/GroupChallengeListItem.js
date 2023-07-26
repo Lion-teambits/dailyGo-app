@@ -18,7 +18,7 @@ const GroupChallengeListItem = ({ challenge }) => {
           TEAM EVENT
         </Typography>
         <HStack>
-          <Box width={"65%"}>
+          <Box width={"60%"}>
             <VStack>
               <Typography type="subtitles" style={styles.subtitles}>
                 {challenge.title}
@@ -37,11 +37,12 @@ const GroupChallengeListItem = ({ challenge }) => {
               />
             </VStack>
           </Box>
-          <Box width={"35%"} justifyContent="center" alignItems="center">
+          <Box width={"40%"} justifyContent="center" alignItems="center">
             <Image
               alt={challenge.title}
               source={parseInt(challenge.monster_image)}
-              size="lg"
+              style={{ width: 136, height: 153 }}
+              resizeMode="contain"
             />
           </Box>
         </HStack>
