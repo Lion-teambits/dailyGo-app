@@ -1,6 +1,7 @@
 export const PRIMARY_LIGHT = "#C1C8FF";
 export const PRIMARY_MEDIUM = "#4A5AE9";
 export const PRIMARY_DARK = "#000F92";
+export const PRIMARY_MEDIUM_PRESSED = "rgba(32, 36, 130, 0.75)";
 
 export const SECONDARY_LIGHT = "#FFD4BF";
 export const SECONDARY_MEDIUM = "#FF5500";

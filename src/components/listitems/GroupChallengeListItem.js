@@ -1,6 +1,9 @@
-import { Box, HStack, Heading, Image, Text, VStack } from "native-base";
+import { Box, HStack, Image, VStack } from "native-base";
 import StepsBarGraph from "../graphs/StepsBarGraph";
 import FriendsCard from "../cards/FriendsCard";
+import Typography from "../typography/typography";
+import { StyleSheet } from "react-native";
+import { BG_DARK, SUCCESS, TXT_LIGHT_BG } from "../../constants/colorCodes";
 
 const GroupChallengeListItem = ({ challenge }) => {
   const targetSteps = challenge.target_steps;
@@ -11,12 +14,18 @@ const GroupChallengeListItem = ({ challenge }) => {
   return (
     <Box paddingY={2} paddingX={4}>
       <VStack>
-        <Text>TEAM EVENT</Text>
+        <Typography type="capitalized" style={{ color: SUCCESS }}>
+          TEAM EVENT
+        </Typography>
         <HStack>
-          <Box width={"65%"}>
+          <Box width={"60%"}>
             <VStack>
-              <Heading size={"sm"}>{challenge.title}</Heading>
-              <Text>Join your friends for bigger challenges!</Text>
+              <Typography type="subtitles" style={styles.subtitles}>
+                {challenge.title}
+              </Typography>
+              <Typography type="body2" style={styles.body}>
+                Have a smashing day!
+              </Typography>
               <StepsBarGraph
                 currentSteps={currentSteps}
                 targetSteps={targetSteps}
@@ -28,11 +37,12 @@ const GroupChallengeListItem = ({ challenge }) => {
               />
             </VStack>
           </Box>
-          <Box width={"35%"} justifyContent="center" alignItems="center">
+          <Box width={"40%"} justifyContent="center" alignItems="center">
             <Image
               alt={challenge.title}
               source={parseInt(challenge.monster_image)}
-              size="xl"
+              style={{ width: 136, height: 153 }}
+              resizeMode="contain"
             />
           </Box>
         </HStack>
@@ -40,5 +50,14 @@ const GroupChallengeListItem = ({ challenge }) => {
     </Box>
   );
 };
+
+const styles = StyleSheet.create({
+  subtitles: {
+    color: TXT_LIGHT_BG,
+  },
+  body: {
+    color: BG_DARK,
+  },
+});
 
 export default GroupChallengeListItem;

@@ -1,10 +1,13 @@
-import { Box, HStack, Heading, Image, Text, VStack } from "native-base";
+import { Box, HStack, Image, VStack } from "native-base";
 import { eventDateStatus } from "../../utils/dateUtils";
 import StepsBarGraph from "../graphs/StepsBarGraph";
 import { TimeDiffTextBox } from "../textBoxes/TimeDiffTextBox";
+import Typography from "../../components/typography/typography";
+import { StyleSheet } from "react-native";
+import { BG_DARK, TXT_LIGHT_BG } from "../../constants/colorCodes";
 
 const ChallengeListItem = ({ challenge, joinedUserProgress }) => {
-  const { status, timeDifference } = eventDateStatus(
+  const { status, timeDifference, color } = eventDateStatus(
     challenge.start_date,
     challenge.expired_date,
     joinedUserProgress
@@ -20,15 +23,23 @@ const ChallengeListItem = ({ challenge, joinedUserProgress }) => {
       <VStack>
         <Box>
           <HStack justifyContent="space-between">
-            <Text>{status}</Text>
+            <Box paddingY={1}>
+              <Typography type="capitalized" style={{ color: color }}>
+                {status}
+              </Typography>
+            </Box>
             <TimeDiffTextBox timeDifference={timeDifference} />
           </HStack>
         </Box>
         <HStack space={1}>
-          <Box width={"65%"}>
+          <Box width={"60%"}>
             <VStack>
-              <Heading size={"sm"}>{challenge.title}</Heading>
-              <Text>{challenge.monster_desc}</Text>
+              <Typography type="subtitles" style={styles.subtitles}>
+                {challenge.title}
+              </Typography>
+              <Typography type="body2" style={styles.body}>
+                {challenge.monster_desc}
+              </Typography>
               {joinedUserProgress ? (
                 <StepsBarGraph
                   currentSteps={currentSteps}
@@ -37,18 +48,25 @@ const ChallengeListItem = ({ challenge, joinedUserProgress }) => {
                 />
               ) : (
                 <Box>
-                  <Text>Goal</Text>
-                  <Heading size={"sm"}>{challenge.target_steps} steps</Heading>
+                  <Typography type="smallTextRegular" style={styles.body}>
+                    Goal
+                  </Typography>
+                  <Typography type="body2Bold" style={styles.body}>
+                    {challenge.target_steps} steps
+                  </Typography>
                 </Box>
               )}
-              <Text>Get a special badge</Text>
+              <Typography type="smallTextRegular" style={styles.body}>
+                Get a special badge
+              </Typography>
             </VStack>
           </Box>
-          <Box width={"35%"} justifyContent="center" alignItems="center">
+          <Box width={"40%"} justifyContent="center" alignItems="center">
             <Image
               alt={challenge.title}
               source={challenge.monster_image}
-              size="xl"
+              style={{ width: 136, height: 153 }}
+              resizeMode="contain"
             />
           </Box>
         </HStack>
@@ -56,5 +74,14 @@ const ChallengeListItem = ({ challenge, joinedUserProgress }) => {
     </Box>
   );
 };
+
+const styles = StyleSheet.create({
+  subtitles: {
+    color: TXT_LIGHT_BG,
+  },
+  body: {
+    color: BG_DARK,
+  },
+});
 
 export default ChallengeListItem;

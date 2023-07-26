@@ -1,17 +1,18 @@
-import { Box, Heading } from "native-base";
-import { ACCENT_MEDIUM, BG_MEDIUM } from "../../constants/colorCodes";
+import { Box } from "native-base";
+import { ACCENT_MEDIUM, BG_DARK, BG_MEDIUM } from "../../constants/colorCodes";
+import Typography from "../typography/typography";
 
 const StepsBarGraph = ({ currentSteps, targetSteps, progressBarWidth }) => {
   return (
     <Box>
-      <Heading size={"sm"}>
+      <Typography type="smallTextBold" style={{ color: BG_DARK }}>
         {currentSteps}/{targetSteps} steps
-      </Heading>
-      <Box bg={BG_MEDIUM} height={6} borderRadius="full" overflow="hidden">
+      </Typography>
+      <Box bg={BG_MEDIUM} height={4} borderRadius="full" overflow="hidden">
         <Box
           bg={ACCENT_MEDIUM}
           width={progressBarWidth}
-          height={6}
+          height={4}
           borderRadius="full"
         />
       </Box>
