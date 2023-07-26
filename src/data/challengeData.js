@@ -30,8 +30,8 @@ export const challenges = [
   },
   {
     _id: 3,
-    start_date: "2023-08-01",
-    expired_date: "2023-08-31",
+    start_date: "2023-09-01",
+    expired_date: "2023-09-30",
     title: "Wizards United",
     monster_name: "Trickster",
     monster_desc: "You're wizard, monster!",

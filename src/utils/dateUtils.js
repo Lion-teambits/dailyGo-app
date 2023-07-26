@@ -1,3 +1,9 @@
+import {
+  ACCENT_DARK,
+  PRIMARY_MEDIUM,
+  SECONDARY_MEDIUM,
+} from "../constants/colorCodes";
+
 export const eventDateStatus = (startDate, expiredDate, userJoin) => {
   const startDateObj = new Date(startDate);
   const expiredDateObj = new Date(expiredDate);
@@ -6,9 +12,11 @@ export const eventDateStatus = (startDate, expiredDate, userJoin) => {
   let status = "";
   let timeDifference = 0;
   let timeDifferenceDisplay = "";
+  let textColor;
 
   if (currentDate < startDateObj) {
     status = "UPCOMING EVENT";
+    color = ACCENT_DARK;
     timeDifference = startDateObj.getTime() - currentDate.getTime();
     timeDifferenceDisplay =
       timeDifference >= 1000 * 60 * 60 * 24
@@ -16,6 +24,7 @@ export const eventDateStatus = (startDate, expiredDate, userJoin) => {
         : `Starts in: ${startDateObj.getHours()}h`;
   } else if (currentDate >= startDateObj && currentDate <= expiredDateObj) {
     status = userJoin ? "CURRENT EVENT" : "ACTIVE EVENT";
+    color = userJoin ? PRIMARY_MEDIUM : SECONDARY_MEDIUM;
     timeDifference = expiredDateObj.getTime() - currentDate.getTime();
     timeDifferenceDisplay =
       timeDifference >= 1000 * 60 * 60 * 24
@@ -23,11 +32,13 @@ export const eventDateStatus = (startDate, expiredDate, userJoin) => {
         : `Time left: ${startDateObj.getHours()}h`;
   } else {
     status = null;
+    color = null;
   }
 
   return {
     status: status,
     timeDifference: timeDifferenceDisplay,
+    color: color,
   };
 };
 
