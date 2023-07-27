@@ -19,11 +19,23 @@ import {
   updateGroupChallenge,
 } from "../api/groupChallengeService";
 
+let previousActivityData = null;
+
 // Fetch activity data & update database
 async function saveActivityData(user_id) {
   try {
     // Fetch activity data
     const activityData = await fetchActivityData();
+
+    const isActivityDataSame =
+      previousActivityData && previousActivityData.date === activityData.date;
+
+    if (isActivityDataSame) {
+      console.log(
+        "Activity data is the same as the previous one. Skipping processing..."
+      );
+      return;
+    }
 
     // Retrieve user data from database
     const userInfo = await retrieveUserInfo(user_id);
@@ -81,6 +93,8 @@ async function saveActivityData(user_id) {
           activityData.calories
         );
     }
+
+    previousActivityData = activityData;
     return;
   } catch (error) {
     console.error(

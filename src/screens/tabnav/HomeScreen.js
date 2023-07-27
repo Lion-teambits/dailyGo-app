@@ -8,7 +8,7 @@ import {
   checkEventChallengeProgress,
   checkGroupChallengeProgress,
 } from "../../services/checkChallengeProgress";
-import { HStack, ScrollView, Center } from "native-base";
+import { HStack, ScrollView, Center, View } from "native-base";
 import UserContext from "../../state/context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
@@ -37,9 +37,12 @@ const HomeScreen = ({ route }) => {
       await saveActivityData(user_id);
 
       // Check daily, event, group challenge progress
-      const dailyChallengeStatus = await checkDailyChallengeProgress(user_id);
-      const eventChallengeObj = await checkEventChallengeProgress(user_id);
-      const groupChallengeObj = await checkGroupChallengeProgress(user_id);
+      const [dailyChallengeStatus, eventChallengeObj, groupChallengeObj] =
+        await Promise.all([
+          checkDailyChallengeProgress(user_id),
+          checkEventChallengeProgress(user_id),
+          checkGroupChallengeProgress(user_id),
+        ]);
       const newOngoingChallenges = [];
 
       newOngoingChallenges.push(dailyChallengeStatus);
@@ -81,7 +84,7 @@ const HomeScreen = ({ route }) => {
   if (isLoading) {
     return (
       <SafeAreaView style={{ flex: 1, alignItems: "center" }}>
-        <Center style={{flex:1}}>
+        <Center style={{ flex: 1 }}>
           <ActivityIndicator
             size="large"
             color={PRIMARY_MEDIUM}
@@ -92,25 +95,27 @@ const HomeScreen = ({ route }) => {
   }
 
   return (
-    <>
-      <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-        <ScrollView>
-          <HomeBG
-            width="100%"
-            style={{
-              position: "absolute",
-              top: -60,
-              left: 0,
-              right: 0,
-              bottom: 0,
-            }}
-          />
+    <View style={{ flex: 1, backgroundColor: "white" }}>
+      <ScrollView style={{ flex: 1 }}>
+        <HomeBG
+          width="100%"
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+          }}
+        />
+        <SafeAreaView style={{ flex: 1, backgroundColor: "transparent" }}>
           <UserContext.Provider
             value={{ userInfo, setUserInfo, isLoading, setIsLoading }}
           >
             <HStack
               space="2xl"
-              margin={4}
+              px={10}
+              py={3}
+              justifyContent="space-between"
             >
               <StatusChip
                 type="streak"
@@ -130,9 +135,9 @@ const HomeScreen = ({ route }) => {
               focusChallengeID={joinedUserProgressId}
             />
           </UserContext.Provider>
-        </ScrollView>
-      </SafeAreaView>
-    </>
+        </SafeAreaView>
+      </ScrollView>
+    </View>
   );
 };
 
