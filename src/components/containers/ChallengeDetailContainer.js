@@ -17,6 +17,9 @@ import { MonsterNameTextBox } from "../textBoxes/MonsterNameTextBox";
 import Typography from "../typography/typography";
 import ActiveDetailBG from "../../../assets/images/challenge/activeChallengeDetailBG.svg";
 import UpcomingDetailBG from "../../../assets/images/challenge/upcomingChallengeDetailBG.svg";
+import BackToPreviousButton from "../buttons/BackToPreviousButton";
+import ChallengeJoinButton from "../buttons/SecondaryButton";
+import SecondaryButton from "../buttons/SecondaryButton";
 
 const ChallengeDetailContainer = (props) => {
   const { challenge, isGroupChallenge } = props;
@@ -117,6 +120,7 @@ const ChallengeDetailContainer = (props) => {
 
         <Box space={1} alignItems="center">
           <Image
+            marginBottom={4}
             alt={challenge.title}
             source={parseInt(challenge.monster_image)}
             style={{ width: 198, height: 192 }}
@@ -131,25 +135,15 @@ const ChallengeDetailContainer = (props) => {
             badgeId={challenge.badge_info}
             steps={challenge.target_steps}
           />
-          <Button
-            margin={1}
-            width={"100%"}
-            borderRadius={50}
-            onPress={joinEvent}
-            disabled={isJoinDisabled}
-            backgroundColor={isJoinDisabled ? DISABLED : SECONDARY_MEDIUM}
-          >
-            Join Event
-          </Button>
-          <Button
-            margin={1}
-            width={"100%"}
-            borderRadius={50}
-            onPress={goBackToChallenges}
-            variant="unstyled"
-          >
-            Go Back to Challenges
-          </Button>
+          <SecondaryButton
+            onPressFunc={joinEvent}
+            isDisabled={isJoinDisabled}
+            text={"Join Event"}
+          />
+          <BackToPreviousButton
+            callbackFunc={goBackToChallenges}
+            text={"Go Back to Challenges"}
+          />
         </Box>
       </VStack>
     </Box>

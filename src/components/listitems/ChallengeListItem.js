@@ -46,7 +46,7 @@ const ChallengeListItem = ({ challenge, joinedUserProgress }) => {
       ) : null}
 
       <Box paddingY={2} paddingX={4}>
-        <VStack>
+        <VStack space={2}>
           <Box>
             <HStack justifyContent="space-between">
               <Box paddingY={1}>
@@ -59,7 +59,7 @@ const ChallengeListItem = ({ challenge, joinedUserProgress }) => {
           </Box>
           <HStack space={1}>
             <Box width={"60%"}>
-              <VStack>
+              <VStack space={2}>
                 <Typography type="subtitles" style={styles.subtitles}>
                   {challenge.title}
                 </Typography>

@@ -21,13 +21,13 @@ const GroupChallengeListItem = ({ challenge }) => {
         }}
       />
       <Box paddingY={2} paddingX={4}>
-        <VStack>
+        <VStack space={2}>
           <Typography type="capitalized" style={{ color: SUCCESS }}>
             TEAM EVENT
           </Typography>
           <HStack>
             <Box width={"60%"}>
-              <VStack>
+              <VStack space={2}>
                 <Typography type="subtitles" style={styles.subtitles}>
                   {challenge.title}
                 </Typography>

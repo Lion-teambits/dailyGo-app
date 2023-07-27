@@ -1,6 +1,7 @@
-import { Button, HStack, Input } from "native-base";
+import { Box, Button, HStack, Input } from "native-base";
 import { useState } from "react";
 import { SECONDARY_MEDIUM } from "../../constants/colorCodes";
+import SecondaryButton from "../buttons/SecondaryButton";
 
 const SearchForm = ({ handleSubmit }) => {
   const [code, setCode] = useState("");
@@ -21,15 +22,13 @@ const SearchForm = ({ handleSubmit }) => {
         width={"70%"}
         onChangeText={handleCodeChange}
       />
-      <Button
-        marginLeft={1}
-        width={"30%"}
-        borderRadius={50}
-        onPress={handleFormSubmit}
-        backgroundColor={SECONDARY_MEDIUM}
-      >
-        Search
-      </Button>
+      <Box width={"30%"} marginY={-1}>
+        <SecondaryButton
+          onPressFunc={handleFormSubmit}
+          isDisabled={false}
+          text={"Search"}
+        />
+      </Box>
     </HStack>
   );
 };

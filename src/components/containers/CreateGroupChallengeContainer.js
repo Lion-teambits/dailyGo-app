@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { Box, Button, Center, HStack, VStack, useClipboard } from "native-base";
+import { Box, Center, HStack, VStack, useClipboard } from "native-base";
 import { useState } from "react";
 import CreateChallengeForm from "../forms/CreateChallengeForm";
 import { createGroupChallenge } from "../../api/groupChallengeService";
@@ -17,6 +17,9 @@ import { GROUP_CHALLENGE_BADGE_INFO as badgeInfo } from "../../data/challengeDat
 import { convertToBase32 } from "../../utils/dateUtils";
 import Typography from "../typography/typography";
 import { StyleSheet } from "react-native";
+import CodeShareButton from "../buttons/CodeShareButton";
+import BackToPreviousButton from "../buttons/BackToPreviousButton";
+import SecondaryButton from "../buttons/SecondaryButton";
 
 const CreateGroupChallengeContainer = () => {
   const navigation = useNavigation();
@@ -105,35 +108,17 @@ const CreateGroupChallengeContainer = () => {
               <Typography type="subtitles" style={styles.body}>
                 Code: {groupInfo.share_id}
               </Typography>
-              <Button
-                marginX={2}
-                variant="outline"
-                onPress={() => onCopy(groupInfo.share_id)}
-                borderColor={PRIMARY_MEDIUM}
-                fontSize={14}
-                style={{ color: PRIMARY_MEDIUM }}
-              >
-                Copy
-              </Button>
+              <CodeShareButton shareId={groupInfo.share_id} onCopy={onCopy} />
             </HStack>
-            <Button
-              margin={1}
-              width={"100%"}
-              borderRadius={50}
-              onPress={shareCode}
-              backgroundColor={SECONDARY_MEDIUM}
-            >
-              Share Invitation Code
-            </Button>
-            <Button
-              margin={1}
-              width={"100%"}
-              borderRadius={50}
-              onPress={goBackToChallenges}
-              variant="unstyled"
-            >
-              Go back to Challenges
-            </Button>
+            <SecondaryButton
+              onPressFunc={shareCode}
+              isDisabled={false}
+              text={"Share Invitation Code"}
+            />
+            <BackToPreviousButton
+              callbackFunc={goBackToChallenges}
+              text={"Go Back to Challenges"}
+            />
           </Center>
         </Box>
       ) : (

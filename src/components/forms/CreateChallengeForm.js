@@ -13,6 +13,8 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import BadgeToAchieve from "../cards/BadgeToAchieve";
 import { StyleSheet } from "react-native";
 import Typography from "../typography/typography";
+import BackToPreviousButton from "../buttons/BackToPreviousButton";
+import SecondaryButton from "../buttons/SecondaryButton";
 
 const CreateChallengeForm = ({ createGroupEvent, goBackToChallenges }) => {
   const [title, setTitle] = useState("");
@@ -95,24 +97,12 @@ const CreateChallengeForm = ({ createGroupEvent, goBackToChallenges }) => {
         />
       </Box>
 
-      <Button
-        margin={1}
-        width={"100%"}
-        borderRadius={50}
-        onPress={handleCreateGroupEvent}
-        backgroundColor={SECONDARY_MEDIUM}
-      >
-        Create Team Event
-      </Button>
-      <Button
-        margin={1}
-        width={"100%"}
-        borderRadius={50}
-        onPress={goBackToChallenges}
-        variant="unstyled"
-      >
-        Cancel
-      </Button>
+      <SecondaryButton
+        onPressFunc={handleCreateGroupEvent}
+        isDisabled={false}
+        text={"Create Team Event"}
+      />
+      <BackToPreviousButton callbackFunc={goBackToChallenges} text={"Cancel"} />
     </VStack>
   );
 };

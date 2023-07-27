@@ -8,11 +8,17 @@ const StepsBarGraph = ({ currentSteps, targetSteps, progressBarWidth }) => {
       <Typography type="smallTextBold" style={{ color: BG_DARK }}>
         {currentSteps}/{targetSteps} steps
       </Typography>
-      <Box bg={BG_MEDIUM} height={4} borderRadius="full" overflow="hidden">
+      <Box
+        marginY={1}
+        bg={BG_MEDIUM}
+        height={5}
+        borderRadius="full"
+        overflow="hidden"
+      >
         <Box
           bg={ACCENT_MEDIUM}
           width={progressBarWidth}
-          height={4}
+          height={5}
           borderRadius="full"
         />
       </Box>
