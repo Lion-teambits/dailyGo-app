@@ -133,13 +133,6 @@ export const checkEventChallengeProgress = async (user_id) => {
       const challengeInfo = challenges.find(
         (challenge) => challenge._id == challengeProgress.event_challenge_info
       );
-      // Achieved challenge, change finish_challenge to true
-      if (challengeInfo.target_steps < challengeProgress.current_steps) {
-        await updateChallengeProgress(challengeProgress._id, {
-          finish_challenge: true,
-          get_reward: "ready",
-        });
-      }
 
       // Get monster Image
       const monsterImgPath = getMonsterImg(challengeProgress.monster_name);
@@ -160,6 +153,17 @@ export const checkEventChallengeProgress = async (user_id) => {
         challengeProgress.get_reward === "completed" ? true : false;
       returnObj.badgeInfo = challengeInfo.badge_info;
       returnObj._id = challengeProgress._id;
+
+      // Achieved challenge, change finish_challenge to true
+      if (challengeInfo.target_steps < challengeProgress.current_steps) {
+        await updateChallengeProgress(challengeProgress._id, {
+          finish_challenge: true,
+          get_reward: "ready",
+        });
+
+        returnObj.finishChallenge = true;
+      }
+
       return returnObj;
     })
   );

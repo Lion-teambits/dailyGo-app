@@ -34,6 +34,7 @@ import Typography from "../typography/typography";
 import PageIndicator from "./pagination/PageIndicator";
 import GhostButton from "../buttons/GhostButton";
 import CodeShareButton from "../buttons/CodeShareButton";
+import { badges } from "../../data/badgeData";
 
 const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
   const [progressRate, setProgressRate] = useState(0);
@@ -91,7 +92,8 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
       const uid = await AsyncStorage.getItem("@uid");
       const userInfo = await retrieveUserInfo(uid);
       // Update user info (populate badge, remove challenge progress from Array)
-      userInfo.badges.push(challenge.reward);
+      const badge = badges.find((badge) => badge.id == challenge.reward);
+      userInfo.badges.push(badge.badgeTitle);
       const updatedUserInfo = await updateUserInfo(uid, {
         badges: userInfo.badges,
       });
@@ -243,16 +245,18 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
           </HStack>
           <HStack>
             <Text>Code: {challenge.shareCode}</Text>
-           
 
-            <CodeShareButton shareId={challenge.shareCode} onCopy={onCopy} />
+            <CodeShareButton
+              shareId={challenge.shareCode}
+              onCopy={onCopy}
+            />
           </HStack>
         </Container>
       )}
       {challenge.type !== "daily" && (
         <>
           <BadgeToAchieve
-            badgeId={challenge.badgeInfo}
+            badgeId={challenge.reward}
             steps={challenge.targetSteps}
           />
           <GhostButton onPress={handleCancel}>Leave event</GhostButton>
@@ -262,6 +266,7 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
             size="xl"
             onSubmit={handleLeaveChallenge}
             submitBtnLabel="Leave event"
+            cancelBtnLabel="Cancel"
           >
             Are you sure you want to leave?
           </ConfirmationModal>
