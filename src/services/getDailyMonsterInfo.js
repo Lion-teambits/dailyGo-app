@@ -56,7 +56,7 @@ export const getMonsterImg = (monster_name) => {
       return {
         monsterImage: require("../../assets/images/animatedMonsters/Piñata.json"),
       };
-    case "Summer Jam":
+    case "SummerJam":
       return {
         monsterImage: require("../../assets/images/animatedMonsters/SummerJam.json"),
       };
