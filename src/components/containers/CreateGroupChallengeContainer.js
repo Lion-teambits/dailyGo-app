@@ -1,24 +1,22 @@
 import { useNavigation } from "@react-navigation/native";
-import {
-  Box,
-  Button,
-  Center,
-  HStack,
-  Text,
-  VStack,
-  useClipboard,
-} from "native-base";
+import { Box, Button, Center, HStack, VStack, useClipboard } from "native-base";
 import { useState } from "react";
 import CreateChallengeForm from "../forms/CreateChallengeForm";
 import { createGroupChallenge } from "../../api/groupChallengeService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import GroupChallengeListItem from "../listitems/GroupChallengeListItem";
-import { SECONDARY_MEDIUM } from "../../constants/colorCodes";
+import {
+  PRIMARY_DARK,
+  PRIMARY_MEDIUM,
+  SECONDARY_MEDIUM,
+} from "../../constants/colorCodes";
 import { Share } from "react-native";
 import { retrieveUserInfo, updateUserInfo } from "../../api/userService";
 import { createChallengeProgress } from "../../api/challengeProgressService";
 import { GROUP_CHALLENGE_BADGE_INFO as badgeInfo } from "../../data/challengeData";
 import { convertToBase32 } from "../../utils/dateUtils";
+import Typography from "../typography/typography";
+import { StyleSheet } from "react-native";
 
 const CreateGroupChallengeContainer = () => {
   const navigation = useNavigation();
@@ -90,6 +88,9 @@ const CreateGroupChallengeContainer = () => {
     <VStack marginX={4}>
       {groupInfo ? (
         <Box>
+          <Typography type="smallTextBold" style={styles.body}>
+            Event Created
+          </Typography>
           <Box
             borderRadius={10}
             margin={3}
@@ -100,9 +101,18 @@ const CreateGroupChallengeContainer = () => {
             <GroupChallengeListItem challenge={groupInfo} />
           </Box>
           <Center>
-            <HStack>
-              <Text>Code: {groupInfo.share_id}</Text>
-              <Button bordered onPress={() => onCopy(groupInfo.share_id)}>
+            <HStack margin={4} alignItems={"center"}>
+              <Typography type="subtitles" style={styles.body}>
+                Code: {groupInfo.share_id}
+              </Typography>
+              <Button
+                marginX={2}
+                variant="outline"
+                onPress={() => onCopy(groupInfo.share_id)}
+                borderColor={PRIMARY_MEDIUM}
+                fontSize={14}
+                style={{ color: PRIMARY_MEDIUM }}
+              >
                 Copy
               </Button>
             </HStack>
@@ -135,5 +145,14 @@ const CreateGroupChallengeContainer = () => {
     </VStack>
   );
 };
+
+const styles = StyleSheet.create({
+  copyBox: {
+    color: PRIMARY_MEDIUM,
+  },
+  body: {
+    color: PRIMARY_DARK,
+  },
+});
 
 export default CreateGroupChallengeContainer;
