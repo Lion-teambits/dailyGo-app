@@ -1,10 +1,16 @@
-import { Box, HStack, Heading, Image, Text, VStack } from "native-base";
+import { Box, HStack, Image, VStack } from "native-base";
 import { PROFILE_AVATAR_LIST } from "../../constants/imagePaths";
+import { PRIMARY_DARK } from "../../constants/colorCodes";
+import Typography from "../typography/typography";
 
 const FriendsCard = ({ member, displayTitle }) => {
   return (
     <VStack>
-      {displayTitle ? <Heading size={"sm"}>Friends</Heading> : null}
+      {displayTitle ? (
+        <Typography type="subtitles" style={{ color: PRIMARY_DARK }}>
+          Friends
+        </Typography>
+      ) : null}
       <HStack>
         {member.map((person) => {
           return (

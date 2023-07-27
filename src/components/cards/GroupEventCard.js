@@ -1,14 +1,11 @@
-import { Box, Button, HStack, Image, VStack } from "native-base";
+import { Box, HStack, Image, VStack } from "native-base";
 import { IMAGE_GROUP_EVENT_LIST } from "../../constants/imagePaths";
 import { useNavigation } from "@react-navigation/native";
-import {
-  BG_DARK,
-  PRIMARY_MEDIUM,
-  SECONDARY_MEDIUM,
-  TXT_LIGHT_BG,
-} from "../../constants/colorCodes";
+import { BG_DARK, TXT_LIGHT_BG } from "../../constants/colorCodes";
 import { StyleSheet } from "react-native";
 import Typography from "../typography/typography";
+import SecondaryButton from "../buttons/SecondaryButton";
+import PrimaryButton from "../buttons/PrimaryButton";
 
 const GroupEventCard = () => {
   const navigation = useNavigation();
@@ -48,22 +45,16 @@ const GroupEventCard = () => {
           </Box>
           <Box width={"45%"}>
             <VStack>
-              <Button
-                borderRadius={50}
-                margin={1}
-                onPress={navigateToGroupSearch}
-                backgroundColor={SECONDARY_MEDIUM}
-              >
-                Join Event
-              </Button>
-              <Button
-                borderRadius={50}
-                margin={1}
-                onPress={navigateToCreateGroupChallenge}
-                backgroundColor={PRIMARY_MEDIUM}
-              >
-                Create Event
-              </Button>
+              <SecondaryButton
+                onPressFunc={navigateToGroupSearch}
+                isDisabled={false}
+                text={"Join Event"}
+              />
+              <PrimaryButton
+                onPressFunc={navigateToCreateGroupChallenge}
+                isDisabled={false}
+                text={"Create Event"}
+              />
             </VStack>
           </Box>
         </HStack>

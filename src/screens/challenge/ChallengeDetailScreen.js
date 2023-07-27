@@ -14,7 +14,10 @@ const ChallengeDetailScreen = ({ route }) => {
   }, [navigation, challenge]);
 
   return (
-    <ScrollView style={challengeStyles.container}>
+    <ScrollView
+      style={challengeStyles.container}
+      contentContainerStyle={{ flexGrow: 1 }}
+    >
       <ChallengeDetailContainer
         challenge={challenge}
         isGroupChallenge={false}

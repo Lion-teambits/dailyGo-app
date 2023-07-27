@@ -1,7 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
 import { Box, Button, HStack, Image, VStack } from "native-base";
 import { eventDateStatus } from "../../utils/dateUtils";
-import { DISABLED, SECONDARY_MEDIUM } from "../../constants/colorCodes";
+import {
+  DISABLED,
+  PRIMARY_DARK,
+  SECONDARY_MEDIUM,
+} from "../../constants/colorCodes";
 import { createChallengeProgress } from "../../api/challengeProgressService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { retrieveUserInfo, updateUserInfo } from "../../api/userService";
@@ -11,6 +15,11 @@ import { updateGroupChallenge } from "../../api/groupChallengeService";
 import { TimeDiffTextBox } from "../textBoxes/TimeDiffTextBox";
 import { MonsterNameTextBox } from "../textBoxes/MonsterNameTextBox";
 import Typography from "../typography/typography";
+import ActiveDetailBG from "../../../assets/images/challenge/activeChallengeDetailBG.svg";
+import UpcomingDetailBG from "../../../assets/images/challenge/upcomingChallengeDetailBG.svg";
+import BackToPreviousButton from "../buttons/BackToPreviousButton";
+import ChallengeJoinButton from "../buttons/SecondaryButton";
+import SecondaryButton from "../buttons/SecondaryButton";
 
 const ChallengeDetailContainer = (props) => {
   const { challenge, isGroupChallenge } = props;
@@ -72,51 +81,72 @@ const ChallengeDetailContainer = (props) => {
 
   const isJoinDisabled = status === "UPCOMING EVENT";
 
+  let BackgroundComponent;
+
+  if (status === "ACTIVE EVENT") {
+    BackgroundComponent = ActiveDetailBG;
+  } else if (status === "UPCOMING EVENT") {
+    BackgroundComponent = UpcomingDetailBG;
+  } else {
+    // default value
+    BackgroundComponent = null;
+  }
+
   return (
-    <VStack space={1} margin={4}>
-      <HStack justifyContent="space-between">
-        <Typography type="capitalized" style={{ color: color }}>
-          {status}
-        </Typography>
-        <TimeDiffTextBox timeDifference={timeDifference} />
-      </HStack>
-      <Box space={1} alignItems="center">
-        <Image
-          alt={challenge.title}
-          source={challenge.monster_image}
-          style={{ width: 198, height: 192 }}
+    <Box>
+      {BackgroundComponent ? (
+        <BackgroundComponent
+          width="100%"
+          style={{
+            position: "absolute",
+          }}
         />
-        <MonsterNameTextBox name={challenge.monster_name} />
-      </Box>
-      {isGroupChallenge ? (
-        <FriendsCard member={challenge.member_list} displayTitle={true} />
       ) : null}
-      <Box space={1} alignItems="center">
-        <BadgeToAchieve
-          badgeId={challenge.badge_info}
-          steps={challenge.target_steps}
-        />
-        <Button
-          margin={1}
-          width={"100%"}
-          borderRadius={50}
-          onPress={joinEvent}
-          disabled={isJoinDisabled}
-          backgroundColor={isJoinDisabled ? DISABLED : SECONDARY_MEDIUM}
-        >
-          Join Event
-        </Button>
-        <Button
-          margin={1}
-          width={"100%"}
-          borderRadius={50}
-          onPress={goBackToChallenges}
-          variant="unstyled"
-        >
-          Go Back to Challenges
-        </Button>
-      </Box>
-    </VStack>
+      <VStack space={1} margin={4}>
+        {isGroupChallenge ? (
+          <Box alignItems="center">
+            <Typography type="subtitles" style={{ color: PRIMARY_DARK }}>
+              {challenge.title}
+            </Typography>
+          </Box>
+        ) : (
+          <HStack justifyContent="space-between">
+            <Typography type="capitalized" style={{ color: color }}>
+              {status}
+            </Typography>
+            <TimeDiffTextBox timeDifference={timeDifference} />
+          </HStack>
+        )}
+
+        <Box space={1} alignItems="center">
+          <Image
+            marginBottom={4}
+            alt={challenge.title}
+            source={parseInt(challenge.monster_image)}
+            style={{ width: 198, height: 192 }}
+          />
+          <MonsterNameTextBox name={challenge.monster_name} />
+        </Box>
+        {isGroupChallenge ? (
+          <FriendsCard member={challenge.member_list} displayTitle={true} />
+        ) : null}
+        <Box space={1} alignItems="center">
+          <BadgeToAchieve
+            badgeId={challenge.badge_info}
+            steps={challenge.target_steps}
+          />
+          <SecondaryButton
+            onPressFunc={joinEvent}
+            isDisabled={isJoinDisabled}
+            text={"Join Event"}
+          />
+          <BackToPreviousButton
+            callbackFunc={goBackToChallenges}
+            text={"Go Back to Challenges"}
+          />
+        </Box>
+      </VStack>
+    </Box>
   );
 };
 

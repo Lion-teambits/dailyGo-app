@@ -1,0 +1,36 @@
+<svg width="360" height="224" viewBox="0 0 360 224" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_f_2640_6896)">
+<circle cx="25.5" cy="25.5039" r="100.5" fill="#FF5500" fill-opacity="0.1"/>
+</g>
+<g filter="url(#filter1_f_2640_6896)">
+<circle cx="196.5" cy="192.504" r="24.5" fill="#FF5500" fill-opacity="0.1"/>
+</g>
+<g filter="url(#filter2_f_2640_6896)">
+<circle cx="206.5" cy="42.5039" r="14.5" fill="#FF5500" fill-opacity="0.1"/>
+</g>
+<g filter="url(#filter3_f_2640_6896)">
+<circle cx="344" cy="20.0039" r="70" fill="#FF5500" fill-opacity="0.1"/>
+</g>
+<defs>
+<filter id="filter0_f_2640_6896" x="-87" y="-86.9961" width="225" height="225" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="6" result="effect1_foregroundBlur_2640_6896"/>
+</filter>
+<filter id="filter1_f_2640_6896" x="160" y="156.004" width="73" height="73" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="6" result="effect1_foregroundBlur_2640_6896"/>
+</filter>
+<filter id="filter2_f_2640_6896" x="180" y="16.0039" width="53" height="53" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="6" result="effect1_foregroundBlur_2640_6896"/>
+</filter>
+<filter id="filter3_f_2640_6896" x="262" y="-61.9961" width="164" height="164" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="6" result="effect1_foregroundBlur_2640_6896"/>
+</filter>
+</defs>
+</svg>

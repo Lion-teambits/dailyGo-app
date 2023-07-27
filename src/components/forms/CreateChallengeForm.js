@@ -1,21 +1,20 @@
-import {
-  Box,
-  Button,
-  Center,
-  HStack,
-  Image,
-  Input,
-  Text,
-  VStack,
-} from "native-base";
+import { Box, Button, Center, HStack, Image, Input, VStack } from "native-base";
 import { useState } from "react";
-import { SECONDARY_LIGHT, SECONDARY_MEDIUM } from "../../constants/colorCodes";
+import {
+  PRIMARY_DARK,
+  SECONDARY_LIGHT,
+  SECONDARY_MEDIUM,
+} from "../../constants/colorCodes";
 import {
   GROUP_CHALLENGE_BADGE_INFO,
   groupChallengeMosters,
 } from "../../data/challengeData";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import BadgeToAchieve from "../cards/BadgeToAchieve";
+import { StyleSheet } from "react-native";
+import Typography from "../typography/typography";
+import BackToPreviousButton from "../buttons/BackToPreviousButton";
+import SecondaryButton from "../buttons/SecondaryButton";
 
 const CreateChallengeForm = ({ createGroupEvent, goBackToChallenges }) => {
   const [title, setTitle] = useState("");
@@ -35,16 +34,25 @@ const CreateChallengeForm = ({ createGroupEvent, goBackToChallenges }) => {
 
   return (
     <VStack>
-      <Text>Team event title</Text>
+      <Typography type="smallTextBold" style={styles.body}>
+        Team event title
+      </Typography>
       <Input
+        marginTop={4}
         marginRight={1}
         variant="rounded"
         width={"100%"}
         onChangeText={handleTitleChange}
+        placeholder="Type the event title"
+        fontFamily="WorkSansRegular"
+        fontSize={14}
+        lineHeight={17}
       />
-      <Box marginY={2}>
-        <Text>Monster Challenge</Text>
-        <HStack space={1} justifyContent="space-around">
+      <Box marginY={4}>
+        <Typography type="smallTextBold" style={styles.body}>
+          Monster Challenge
+        </Typography>
+        <HStack marginTop={4} space={1} justifyContent="space-around">
           {groupChallengeMosters.map((imageData, index) => (
             <TouchableOpacity
               key={index}
@@ -70,41 +78,39 @@ const CreateChallengeForm = ({ createGroupEvent, goBackToChallenges }) => {
                     style={{ width: 72, height: 70 }}
                   />
                 </Box>
-                <Text>{imageData.steps} steps</Text>
+                <Typography type="smallTextBold" style={styles.body}>
+                  {imageData.steps} steps
+                </Typography>
               </Center>
             </TouchableOpacity>
           ))}
         </HStack>
       </Box>
 
-      <Box marginY={2}>
-        <Text>Rewards</Text>
+      <Box marginY={6}>
+        <Typography type="smallTextBold" style={styles.body}>
+          Rewards
+        </Typography>
         <BadgeToAchieve
           badgeId={GROUP_CHALLENGE_BADGE_INFO}
           steps={selectImgInfo ? selectImgInfo.steps : 0}
         />
       </Box>
 
-      <Button
-        margin={1}
-        width={"100%"}
-        borderRadius={50}
-        onPress={handleCreateGroupEvent}
-        backgroundColor={SECONDARY_MEDIUM}
-      >
-        Create Team Event
-      </Button>
-      <Button
-        margin={1}
-        width={"100%"}
-        borderRadius={50}
-        onPress={goBackToChallenges}
-        variant="unstyled"
-      >
-        Cancel
-      </Button>
+      <SecondaryButton
+        onPressFunc={handleCreateGroupEvent}
+        isDisabled={false}
+        text={"Create Team Event"}
+      />
+      <BackToPreviousButton callbackFunc={goBackToChallenges} text={"Cancel"} />
     </VStack>
   );
 };
+
+const styles = StyleSheet.create({
+  body: {
+    color: PRIMARY_DARK,
+  },
+});
 
 export default CreateChallengeForm;

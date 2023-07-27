@@ -1,9 +1,12 @@
-import { Box, Heading, Image, Text, VStack } from "native-base";
+import { Box, Image, VStack } from "native-base";
 import { IMAGE_GROUP_EVENT_LIST } from "../../constants/imagePaths";
 import SearchForm from "../forms/SearchForm";
 import { retrieveGroupChallengeInfoByShareId } from "../../api/groupChallengeService";
 import { useState } from "react";
 import ChallengeDetailContainer from "./ChallengeDetailContainer";
+import Typography from "../typography/typography";
+import { StyleSheet } from "react-native";
+import { PRIMARY_DARK } from "../../constants/colorCodes";
 
 const GroupChallengeContainer = () => {
   const [groupInfo, setGroupInfo] = useState("");
@@ -27,29 +30,42 @@ const GroupChallengeContainer = () => {
   };
 
   return (
-    <VStack marginX={4}>
-      <Text>Team event code</Text>
+    <VStack marginX={4} space={4}>
+      <Typography type="smallTextBold" style={styles.subtitles}>
+        Team event code
+      </Typography>
       <SearchForm handleSubmit={handleGroupChallengeSearch} />
       {groupInfo ? (
         <Box>
-          <Text>{groupInfo.toString}</Text>
           <ChallengeDetailContainer
             challenge={groupInfo}
             isGroupChallenge={true}
           />
         </Box>
       ) : (
-        <Box justifyContent="center" alignItems="center">
-          <Heading>Join your friends</Heading>
+        <Box marginTop={10} justifyContent="center" alignItems="center">
+          <Typography type="heading4" style={styles.body}>
+            Join your friends
+          </Typography>
           <Image
+            marginTop={4}
             alt="Monster Friends Image"
             source={IMAGE_GROUP_EVENT_LIST}
-            style={{ width: 314, height: 165 }}
+            style={{ width: 354, height: 186 }}
           />
         </Box>
       )}
     </VStack>
   );
 };
+
+const styles = StyleSheet.create({
+  subtitles: {
+    color: PRIMARY_DARK,
+  },
+  body: {
+    color: PRIMARY_DARK,
+  },
+});
 
 export default GroupChallengeContainer;
