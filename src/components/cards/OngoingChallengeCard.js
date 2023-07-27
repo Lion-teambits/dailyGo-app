@@ -6,9 +6,9 @@ import {
   Divider,
   Button,
   Text,
-  View,
   useClipboard,
   Container,
+  View,
 } from "native-base";
 import { useContext, useEffect, useRef, useState } from "react";
 import { StyleSheet } from "react-native";
@@ -26,12 +26,18 @@ import { updateGroupChallenge } from "../../api/groupChallengeService";
 import { TimeDiffTextBox } from "../textBoxes/TimeDiffTextBox";
 import {
   BG_PRIMARY,
+  PRIMARY_DARK,
   PRIMARY_LIGHT,
 } from "../../constants/colorCodes";
 import ProgressBarHome from "../progressBar/ProgressBarHome";
+import Typography from "../typography/typography";
+import PageIndicator from "./pagination/PageIndicator";
+import GhostButton from "../buttons/GhostButton";
+import CodeShareButton from "../buttons/CodeShareButton";
 
 const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
   const [progressRate, setProgressRate] = useState(0);
+  const [remainingTime, setRemainingTime] = useState("");
   const [showRewardButton, setShowRewardButton] = useState(false);
 
   const [showRewardModal, setShowRewardModal] = useState(false);
@@ -49,6 +55,7 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
     if (challenge.finishChallenge && !challenge.getReward) {
       setShowRewardButton(true);
     }
+    setRemainingTime(`Time left: ${challenge.remainingTime}`);
   }, [challenge.currentSteps, challenge.targetSteps]);
 
   function handleCancel() {
@@ -100,87 +107,124 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
   }
 
   return (
-    <View style={[styles.card, showCancelModal ? styles.blur : null]}>
-      <Container marginBottom="12">
-        <Center>
-          <Text textTransform="capitalize">{challenge.type} Goal</Text>
-          <Text>
-            <TimeDiffTextBox timeDifference={challenge.remainingTime} />
-          </Text>
+    <View
+      paddingX={4}
+      style={[styles.card, showCancelModal && styles.blur]}
+    >
+      <View
+        style={{ flex: 1 }}
+        alignItems="center"
+        width="100%"
+      >
+        <VStack
+          paddingTop={6}
+          space={2}
+          alignItems="center"
+        >
+          <Typography
+            type="subtitles"
+            style={styles.cardTitle}
+          >
+            {challenge.type} Goal
+          </Typography>
+          <TimeDiffTextBox timeDifference={remainingTime} />
+        </VStack>
+        <Box
+          style={{ flex: 1 }}
+          alignItems="center"
+          height="48%"
+          width="60%"
+        >
           <LottieView
             autoPlay
             loop
             ref={animation}
             style={{
-              width: 224,
-              height: 188,
+              width: "100%",
+              height: "100%",
             }}
             source={challenge.monsterImg}
           />
-
-          <Box
-            p="4"
-            rounded="xl"
-            _text={{
-              fontSize: "md",
-              fontWeight: "medium",
-              color: "warmGray.50",
-              textAlign: "center",
-            }}
-            alignItems="center"
-            backgroundColor="white"
-          >
-            <Text>{challenge.monsterName}</Text>
-          </Box>
-        </Center>
-      </Container>
+        </Box>
+        <Box
+          width="100%"
+          alignItems="center"
+        >
+          <PageIndicator
+            totalPageCount={totalPageCount}
+            currentPage={currentPage}
+            monsterName={challenge.monsterName}
+          />
+        </Box>
+      </View>
 
       <ProgressBarHome progressRate={progressRate} />
       {/* Switch button visibility depends on challenge status */}
-      <Box p={4}>
-        {showRewardButton && (
-          <Button onPress={handleRewardModal}>Receive Reward</Button>
-        )}
-        {showRewardModal && (
-          <RewardModal
-            eventType={challenge.type}
-            showModal={showRewardModal}
-            setShowModal={setShowRewardModal}
-            size="xl"
-            reward={challenge.reward}
-            onSubmit={handleReceiveReward}
-          />
-        )}
-        {challenge.getReward && <Text>Firefly collected!</Text>}
-      </Box>
+      <Container alignItems="center">
+        <Box padding={4}>
+          {showRewardButton && (
+            <Button onPress={handleRewardModal}>Receive Reward</Button>
+          )}
+          {showRewardModal && (
+            <RewardModal
+              eventType={challenge.type}
+              showModal={showRewardModal}
+              setShowModal={setShowRewardModal}
+              size="xl"
+              reward={challenge.reward}
+              onSubmit={handleReceiveReward}
+            />
+          )}
+          {challenge.getReward && <Text>Firefly collected!</Text>}
+        </Box>
+      </Container>
 
-      <Container>
-        <Text>Current Progress</Text>
+      <Container
+        alignItems="center"
+        gap={3}
+      >
+        <Text
+          fontSize="lg"
+          bold
+        >
+          {challenge.type === "daily" ? "Daily" : "Current"} Progress
+        </Text>
         <Box
           backgroundColor={BG_PRIMARY}
           padding={6}
-          rounded="xl"
+          rounded={26}
         >
           <HStack space="2">
-            <VStack>
+            <VStack
+              alignItems="center"
+              padding={2}
+            >
               <Text>{challenge.currentDistance}</Text>
               <Text>KM</Text>
             </VStack>
             <Divider
               orientation="vertical"
-              mx="3"
-              bg={PRIMARY_LIGHT}
+              thickness="2"
+              marginX="3"
+              backgroundColor={PRIMARY_LIGHT}
             />
-            <VStack>
+            <VStack
+              alignItems="center"
+              padding={2}
+            >
               <Text>{challenge.currentSteps}</Text>
               <Text>Steps</Text>
             </VStack>
             <Divider
               orientation="vertical"
-              mx="3"
+              thickness="2"
+              marginX="3"
               bg={PRIMARY_LIGHT}
             />
-            <VStack>
+            <VStack
+              alignItems="center"
+              padding={2}
+            >
               <Text>{challenge.currentCalories}</Text>
               <Text>Kcal</Text>
             </VStack>
@@ -188,21 +232,22 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
         </Box>
       </Container>
       {challenge.type === "group" && (
-        <>
+        <Container
+          width="70%"
+          paddingY={6}
+          gap={2}
+        >
           <Text>Friends</Text>
           <HStack>
             <FriendsCard member={challenge.memberList} />
           </HStack>
           <HStack>
             <Text>Code: {challenge.shareCode}</Text>
-            <Button
-              bordered
-              onPress={() => onCopy(challenge._id)}
-            >
-              Copy
-            </Button>
+           
+
+            <CodeShareButton shareId={challenge.shareCode} onCopy={onCopy} />
           </HStack>
-        </>
+        </Container>
       )}
       {challenge.type !== "daily" && (
         <>
@@ -210,7 +255,7 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
             badgeId={challenge.badgeInfo}
             steps={challenge.targetSteps}
           />
-          <Button onPress={handleCancel}>Cancel</Button>
+          <GhostButton onPress={handleCancel}>Leave event</GhostButton>
           <ConfirmationModal
             showModal={showCancelModal}
             setShowModal={setShowCancelModal}
@@ -274,7 +319,6 @@ const removeIDFromMembers = async (user_id, challenge) => {
 const styles = StyleSheet.create({
   card: {
     flex: 1,
-    padding: 20,
     justifyContent: "flex-start",
     alignItems: "center",
     flexGrow: 0,
@@ -285,63 +329,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   cardTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  image: {
-    width: 100,
-    height: 100,
-  },
-  indicatorContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    height: 100,
-  },
-  indicator: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    margin: 5,
-    backgroundColor: "lightgray",
-  },
-  selectedIndicator: {
-    width: 72,
-    height: 48,
-    justifyContent: "center",
-    alignItems: "center",
-    // textAlign: "center",
-    backgroundColor: "grey",
-  },
-  smallIndicatorLeft: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: "gray",
-  },
-  mediumIndicatorLeft: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: "gray",
-  },
-  mediumIndicatorRight: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: "gray",
-  },
-  smallIndicatorRight: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: "gray",
-  },
-  hiddenIndicator: { opacity: 0 },
-  dummyIndicator: {
-    width: 10,
-    height: 10,
-    margin: 5,
-    backgroundColor: "transparent",
+    color: PRIMARY_DARK,
+    textTransform: "capitalize",
   },
 });
