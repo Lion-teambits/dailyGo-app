@@ -12,6 +12,7 @@ import { PRIMARY_MEDIUM, PRIMARY_DARK } from "../../constants/colorCodes";
 import { WELCOME_MONSTER, WELCOME_LOGO } from "../../constants/imagePaths";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Typography from "../../components/typography/typography";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SignupScreen = ({ navigation }) => {
   const handleSignupGmail = () => {
