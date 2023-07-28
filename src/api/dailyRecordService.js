@@ -40,11 +40,18 @@ export const updateDailyRecord = async (record_id, newActivityData) => {
 // Create new daily record
 export const createDailyRecord = async (user_id, activityData) => {
   try {
-    const newDailyRecord = await axios.post(`${BASE_URL}/dailyRecord`, {
-      ...activityData,
-      uid: user_id,
-      streak_status: "continue", // default
-    });
+    const headers = await makeAuthHeaders();
+    const newDailyRecord = await axios.post(
+      `${BASE_URL}/dailyRecord`,
+      {
+        ...activityData,
+        uid: user_id,
+        streak_status: "continue", // default
+      },
+      {
+        headers,
+      }
+    );
     return newDailyRecord.data;
   } catch (error) {
     throw error;
