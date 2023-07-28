@@ -1,11 +1,8 @@
 import {
-  Center,
   Box,
   HStack,
   VStack,
   Divider,
-  Button,
-  Text,
   useClipboard,
   Container,
   View,
@@ -25,6 +22,7 @@ import LottieView from "lottie-react-native";
 import { updateGroupChallenge } from "../../api/groupChallengeService";
 import { TimeDiffTextBox } from "../textBoxes/TimeDiffTextBox";
 import {
+  ACCENT_DARK,
   BG_PRIMARY,
   PRIMARY_DARK,
   PRIMARY_LIGHT,
@@ -35,6 +33,8 @@ import PageIndicator from "./pagination/PageIndicator";
 import GhostButton from "../buttons/GhostButton";
 import CodeShareButton from "../buttons/CodeShareButton";
 import { badges } from "../../data/badgeData";
+import CollectFireFlyButton from "../buttons/CollectFireFlyButton";
+import AccentButton from "../buttons/AccentButton";
 
 const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
   const [progressRate, setProgressRate] = useState(0);
@@ -160,13 +160,26 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
         </Box>
       </View>
 
-      <ProgressBarHome progressRate={progressRate} />
+      <ProgressBarHome
+        progressRate={progressRate}
+        getReward={challenge.getReward}
+        challengeType={challenge.type}
+        targetSteps={challenge.targetSteps}
+      />
       {/* Switch button visibility depends on challenge status */}
       <Container alignItems="center">
-        <Box padding={4}>
-          {showRewardButton && (
-            <Button onPress={handleRewardModal}>Receive Reward</Button>
-          )}
+        <Box
+          padding={2}
+          width="60%"
+        >
+          {showRewardButton &&
+            (challenge.type === "daily" ? (
+              <CollectFireFlyButton onPress={handleRewardModal} />
+            ) : (
+              <AccentButton onPress={handleRewardModal}>
+                Receive Reward
+              </AccentButton>
+            ))}
           {showRewardModal && (
             <RewardModal
               eventType={challenge.type}
@@ -177,20 +190,20 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
               onSubmit={handleReceiveReward}
             />
           )}
-          {challenge.getReward && <Text>Firefly collected!</Text>}
         </Box>
       </Container>
 
       <Container
+        paddingY={2}
         alignItems="center"
         gap={3}
       >
-        <Text
-          fontSize="lg"
-          bold
+        <Typography
+          type="subtitles"
+          style={{ color: PRIMARY_DARK }}
         >
           {challenge.type === "daily" ? "Daily" : "Current"} Progress
-        </Text>
+        </Typography>
         <Box
           backgroundColor={BG_PRIMARY}
           padding={6}
@@ -200,9 +213,20 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
             <VStack
               alignItems="center"
               padding={2}
+              space={1}
             >
-              <Text>{challenge.currentDistance}</Text>
-              <Text>KM</Text>
+              <Typography
+                type="subtitles"
+                style={{ color: PRIMARY_DARK }}
+              >
+                {challenge.currentDistance}
+              </Typography>
+              <Typography
+                type="body1"
+                style={{ color: PRIMARY_DARK }}
+              >
+                KM
+              </Typography>
             </VStack>
             <Divider
               orientation="vertical"
@@ -213,9 +237,20 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
             <VStack
               alignItems="center"
               padding={2}
+              space={1}
             >
-              <Text>{challenge.currentSteps}</Text>
-              <Text>Steps</Text>
+              <Typography
+                type="subtitles"
+                style={{ color: PRIMARY_DARK }}
+              >
+                {challenge.currentSteps}
+              </Typography>
+              <Typography
+                type="body1"
+                style={{ color: PRIMARY_DARK }}
+              >
+                Steps
+              </Typography>
             </VStack>
             <Divider
               orientation="vertical"
@@ -226,9 +261,20 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
             <VStack
               alignItems="center"
               padding={2}
+              space={1}
             >
-              <Text>{challenge.currentCalories}</Text>
-              <Text>Kcal</Text>
+              <Typography
+                type="subtitles"
+                style={{ color: PRIMARY_DARK }}
+              >
+                {challenge.currentCalories}
+              </Typography>
+              <Typography
+                type="body1"
+                style={{ color: PRIMARY_DARK }}
+              >
+                Kcal
+              </Typography>
             </VStack>
           </HStack>
         </Box>
@@ -239,12 +285,22 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
           paddingY={6}
           gap={2}
         >
-          <Text>Friends</Text>
-          <HStack>
+          <Typography
+            type="subtitles"
+            style={{ color: PRIMARY_DARK }}
+          >
+            Friends
+          </Typography>
+          <HStack marginBottom={2}>
             <FriendsCard member={challenge.memberList} />
           </HStack>
-          <HStack>
-            <Text>Code: {challenge.shareCode}</Text>
+          <HStack alignItems="center">
+            <Typography
+              type="body2"
+              style={{ color: PRIMARY_DARK }}
+            >
+              Code: {challenge.shareCode}
+            </Typography>
 
             <CodeShareButton
               shareId={challenge.shareCode}

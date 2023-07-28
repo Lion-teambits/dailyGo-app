@@ -11,7 +11,6 @@ const PageIndicator = ({ totalPageCount, currentPage, monsterName }) => {
         width="100%"
         space={2}
         justifyContent="space-evenly"
-        // paddingX={2}
         marginTop={-8}
         marginBottom={8}
       >
