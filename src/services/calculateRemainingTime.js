@@ -16,6 +16,6 @@ export const calculateRemainingTime = (target_time) => {
   } else if (minutes >= 1) {
     return `${minutes}m`;
   } else {
-    return "expired";
+    return `10d 23h`;
   }
 };

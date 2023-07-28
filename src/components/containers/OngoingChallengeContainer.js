@@ -44,7 +44,7 @@ const OngoingChallengeContainer = ({ ongoingChallenges, focusChallengeID }) => {
             <OngoingChallengeCard
               challenge={challenge}
               totalPageCount={ongoingChallenges.length}
-              currentPage={Math.floor(scrollPosition / windowWidth) + 1}
+              currentPage={index + 1}
             />
           </View>
         ))}
