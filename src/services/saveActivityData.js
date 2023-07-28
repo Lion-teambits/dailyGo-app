@@ -27,7 +27,7 @@ async function saveActivityData(user_id) {
     const activityData = await fetchActivityData();
 
     const isActivityDataSame =
-      previousActivityData && previousActivityData.step === activityData.step;
+      previousActivityData && previousActivityData.steps === activityData.steps;
 
     if (isActivityDataSame) {
       console.log(
