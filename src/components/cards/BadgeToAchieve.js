@@ -1,11 +1,7 @@
-import { Box, HStack, Heading, Image, Text, VStack } from "native-base";
+import { Box, HStack, Image, VStack } from "native-base";
 import { badges } from "../../data/badgeData";
 import { StyleSheet } from "react-native";
-import {
-  BG_DARK,
-  PRIMARY_DARK,
-  TXT_LIGHT_BG,
-} from "../../constants/colorCodes";
+import { BG_DARK, PRIMARY_DARK } from "../../constants/colorCodes";
 import Typography from "../typography/typography";
 
 const BadgeToAchieve = ({ badgeId, steps }) => {
@@ -13,20 +9,25 @@ const BadgeToAchieve = ({ badgeId, steps }) => {
 
   return (
     <Box
-      paddingY={2}
+      paddingY={4}
       paddingX={4}
       margin={3}
-      borderRadius={10}
+      borderRadius={16}
       bg="white"
-      shadow={2}
-      overflow="hidden"
+      shadow={4}
     >
       <VStack space={3}>
-        <Typography type="subtitles" style={styles.titles}>
+        <Typography
+          type="subtitles"
+          style={styles.titles}
+        >
           Badge to Achieve
         </Typography>
         <HStack>
-          <Box width={"40%"} marginRight={2}>
+          <Box
+            width={"40%"}
+            marginRight={2}
+          >
             <Image
               alt="Badge Image"
               source={parseInt(badgeInfo.badgeImage)}
@@ -37,18 +38,30 @@ const BadgeToAchieve = ({ badgeId, steps }) => {
           <Box width={"60%"}>
             <VStack space={4}>
               <Box>
-                <Typography type="smallTextBold" style={styles.subtitles}>
+                <Typography
+                  type="smallTextBold"
+                  style={styles.subtitles}
+                >
                   {badgeInfo.badgeTitle}
                 </Typography>
-                <Typography type="smallTextRegular" style={styles.body}>
+                <Typography
+                  type="smallTextRegular"
+                  style={styles.body}
+                >
                   {badgeInfo.description}
                 </Typography>
               </Box>
               <Box>
-                <Typography type="smallTextBold" style={styles.subtitles}>
+                <Typography
+                  type="smallTextBold"
+                  style={styles.subtitles}
+                >
                   Goal: {steps} Steps
                 </Typography>
-                <Typography type="smallTextRegular" style={styles.body}>
+                <Typography
+                  type="smallTextRegular"
+                  style={styles.body}
+                >
                   Est. distance: {parseInt(steps * 0.0007)} Km
                 </Typography>
               </Box>

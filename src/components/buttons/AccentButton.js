@@ -1,30 +1,33 @@
+import { TouchableOpacity } from "react-native";
 import {
   ACCENT_MEDIUM,
   DISABLED,
   TXT_LIGHT_BG,
 } from "../../constants/colorCodes";
 import Typography from "../typography/typography";
-import { Button } from "native-base";
 
 const AccentButton = ({ onPress, isDisabled, children }) => {
   return (
-    <Button
-      width="100%"
-      backgroundColor={isDisabled ? DISABLED : ACCENT_MEDIUM}
+    <TouchableOpacity
+      style={{
+        width: "100%",
+        backgroundColor: isDisabled ? DISABLED : ACCENT_MEDIUM,
+        borderRadius: 50,
+        paddingHorizontal: 12,
+        paddingVertical: 12,
+        justifyContent: 'center',
+        alignItem: 'center'
+      }}
       onPress={onPress}
       disabled={isDisabled}
-      borderRadius={50}
-      alignItems="center"
-      paddingX="6"
-      paddingY="12"
     >
       <Typography
         type="button"
-        style={{ color: TXT_LIGHT_BG }}
+        style={{ color: TXT_LIGHT_BG, textAlign:'center' }}
       >
         {children}
       </Typography>
-    </Button>
+    </TouchableOpacity>
   );
 };
 

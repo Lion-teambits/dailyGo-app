@@ -9,7 +9,7 @@ const CodeShareButton = ({ shareId, onCopy }) => {
         borderWidth: 1,
         borderColor: PRIMARY_MEDIUM,
         paddingVertical: 4,
-        borderRadius: 10,
+        borderRadius: 4,
         padding: 10,
         alignItems: "center",
       }}

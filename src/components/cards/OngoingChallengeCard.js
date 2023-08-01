@@ -22,7 +22,6 @@ import LottieView from "lottie-react-native";
 import { updateGroupChallenge } from "../../api/groupChallengeService";
 import { TimeDiffTextBox } from "../textBoxes/TimeDiffTextBox";
 import {
-  ACCENT_DARK,
   BG_PRIMARY,
   PRIMARY_DARK,
   PRIMARY_LIGHT,
@@ -167,7 +166,7 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
         targetSteps={challenge.targetSteps}
       />
       {/* Switch button visibility depends on challenge status */}
-      <Container alignItems="center">
+      <Container alignItems="center" marginBottom={4}>
         <Box
           padding={2}
           width="60%"
@@ -219,7 +218,7 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
                 type="subtitles"
                 style={{ color: PRIMARY_DARK }}
               >
-                {challenge.currentDistance}
+                {Math.floor(challenge.currentDistance)}
               </Typography>
               <Typography
                 type="body1"
@@ -243,7 +242,7 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
                 type="subtitles"
                 style={{ color: PRIMARY_DARK }}
               >
-                {challenge.currentSteps}
+                {Math.floor(challenge.currentSteps)}
               </Typography>
               <Typography
                 type="body1"
@@ -267,7 +266,7 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
                 type="subtitles"
                 style={{ color: PRIMARY_DARK }}
               >
-                {challenge.currentCalories}
+                {Math.floor(challenge.currentCalories)}
               </Typography>
               <Typography
                 type="body1"

@@ -20,13 +20,12 @@ const GroupEventCard = () => {
 
   return (
     <Box
-      paddingY={2}
+      paddingY={4}
       paddingX={4}
       margin={3}
       borderRadius={10}
       bg="white"
       shadow={2}
-      overflow="hidden"
     >
       <VStack>
         <Typography type="subtitles" style={styles.subtitles} size={"sm"}>
