@@ -4,19 +4,23 @@ import {
   TXT_LIGHT_BG,
 } from "../../constants/colorCodes";
 import Typography from "../typography/typography";
-import { Button, HStack } from "native-base";
+import { HStack } from "native-base";
 import FireFly from "../../../assets/images/icons/firefly-small.svg";
+import { TouchableOpacity } from "react-native";
 
 const CollectFireFlyButton = ({ onPress, isDisabled }) => {
   return (
-    <Button
-      width="100%"
-      backgroundColor={isDisabled ? DISABLED : ACCENT_MEDIUM}
+    <TouchableOpacity
+      style={{
+        width: "100%",
+        backgroundColor: isDisabled ? DISABLED : ACCENT_MEDIUM,
+        borderRadius: 50,
+        paddingHorizontal: 12,
+        paddingVertical: 12,
+        justifyContent: "center",
+        alignItem: "center",
+      }}
       onPress={onPress}
-      disabled={isDisabled}
-      borderRadius={50}
-      paddingX="6"
-      paddingY="12"
     >
       <HStack
         alignItems="center"
@@ -33,7 +37,7 @@ const CollectFireFlyButton = ({ onPress, isDisabled }) => {
           height={24}
         />
       </HStack>
-    </Button>
+    </TouchableOpacity>
   );
 };
 

@@ -5,8 +5,16 @@ import { StyleSheet } from "react-native";
 
 export const TimeDiffTextBox = ({ timeDifference }) => {
   return (
-    <Box paddingY={1} paddingX={3} bg={BG_PRIMARY} rounded={50}>
-      <Typography type="smallTextBold" style={styles.label}>
+    <Box
+      paddingY={1.5}
+      paddingX={3}
+      bg={BG_PRIMARY}
+      rounded={50}
+    >
+      <Typography
+        type="smallTextBold"
+        style={styles.label}
+      >
         {timeDifference}
       </Typography>
     </Box>
