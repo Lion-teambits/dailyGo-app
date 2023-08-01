@@ -204,9 +204,8 @@ export const checkGroupChallengeProgress = async (user_id) => {
         getReward: "",
         badgeInfo: null,
         _id: 0,
-        groupChallengeID: "",
-        memberList: [],
-        shareCode: "",
+        friendsInfo: [],
+        challengeCode: null,
       };
 
       const groupChallengeInfo = await retrieveGroupChallengeInfo(
@@ -239,12 +238,13 @@ export const checkGroupChallengeProgress = async (user_id) => {
       returnObj.reward = challengeProgress.badge_info;
       returnObj.getReward =
         challengeProgress.get_reward === "completed" ? true : false;
+      returnObj.getReward =
+        challengeProgress.get_reward === "completed" ? true : false;
       returnObj.badgeInfo = challengeProgress.badge_info;
       returnObj._id = challengeProgress._id;
-      returnObj.groupChallengeID = groupChallengeInfo._id;
-      returnObj.memberList = groupChallengeInfo.member_list;
-      returnObj.shareCode = groupChallengeInfo.share_id;
-      return returnObj;
+      returnObj.friendsInfo = groupChallengeInfo.member_list;
+
+      return { ...challengeProgress, challengeInfo: groupChallengeInfo };
     })
   );
   return updatedProgressArray;

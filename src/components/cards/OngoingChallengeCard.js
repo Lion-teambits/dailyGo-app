@@ -6,6 +6,7 @@ import {
   useClipboard,
   Container,
   View,
+  useClipboard,
 } from "native-base";
 import { useContext, useEffect, useRef, useState } from "react";
 import { StyleSheet } from "react-native";
@@ -44,9 +45,6 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
   const [showRewardModal, setShowRewardModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const { setIsLoading } = useContext(UserContext);
-  const { value, onCopy } = useClipboard();
-
-  const animation = useRef(null);
 
   useEffect(() => {
     const result = Math.floor(
@@ -198,118 +196,39 @@ const OngoingChallengeCard = ({ challenge, totalPageCount, currentPage }) => {
         alignItems="center"
         gap={3}
       >
-        <Typography
-          type="subtitles"
-          style={{ color: PRIMARY_DARK }}
-        >
-          {challenge.type === "daily" ? "Daily" : "Current"} Progress
-        </Typography>
-        <Box
-          backgroundColor={BG_PRIMARY}
-          padding={6}
-          rounded={26}
-        >
-          <HStack space="2">
-            <VStack
-              alignItems="center"
-              padding={2}
-              space={1}
-            >
-              <Typography
-                type="subtitles"
-                style={{ color: PRIMARY_DARK }}
-              >
-                {challenge.currentDistance}
-              </Typography>
-              <Typography
-                type="body1"
-                style={{ color: PRIMARY_DARK }}
-              >
-                KM
-              </Typography>
-            </VStack>
-            <Divider
-              orientation="vertical"
-              thickness="2"
-              marginX="3"
-              backgroundColor={PRIMARY_LIGHT}
-            />
-            <VStack
-              alignItems="center"
-              padding={2}
-              space={1}
-            >
-              <Typography
-                type="subtitles"
-                style={{ color: PRIMARY_DARK }}
-              >
-                {challenge.currentSteps}
-              </Typography>
-              <Typography
-                type="body1"
-                style={{ color: PRIMARY_DARK }}
-              >
-                Steps
-              </Typography>
-            </VStack>
-            <Divider
-              orientation="vertical"
-              thickness="2"
-              marginX="3"
-              bg={PRIMARY_LIGHT}
-            />
-            <VStack
-              alignItems="center"
-              padding={2}
-              space={1}
-            >
-              <Typography
-                type="subtitles"
-                style={{ color: PRIMARY_DARK }}
-              >
-                {challenge.currentCalories}
-              </Typography>
-              <Typography
-                type="body1"
-                style={{ color: PRIMARY_DARK }}
-              >
-                Kcal
-              </Typography>
-            </VStack>
-          </HStack>
-        </Box>
-      </Container>
-      {challenge.type === "group" && (
-        <Container
-          width="70%"
-          paddingY={6}
-          gap={2}
-        >
-          <Typography
-            type="subtitles"
-            style={{ color: PRIMARY_DARK }}
-          >
-            Friends
-          </Typography>
-          <HStack marginBottom={2}>
-            <FriendsCard member={challenge.memberList} />
-          </HStack>
-          <HStack alignItems="center">
-            <Typography
-              type="body2"
-              style={{ color: PRIMARY_DARK }}
-            >
-              Code: {challenge.shareCode}
-            </Typography>
-
-            <CodeShareButton
-              shareId={challenge.shareCode}
-              onCopy={onCopy}
-            />
-          </HStack>
-        </Container>
-      )}
-    
+        <VStack>
+          <Text>{challenge.currentDistance}</Text>
+          <Text>KM</Text>
+        </VStack>
+        <Divider
+          orientation="vertical"
+          mx="3"
+          _light={{
+            bg: "muted.800",
+          }}
+          _dark={{
+            bg: "muted.50",
+          }}
+        />
+        <VStack>
+          <Text>{challenge.currentSteps}</Text>
+          <Text>Steps</Text>
+        </VStack>
+        <Divider
+          orientation="vertical"
+          mx="3"
+          _light={{
+            bg: "muted.800",
+          }}
+          _dark={{
+            bg: "muted.50",
+          }}
+        />
+        <VStack>
+          <Text>{challenge.currentCalories}</Text>
+          <Text>Kcal</Text>
+        </VStack>
+      </HStack>
       {challenge.type !== "daily" && (
         <>
           <BadgeToAchieve
