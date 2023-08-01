@@ -23,7 +23,7 @@ const AccentButton = ({ onPress, isDisabled, children }) => {
     >
       <Typography
         type="button"
-        style={{ color: TXT_LIGHT_BG }}
+        style={{ color: TXT_LIGHT_BG, textAlign:'center' }}
       >
         {children}
       </Typography>
