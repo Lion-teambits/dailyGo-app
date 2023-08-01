@@ -194,9 +194,3 @@ const styles = StyleSheet.create({
   heading: { marginBottom: 24 },
   subtitle: { marginBottom: 44, textAlign: "center" },
 });
-
-const styles = StyleSheet.create({
-  color: { color: "white" },
-  heading: { marginBottom: 24 },
-  subtitle: { marginBottom: 44, textAlign: "center" },
-});
