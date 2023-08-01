@@ -62,7 +62,6 @@ const ChallengeList = ({ userData }) => {
               margin={3}
               bg="white"
               shadow={2}
-              overflow="hidden"
             >
               <ChallengeListItem
                 challenge={item}
