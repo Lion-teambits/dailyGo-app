@@ -12,8 +12,22 @@ import BadgeList from "../components/list/BadgeList";
 import BadgeItem from "../components/listitems/BadgeItem";
 import GroupChallengeScreen from "../screens/challenge/GroupChallengeScreen";
 import CreateGroupChallengeScreen from "../screens/challenge/CreateGroupChallengeScreen";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { PRIMARY_DARK } from "../constants/colorCodes";
 
 const Stack = createStackNavigator();
+
+const backIconOptions = {
+  headerBackImage: () => (
+    <MaterialCommunityIcons
+      name="keyboard-backspace"
+      size={24}
+      color={PRIMARY_DARK}
+      style={{padding: 12}}
+    />
+  ),
+  headerBackTitleVisible: false,
+};
 
 const AppStack = () => {
   return (
@@ -52,12 +66,19 @@ const AppStack = () => {
         <Stack.Screen
           name="ChallengeDetail"
           component={ChallengeDetailScreen}
+          options={backIconOptions}
         />
+
         <Stack.Screen
           name="CreateGroupChallenge"
           component={CreateGroupChallengeScreen}
+          options={backIconOptions}
         />
-        <Stack.Screen name="GroupChallenge" component={GroupChallengeScreen} />
+        <Stack.Screen
+          name="GroupChallenge"
+          component={GroupChallengeScreen}
+          options={backIconOptions}
+        />
         <Stack.Screen
           name="BadgeList"
           component={BadgeList}
