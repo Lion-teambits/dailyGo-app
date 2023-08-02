@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Center, Box, Button, KeyboardAvoidingView } from "native-base";
 import { View, StyleSheet, Image } from "react-native";
 import Form from "../../components/forms/Form";
+import * as Google from "expo-auth-session/providers/google";
+import * as WebBrowser from "expo-web-browser";
 import {
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithCredential,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
@@ -13,10 +18,54 @@ import { WELCOME_MONSTER, WELCOME_LOGO } from "../../constants/imagePaths";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Typography from "../../components/typography/typography";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { IOS_CLIENT_ID, ANDROID_CLIENT_ID } from "@env";
+import { retrieveUserInfo } from "../../api/userService";
+
+WebBrowser.maybeCompleteAuthSession();
 
 const SignupScreen = ({ navigation }) => {
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    iosClientId: IOS_CLIENT_ID,
+    androidClientId: ANDROID_CLIENT_ID,
+  });
+
+  useEffect(() => {
+    if (response?.type == "success") {
+      const { id_token } = response.params;
+      const credential = GoogleAuthProvider.credential(id_token);
+      signInWithCredential(auth, credential);
+    }
+  }, [response]);
+
+  const moveToNextPage = async (user) => {
+    if (user) {
+      try {
+        await AsyncStorage.setItem("@uid", user.uid);
+        await AsyncStorage.setItem("@accessToken", user.accessToken);
+        const userInfo = await retrieveUserInfo(user.uid);
+        if (userInfo == null) {
+          navigation.navigate("Onboarding", { user });
+        } else {
+          navigation.navigate("HomeScreen");
+        }
+      } catch (error) {
+        if (user) {
+          navigation.navigate("Onboarding", { user });
+        } else {
+          console.log("Login Fail. ", error);
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    onAuthStateChanged(auth, async (user) => {
+      moveToNextPage(user);
+    });
+  }, []);
+
   const handleSignupGmail = () => {
-    // Logic for signing up with Gmail
+    promptAsync();
   };
 
   const handleSignupEmail = async (name, email, password) => {
