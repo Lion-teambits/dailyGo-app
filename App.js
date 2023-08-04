@@ -13,14 +13,6 @@ const App = () => {
   const [appIsReady, setAppIsReady] = useState(false);
 
   useEffect(() => {
-    // start background task after mounting
-    startBackgroundTask();
-
-    if (BUILD_MODE == "release") {
-      LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
-      LogBox.ignoreAllLogs(); //Ignore all log notifications
-    }
-
     async function prepare() {
       try {
         await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -32,6 +24,11 @@ const App = () => {
     }
 
     prepare();
+
+    if (BUILD_MODE == "release") {
+      LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
+      LogBox.ignoreAllLogs(); //Ignore all log notifications
+    }
   }, []);
 
   const onLayoutRootView = useCallback(async () => {
