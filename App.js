@@ -7,56 +7,37 @@ import { BUILD_MODE } from "./src/constants/buildOptions";
 import * as SplashScreen from "expo-splash-screen";
 import LottieView from "lottie-react-native";
 
-SplashScreen.preventAutoHideAsync();
-
 const App = () => {
   const [appIsReady, setAppIsReady] = useState(false);
 
   useEffect(() => {
-    async function prepare() {
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setAppIsReady(true);
-      }
-    }
-
-    prepare();
-
     if (BUILD_MODE == "release") {
       LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
       LogBox.ignoreAllLogs(); //Ignore all log notifications
     }
   }, []);
 
-  const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
-      await SplashScreen.hideAsync();
-    }
-  }, [appIsReady]);
-
   if (!appIsReady) {
     return (
-      <View
-        style={styles.splashContainer}
-        onLayout={onLayoutRootView}
-      >
+      <View style={styles.splashContainer}>
         <LottieView
           source={require("./assets/images/Splashscreen_DailyGo.json")}
           autoPlay
           loop={false}
+          onAnimationFinish={() => {
+            console.log("animation finished");
+            setAppIsReady(true);
+          }}
         />
       </View>
     );
+  } else {
+    return (
+      <NativeBaseProvider>
+        <AppStack />
+      </NativeBaseProvider>
+    );
   }
-
-  return (
-    <NativeBaseProvider>
-      <AppStack />
-    </NativeBaseProvider>
-  );
 };
 
 export default App;
