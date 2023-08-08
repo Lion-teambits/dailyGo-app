@@ -64,7 +64,7 @@ const PageIndicator = ({ totalPageCount, currentPage, monsterName }) => {
             name="circle"
             size={32}
             color={
-              totalPageCount - currentPage >= 1 && totalPageCount >= 3
+              totalPageCount - currentPage >= 1 && totalPageCount >= 2
                 ? "white"
                 : "transparent"
             }
