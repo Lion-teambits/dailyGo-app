@@ -5,9 +5,7 @@ import {
   retrieveDailyRecord,
   updateDailyRecord,
 } from "../api/dailyRecordService";
-import {
-  resetStreakOrUseHeart,
-} from "./checkChallengeProgress";
+import { resetStreakOrUseHeart } from "./checkChallengeProgress";
 import {
   retrieveChallengeProgressInfo,
   updateChallengeProgress,
@@ -27,7 +25,9 @@ async function saveActivityData(user_id) {
     const activityData = await fetchActivityData();
 
     const isActivityDataSame =
-      previousActivityData && previousActivityData.steps === activityData.steps;
+      previousActivityData &&
+      previousActivityData.steps === activityData.steps &&
+      previousActivityData.userID === user_id;
 
     if (isActivityDataSame) {
       console.log(
@@ -94,7 +94,7 @@ async function saveActivityData(user_id) {
         );
     }
 
-    previousActivityData = activityData;
+    previousActivityData = { ...activityData, userId: user_id };
     return;
   } catch (error) {
     console.error(
