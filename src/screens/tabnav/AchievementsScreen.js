@@ -66,7 +66,7 @@ const AchievementsScreen = ({ navigation }) => {
             </ScrollView>
             <TouchableOpacity onPress={closeModal}>
               <Typography type="button" style={styles.modalButton}>
-                Close Modal
+                Close
               </Typography>
             </TouchableOpacity>
           </View>
