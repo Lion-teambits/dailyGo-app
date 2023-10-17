@@ -48,13 +48,16 @@ DailyGo is built using the following technologies:
 - **Back-end:** Node.js, Express, AWS, Firebase Authentication, JWT
 - **Database:** MongoDB
 
-**Cloud and Scalability**
+#### Cloud and Scalability
+
 The DailyGo app leverages MongoDB Atlas for cloud-based storage of user information, health data, and challenge details. This ensures seamless data management, retrieval, and security. MongoDB's advanced querying capabilities enhance user experiences. The combination of MongoDB and Node.js facilitates scalability by providing horizontal scalability for data and efficient handling of concurrent connections.
 
-**Stability and Industry Standards**
+#### Stability and Industry Standards
+
 AWS and Node.js are employed to ensure the app's stability. AWS offers a reliable cloud infrastructure, while Node.js, with its event-driven architecture, contributes to a stable and resilient application. Expo and Express frameworks follow industry standards, providing a robust and well-documented foundation for mobile app development and scalable APIs.
 
-**Security Features**
+#### Security Features
+
 DailyGo prioritizes user security by implementing Google Authentication for login verification. This adds an extra layer of protection through industry-leading security protocols and encryption algorithms, preventing unauthorized access and safeguarding user privacy.
 
 ## Deliverables
