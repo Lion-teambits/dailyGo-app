@@ -38,7 +38,7 @@ https://dailygo.ca/
 
 ## Demo
 
-<img src="https://github.com/Rena52107/assets/blob/main/dailygo/dailygo_demo.gif" width="25%">
+<img src="https://github.com/Rena52107/assets/blob/main/dailygo/dailygo_demo.gif" width="30%">
 
 ## Technology Stack
 
